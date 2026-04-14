@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -6,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const locale = useLocaleStore((s) => s.locale);
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -45,5 +46,13 @@ export default function ThankYouPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={null}>
+      <ThankYouContent />
+    </Suspense>
   );
 }

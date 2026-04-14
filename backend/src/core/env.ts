@@ -26,6 +26,12 @@ export const env = {
     password: process.env.DB_PASSWORD || 'app',
     name: process.env.DB_NAME || 'geoserra',
   },
+  DB_ADMIN: {
+    host: process.env.DB_ADMIN_HOST || process.env.DB_HOST || '127.0.0.1',
+    port: toInt(process.env.DB_ADMIN_PORT || process.env.DB_PORT, 3306),
+    user: process.env.DB_ADMIN_USER || process.env.DB_USER || 'app',
+    password: process.env.DB_ADMIN_PASSWORD || process.env.DB_PASSWORD || 'app',
+  },
 
   JWT_SECRET: process.env.JWT_SECRET || 'change-me',
   COOKIE_SECRET: process.env.COOKIE_SECRET || 'cookie-secret',

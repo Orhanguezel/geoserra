@@ -1,5 +1,6 @@
 import fp from 'fastify-plugin';
 import mysql from '@fastify/mysql';
+import type { FastifyInstance } from 'fastify';
 import { env } from '@/core/env';
 
 export default fp(async (app) => {
@@ -10,13 +11,15 @@ export default fp(async (app) => {
       `${env.DB.host}:${env.DB.port}/${env.DB.name}?timezone=Z&charset=utf8mb4_unicode_ci`,
   });
 
-  if (!app.mysql) {
+  const fastifyApp = app as FastifyInstance;
+
+  if (!fastifyApp.mysql) {
     app.log.error('MySQL plugin did not initialize');
     throw new Error('MySQL not initialized');
   }
 
-  app.decorate('db', app.mysql);
+  app.decorate('db', fastifyApp.mysql);
 
-  const [rows] = await app.mysql.query<any[]>('SELECT 1 AS ok');
+  const [rows] = await fastifyApp.mysql.query<any[]>('SELECT 1 AS ok');
   app.log.info({ mysqlOk: rows?.[0]?.ok === 1 }, 'MySQL connected');
 });

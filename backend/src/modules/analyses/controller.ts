@@ -168,6 +168,7 @@ export async function getAnalysisStatus(req: FastifyRequest, reply: FastifyReply
 
   // Ücretli tamamlanmışsa PDF hazır bildirimi
   if (analysis.status === 'completed' && analysis.package_slug !== 'free') {
+    response.full_data = analysis.full_data;
     response.pdf_ready = !!analysis.pdf_path;
     response.pdf_sent_at = analysis.pdf_sent_at;
   }

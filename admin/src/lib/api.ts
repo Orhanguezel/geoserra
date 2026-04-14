@@ -97,6 +97,18 @@ export const implApi = {
     api.patch(`/admin/implementation/${id}`, data),
 };
 
+// ── Site Settings ─────────────────────────────────────────────────────────────
+export interface SiteSettingsAggregate {
+  [key: string]: unknown;
+}
+
+export const settingsApi = {
+  get: () => api.get<SiteSettingsAggregate>('/admin/site-settings'),
+  put: (data: SiteSettingsAggregate) => api.put('/admin/site-settings', data),
+  bulkUpsert: (items: { key: string; value: unknown }[]) =>
+    api.post('/admin/site-settings/bulk-upsert', { items }),
+};
+
 // ── Stats ─────────────────────────────────────────────────────────────────────
 export interface AdminStats {
   total_analyses: number;

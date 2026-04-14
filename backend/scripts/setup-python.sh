@@ -7,7 +7,9 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKEND_DIR="$(dirname "$SCRIPT_DIR")"
 PYTHON_DIR="$BACKEND_DIR/python"
-SOURCE_DIR="/home/orhan/Documents/Projeler/geo-seo-claude/scripts"
+# geo-seo-claude, geoserra/ altında yer alıyor (backend ile aynı seviye)
+GEO_ROOT="$(dirname "$BACKEND_DIR")/geo-seo-claude"
+SOURCE_DIR="$GEO_ROOT/scripts"
 
 echo "Python scriptleri kurulumu..."
 echo "Kaynak: $SOURCE_DIR"

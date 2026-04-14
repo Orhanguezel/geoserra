@@ -34,10 +34,10 @@ function assertSafeToDrop(dbName: string) {
 
 async function createRoot(): Promise<mysql.Connection> {
   return mysql.createConnection({
-    host: env.DB.host,
-    port: env.DB.port,
-    user: env.DB.user,
-    password: env.DB.password,
+    host: env.DB_ADMIN.host,
+    port: env.DB_ADMIN.port,
+    user: env.DB_ADMIN.user,
+    password: env.DB_ADMIN.password,
     multipleStatements: true,
   });
 }
@@ -117,9 +117,9 @@ async function runSqlFile(
 async function main() {
   const flags = parseFlags(process.argv);
 
-  const root = await createRoot();
-  try {
-    if (!flags.noDrop) {
+  if (!flags.noDrop) {
+    const root = await createRoot();
+    try {
       assertSafeToDrop(env.DB.name);
       logStep('💣 DROP + CREATE başlıyor');
       await root.query(`DROP DATABASE IF EXISTS \`${env.DB.name}\`;`);
@@ -127,11 +127,11 @@ async function main() {
         `CREATE DATABASE \`${env.DB.name}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`,
       );
       logStep('🆕 DB oluşturuldu');
-    } else {
-      logStep('⤵️ --no-drop: DROP/CREATE atlanıyor');
+    } finally {
+      await root.end();
     }
-  } finally {
-    await root.end();
+  } else {
+    logStep('⤵️ --no-drop: DROP/CREATE atlanıyor');
   }
 
   const conn = await createConnToDb();
@@ -162,6 +162,19 @@ async function main() {
 }
 
 main().catch((err) => {
+  if (err && typeof err === 'object' && 'code' in err) {
+    const code = String((err as { code?: string }).code || '');
+    if (code === 'ER_DBACCESS_DENIED_ERROR' || code === 'ER_ACCESS_DENIED_ERROR') {
+      console.error(
+        [
+          'DB erişim hatası.',
+          `Seed varsayılan olarak DB admin kullanıcısıyla çalışır.`,
+          '`.env` içine `DB_ADMIN_USER` ve `DB_ADMIN_PASSWORD` ekleyin',
+          'veya mevcut kullanıcıya veritabanı yetkisi verin.',
+        ].join(' '),
+      );
+    }
+  }
   console.error(err);
   process.exit(1);
 });

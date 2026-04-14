@@ -35,10 +35,32 @@ export interface AnalysisStatus {
   status: 'free' | 'pending' | 'processing' | 'completed' | 'failed';
   domain: string;
   package_slug: string;
-  free_data?: any;
+  free_data?: {
+    geo_score?: number;
+    performance_score?: number | null;
+    seo_score?: number | null;
+    top_issues?: string[];
+    [key: string]: unknown;
+  };
+  full_data?: {
+    geo_score?: number;
+    performance?: {
+      score?: number;
+      [key: string]: unknown;
+    };
+    lighthouse?: {
+      categories?: {
+        performance?: { score?: number };
+        seo?: { score?: number };
+      };
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
   pdf_ready?: boolean;
   pdf_sent_at?: string;
   completed_at?: string;
+  created_at?: string;
 }
 
 export interface PaidAnalysisResponse {

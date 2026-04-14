@@ -60,6 +60,13 @@ export function ReportClient({ id }: { id: string }) {
   const isComplete = status.status === 'completed';
   const isFailed = status.status === 'failed';
   const isProcessing = status.status === 'pending' || status.status === 'processing';
+  const fullData = status.full_data;
+  const geoScore = fullData?.geo_score ?? 0;
+  const performanceScoreRaw =
+    fullData?.performance?.score ?? fullData?.lighthouse?.categories?.performance?.score ?? 0;
+  const seoScoreRaw = fullData?.lighthouse?.categories?.seo?.score ?? 0;
+  const performanceScore = performanceScoreRaw <= 1 ? Math.round(performanceScoreRaw * 100) : performanceScoreRaw;
+  const seoScore = seoScoreRaw <= 1 ? Math.round(seoScoreRaw * 100) : seoScoreRaw;
 
   return (
     <main className="min-h-screen py-20 md:py-28">
@@ -94,14 +101,14 @@ export function ReportClient({ id }: { id: string }) {
           </div>
 
           {/* Scores */}
-          {isComplete && status.full_data && (
+          {isComplete && fullData && (
             <div className="rounded-2xl border border-border bg-card p-6">
               <h2 className="mb-4 font-bold">{t('report.scores', {}, locale)}</h2>
               <div className="grid grid-cols-3 gap-4 text-center">
                 {[
-                  { label: t('analyze.geo_score', {}, locale), val: status.full_data?.geo_score ?? 0 },
-                  { label: t('analyze.performance', {}, locale), val: status.full_data?.performance?.score ?? 0 },
-                  { label: t('analyze.seo', {}, locale), val: status.full_data?.seo?.score ?? 0 },
+                  { label: t('analyze.geo_score', {}, locale), val: geoScore },
+                  { label: t('analyze.performance', {}, locale), val: performanceScore },
+                  { label: t('analyze.seo', {}, locale), val: seoScore },
                 ].map((s) => (
                   <div key={s.label}>
                     <div className="text-3xl font-bold" style={{ color: scoreColor(s.val) }}>{s.val}</div>
