@@ -137,3 +137,31 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# GeoSerra — Proje özel
+geo-seo-claude/
+.codex/
+storage/
+backend/python/
+*.pdf
+!geo-seo-claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Bun
+bun.lockb
+
+# IDE
+.vscode/
+.idea/
+
+# PM2
+.pm2/
+
+# Build artifacts
+backend/dist/

@@ -1,0 +1,196 @@
+{
+  "site": {
+    "name": "GeoSerra",
+    "tagline": "GEO SEO Performance",
+    "description": "AI-powered SEO analysis. Boost your site's visibility in Google AI, ChatGPT and Perplexity."
+  },
+  "nav": {
+    "home": "Home",
+    "analyze": "Free Analysis",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "start_free": "Start for Free"
+  },
+  "hero": {
+    "badge": "AI-Powered SEO Analysis",
+    "title": "How Visible Is Your Site",
+    "title_highlight": "In AI Search?",
+    "description": "Find out why your site isn't appearing in Google AI Overviews, ChatGPT and Perplexity. Start with a free GEO SEO analysis.",
+    "cta_primary": "Analyze for Free",
+    "cta_secondary": "See Sample Report",
+    "stat_analyses": "Analyses Done",
+    "stat_issues": "Issues Found",
+    "stat_score": "Avg. Score Increase"
+  },
+  "analyze": {
+    "title": "Analyze Your Site",
+    "subtitle": "Enter your URL and get your GEO SEO score in 2 minutes.",
+    "url_label": "Site URL",
+    "url_placeholder": "https://yoursite.com",
+    "email_label": "Your Email",
+    "email_placeholder": "you@example.com",
+    "email_hint": "Receive analysis results via email",
+    "submit": "Start Analysis",
+    "submitting": "Starting analysis...",
+    "processing": "Analyzing your site...",
+    "processing_hint": "This may take 1-2 minutes",
+    "domain_locked": "Free analysis has already been used for this domain.",
+    "domain_locked_hint": "Choose a paid package for a detailed report.",
+    "error_generic": "Could not start analysis. Please try again.",
+    "free_result_title": "Free Analysis Results",
+    "geo_score": "GEO SEO Score",
+    "performance": "Performance",
+    "seo": "SEO",
+    "issues_title": "Detected Issues",
+    "upgrade_title": "Want a Detailed Report?",
+    "upgrade_desc": "Get 20+ metrics, full action plan and PDF report with the Pro version.",
+    "upgrade_cta": "Get Detailed Report"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that fits your needs",
+    "currency_toggle": "Currency:",
+    "most_popular": "Most Popular",
+    "per_report": "per report",
+    "cta": "Buy Now",
+    "starter": {
+      "name": "Starter",
+      "desc": "8-category full analysis, PDF report, 30 action items"
+    },
+    "pro": {
+      "name": "Pro",
+      "desc": "Starter + AI citability, schema suggestions, competitor analysis"
+    },
+    "expert": {
+      "name": "Expert",
+      "desc": "Pro + 1 hour of technical implementation included"
+    },
+    "free_tier": "Free Trial",
+    "free_tier_desc": "Once per domain, basic analysis"
+  },
+  "features": {
+    "title": "Why GeoSerra?",
+    "subtitle": "Stay one step ahead of your competitors",
+    "f1_title": "AI Visibility Analysis",
+    "f1_desc": "Measure how your site appears in ChatGPT, Perplexity and Google AI",
+    "f2_title": "Core Web Vitals",
+    "f2_desc": "See your LCP, CLS, INP metrics with real data",
+    "f3_title": "Schema & Structured Data",
+    "f3_desc": "Automatically detect JSON-LD gaps and errors",
+    "f4_title": "PDF Report",
+    "f4_desc": "Professional, client-ready detailed report",
+    "f5_title": "Action Plan",
+    "f5_desc": "Actionable steps organized by priority",
+    "f6_title": "Implementation Service",
+    "f6_desc": "Share your cPanel or VPS access, we'll handle it"
+  },
+  "how_it_works": {
+    "title": "How It Works",
+    "step1_title": "Enter URL",
+    "step1_desc": "Enter the address of the site you want to analyze and your email",
+    "step2_title": "Analysis Runs",
+    "step2_desc": "20+ different metrics are automatically scanned",
+    "step3_title": "Get Report",
+    "step3_desc": "Detailed PDF report and action plan sent to your email"
+  },
+  "implementation": {
+    "title": "Implementation Service",
+    "subtitle": "You got the report, now let us apply it",
+    "description": "Share your cPanel or VPS credentials via a secure form. Our experts will apply all technical changes for you.",
+    "email_label": "Email",
+    "domain_label": "Domain",
+    "notes_label": "Notes / Requests",
+    "cpanel_section": "Access Credentials (Optional)",
+    "cpanel_warning": "This information is only used for the task and is not stored in our database.",
+    "cpanel_host": "cPanel Host",
+    "cpanel_user": "cPanel Username",
+    "cpanel_pass": "cPanel Password",
+    "submit": "Submit Request",
+    "success": "Your request has been received! We'll get back to you shortly.",
+    "error": "Submission failed. Please try again."
+  },
+  "thank_you": {
+    "title": "Payment Received!",
+    "subtitle": "Your analysis has started",
+    "description": "Your report will be sent to your email when ready. This usually takes 5-10 minutes.",
+    "check_status": "Check Status",
+    "back_home": "Back to Home"
+  },
+  "footer": {
+    "tagline": "Be visible in the AI era.",
+    "links_title": "Quick Links",
+    "legal_title": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© {{year}} GeoSerra. All rights reserved."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know",
+    "q1_q": "What does the free analysis include?",
+    "q1_a": "The free analysis provides a basic SEO score, performance metrics (LCP, CLS), DNS check, and a few critical recommendations. It can only be used once per domain.",
+    "q2_q": "When will my paid report be delivered?",
+    "q2_a": "Once payment is confirmed, analysis starts automatically. After scanning 20+ metrics, your report is sent to your email within 5-10 minutes.",
+    "q3_q": "Is my credit card secure?",
+    "q3_a": "Payments are processed via Stripe and PayPal infrastructure. Your card details are never stored on GeoSerra servers.",
+    "q4_q": "Are my access credentials safe with the implementation service?",
+    "q4_a": "Your cPanel or SSH credentials are used only during the task and are not saved to our database. We recommend changing your password after the task is complete.",
+    "q5_q": "Which AI platforms are analyzed?",
+    "q5_a": "Visibility and citability analysis is performed for Google AI Overviews, ChatGPT web search, Perplexity AI, and Bing Copilot.",
+    "q6_q": "I can't download my report?",
+    "q6_a": "When the report is ready it is sent to your email as a PDF. You can also track its status at /report/[id] and download the PDF directly from there."
+  },
+  "cta": {
+    "title": "Get Visible in AI Search",
+    "description": "Find out today why your site isn't appearing in ChatGPT, Perplexity and Google AI. Free analysis takes just 2 minutes.",
+    "primary": "Analyze for Free",
+    "secondary": "See Pricing"
+  },
+  "checkout": {
+    "details": "Order Details",
+    "payment_method": "Payment Method",
+    "pay_card": "Pay with Credit / Debit Card",
+    "pay_paypal": "Pay with",
+    "processing": "Preparing payment...",
+    "complete_payment": "Complete Payment",
+    "confirm_payment": "Confirm Payment"
+  },
+  "report": {
+    "status_pending": "Analysis queued...",
+    "status_processing": "Analyzing...",
+    "status_completed": "Analysis complete!",
+    "status_failed": "Analysis failed",
+    "scores": "Scores",
+    "download_pdf": "Download PDF Report",
+    "impl_cta": "Want us to apply the changes from your report?"
+  },
+  "about": {
+    "title": "About Us",
+    "intro": "GeoSerra is a GEO SEO analysis platform built to help websites become more visible in AI-powered search engines.",
+    "ai_title": "AI-Focused",
+    "ai_desc": "Custom analysis metrics for Google AI Overviews, ChatGPT and Perplexity",
+    "mission_title": "Our Mission",
+    "mission_desc": "Make AI search visibility accessible to businesses of all sizes",
+    "speed_title": "Fast Results",
+    "speed_desc": "Analysis in 2 minutes, PDF report in 10 minutes",
+    "body": "GeoSerra was built by a team that noticed SEO is changing with AI. Traditional SEO tools don't adequately cover platforms like Google AI Overviews, ChatGPT web search and Perplexity. We're here to fill that gap."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Reach out to us with your questions",
+    "name_label": "Your Name",
+    "email_label": "Email",
+    "message_label": "Your Message",
+    "submit": "Send",
+    "success": "Your message has been received! We'll get back to you shortly."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Try Again",
+    "close": "Close",
+    "back": "Back",
+    "or": "or"
+  }
+}

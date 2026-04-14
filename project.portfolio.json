@@ -1,0 +1,26 @@
+{
+  "name": "GeoSerra",
+  "slug": "geoserra",
+  "description": "GEO SEO Performance — AI destekli web sitesi analiz ve optimizasyon hizmeti. Ücretsiz analiz, ücretli PDF rapor, manuel implementation hizmeti.",
+  "url": "https://geoserra.com",
+  "status": "development",
+  "type": "saas",
+  "stack": {
+    "frontend": ["Next.js 16", "React 19", "Tailwind CSS v4", "Shadcn UI", "next-intl"],
+    "backend": ["Fastify 5", "Drizzle ORM", "MySQL 8", "Bun"],
+    "payments": ["Stripe", "PayPal"],
+    "analysis": ["Python", "Google PSI API", "ReportLab PDF"],
+    "devops": ["PM2", "Nginx", "Docker"]
+  },
+  "ports": {
+    "frontend": 3071,
+    "backend": 8095,
+    "admin": 3072
+  },
+  "domains": {
+    "main": "geoserra.com",
+    "admin": "admin.geoserra.com",
+    "api": "api.geoserra.com"
+  },
+  "created_at": "2026-04-14"
+}

@@ -1,0 +1,196 @@
+{
+  "site": {
+    "name": "GeoSerra",
+    "tagline": "GEO SEO Performance",
+    "description": "Yapay zeka destekli SEO analizi. Sitenizin Google AI, ChatGPT ve Perplexity'deki görünürlüğünü artırın."
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "analyze": "Ücretsiz Analiz",
+    "pricing": "Fiyatlandırma",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "start_free": "Ücretsiz Başla"
+  },
+  "hero": {
+    "badge": "AI Destekli SEO Analizi",
+    "title": "Siteniz AI Aramalarda",
+    "title_highlight": "Ne Kadar Görünür?",
+    "description": "Google AI Overviews, ChatGPT ve Perplexity'de sitenizin neden görünmediğini öğrenin. Ücretsiz GEO SEO analizi ile başlayın.",
+    "cta_primary": "Ücretsiz Analiz Yap",
+    "cta_secondary": "Örnek Raporu Gör",
+    "stat_analyses": "Analiz Yapıldı",
+    "stat_issues": "Sorun Tespit",
+    "stat_score": "Ort. Skor Artışı"
+  },
+  "analyze": {
+    "title": "Sitenizi Analiz Edin",
+    "subtitle": "URL'nizi girin, 2 dakikada GEO SEO skorunuzu öğrenin.",
+    "url_label": "Site URL'si",
+    "url_placeholder": "https://siteniz.com",
+    "email_label": "E-posta Adresiniz",
+    "email_placeholder": "siz@ornek.com",
+    "email_hint": "Analiz sonuçlarını e-posta ile alabilirsiniz",
+    "submit": "Analizi Başlat",
+    "submitting": "Analiz başlatılıyor...",
+    "processing": "Siteniz analiz ediliyor...",
+    "processing_hint": "Bu işlem 1-2 dakika sürebilir",
+    "domain_locked": "Bu domain için ücretsiz analiz hakkı kullanıldı.",
+    "domain_locked_hint": "Detaylı rapor için ücretli paketi tercih edin.",
+    "error_generic": "Analiz başlatılamadı. Lütfen tekrar deneyin.",
+    "free_result_title": "Ücretsiz Analiz Sonuçları",
+    "geo_score": "GEO SEO Skoru",
+    "performance": "Performans",
+    "seo": "SEO",
+    "issues_title": "Tespit Edilen Sorunlar",
+    "upgrade_title": "Detaylı Rapor İster misiniz?",
+    "upgrade_desc": "20+ metrik, tam aksiyon planı ve PDF rapor için Pro sürüme geçin.",
+    "upgrade_cta": "Detaylı Rapor Al"
+  },
+  "pricing": {
+    "title": "Fiyatlandırma",
+    "subtitle": "İhtiyacınıza uygun paketi seçin",
+    "currency_toggle": "Para birimi:",
+    "most_popular": "En Popüler",
+    "per_report": "rapor başına",
+    "cta": "Satın Al",
+    "starter": {
+      "name": "Başlangıç",
+      "desc": "8 kategori tam analiz, PDF rapor, 30 aksiyon maddesi"
+    },
+    "pro": {
+      "name": "Pro",
+      "desc": "Starter + AI citability, schema önerileri, rakip analizi"
+    },
+    "expert": {
+      "name": "Uzman",
+      "desc": "Pro + 1 saatlik teknik implementasyon dahil"
+    },
+    "free_tier": "Ücretsiz Deneme",
+    "free_tier_desc": "Her domain için 1 kez, temel analiz"
+  },
+  "features": {
+    "title": "Neden GeoSerra?",
+    "subtitle": "Rakiplerinizin bir adım önünde olun",
+    "f1_title": "AI Görünürlük Analizi",
+    "f1_desc": "ChatGPT, Perplexity ve Google AI'da sitenizin nasıl göründüğünü ölçün",
+    "f2_title": "Core Web Vitals",
+    "f2_desc": "LCP, CLS, INP metriklerinizi gerçek veriyle görün",
+    "f3_title": "Schema & Yapısal Veri",
+    "f3_desc": "JSON-LD eksikliklerini ve hataları otomatik tespit edin",
+    "f4_title": "PDF Rapor",
+    "f4_desc": "Profesyonel, müşterinize gösterebileceğiniz detaylı rapor",
+    "f5_title": "Aksiyon Planı",
+    "f5_desc": "Öncelik sırasına göre düzenlenmiş, uygulanabilir adımlar",
+    "f6_title": "Implementation Hizmeti",
+    "f6_desc": "cPanel veya VPS erişiminizi paylaşın, biz halledelim"
+  },
+  "how_it_works": {
+    "title": "Nasıl Çalışır?",
+    "step1_title": "URL Girin",
+    "step1_desc": "Analiz etmek istediğiniz sitenin adresini ve e-postanızı girin",
+    "step2_title": "Analiz Yapılır",
+    "step2_desc": "20+ farklı metrik otomatik olarak taranır",
+    "step3_title": "Rapor Alın",
+    "step3_desc": "Detaylı PDF rapor ve aksiyon planı e-postanıza gelir"
+  },
+  "implementation": {
+    "title": "Implementation Hizmeti",
+    "subtitle": "Raporu aldınız, şimdi uygulayalım",
+    "description": "cPanel veya VPS erişim bilgilerinizi güvenli formla paylaşın. Uzmanlarımız tüm teknik değişiklikleri sizin için uygulasın.",
+    "email_label": "E-posta",
+    "domain_label": "Domain",
+    "notes_label": "Notlar / İstekler",
+    "cpanel_section": "Erişim Bilgileri (İsteğe Bağlı)",
+    "cpanel_warning": "Bu bilgiler yalnızca işlem için kullanılır, veritabanımızda saklanmaz.",
+    "cpanel_host": "cPanel Host",
+    "cpanel_user": "cPanel Kullanıcı Adı",
+    "cpanel_pass": "cPanel Şifresi",
+    "submit": "Talep Gönder",
+    "success": "Talebiniz alındı! En kısa sürede dönüş yapacağız.",
+    "error": "Gönderim başarısız. Lütfen tekrar deneyin."
+  },
+  "thank_you": {
+    "title": "Ödemeniz Alındı!",
+    "subtitle": "Analiziniz başlatıldı",
+    "description": "Raporunuz hazır olduğunda e-posta adresinize gönderilecek. Bu genellikle 5-10 dakika sürer.",
+    "check_status": "Durum Kontrol Et",
+    "back_home": "Ana Sayfaya Dön"
+  },
+  "footer": {
+    "tagline": "AI çağında görünür olun.",
+    "links_title": "Hızlı Erişim",
+    "legal_title": "Yasal",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Şartları",
+    "copyright": "© {{year}} GeoSerra. Tüm hakları saklıdır."
+  },
+  "faq": {
+    "title": "Sıkça Sorulan Sorular",
+    "subtitle": "Merak ettiğiniz her şey burada",
+    "q1_q": "Ücretsiz analiz ne içeriyor?",
+    "q1_a": "Ücretsiz analiz; temel SEO skoru, performans metrikleri (LCP, CLS), DNS kontrolü ve birkaç kritik öneri sunar. Her domain için yalnızca 1 kez kullanılabilir.",
+    "q2_q": "Ücretli rapor ne zaman teslim edilir?",
+    "q2_a": "Ödeme onaylandıktan sonra analiz otomatik başlar. 20+ metrik tarandıktan sonra rapor 5-10 dakika içinde e-postanıza iletilir.",
+    "q3_q": "Kredi kartım güvende mi?",
+    "q3_a": "Ödemeler Stripe ve PayPal altyapısıyla işlenir. Kart bilgileriniz GeoSerra sunucularında hiçbir zaman saklanmaz.",
+    "q4_q": "Implementation hizmetinde erişim bilgilerimi güvende mi?",
+    "q4_a": "cPanel veya SSH bilgileriniz yalnızca işlem sırasında kullanılır ve veritabanımıza kaydedilmez. İşlem tamamlandıktan sonra şifrenizi değiştirmenizi öneririz.",
+    "q5_q": "Hangi AI platformları için analiz yapılıyor?",
+    "q5_a": "Google AI Overviews, ChatGPT web araması, Perplexity AI ve Bing Copilot için görünürlük ve citability analizi yapılmaktadır.",
+    "q6_q": "Raporumu indiremiyor muyum?",
+    "q6_a": "Rapor hazır olduğunda e-postanıza PDF olarak gönderilir. Aynı zamanda /report/[id] adresinden de durumu izleyebilir ve PDF'i doğrudan indirebilirsiniz."
+  },
+  "cta": {
+    "title": "AI Aramalarında Görünür Olun",
+    "description": "Sitenizin ChatGPT, Perplexity ve Google AI'da neden görünmediğini bugün öğrenin. Ücretsiz analiz 2 dakika sürer.",
+    "primary": "Ücretsiz Analiz Yap",
+    "secondary": "Fiyatları Gör"
+  },
+  "checkout": {
+    "details": "Sipariş Detayları",
+    "payment_method": "Ödeme Yöntemi",
+    "pay_card": "Kredi / Banka Kartı ile Öde",
+    "pay_paypal": "ile Öde",
+    "processing": "Ödeme hazırlanıyor...",
+    "complete_payment": "Ödemeyi Tamamla",
+    "confirm_payment": "Ödemeyi Onayla"
+  },
+  "report": {
+    "status_pending": "Analiz kuyruğa alındı...",
+    "status_processing": "Analiz yapılıyor...",
+    "status_completed": "Analiz tamamlandı!",
+    "status_failed": "Analiz başarısız",
+    "scores": "Skorlar",
+    "download_pdf": "PDF Raporu İndir",
+    "impl_cta": "Raporunuzdaki değişiklikleri uygulamak ister misiniz?"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "intro": "GeoSerra, web sitelerinin yapay zeka destekli arama motorlarında daha görünür olmasını sağlamak için geliştirilmiş bir GEO SEO analiz platformudur.",
+    "ai_title": "AI Odaklı",
+    "ai_desc": "Google AI Overviews, ChatGPT ve Perplexity için özel analiz metrikleri",
+    "mission_title": "Misyonumuz",
+    "mission_desc": "Her boyuttaki işletmenin AI arama görünürlüğüne erişmesini sağlamak",
+    "speed_title": "Hızlı Sonuç",
+    "speed_desc": "2 dakikada analiz, 10 dakikada PDF rapor",
+    "body": "GeoSerra, SEO dünyasının AI ile değiştiğini fark eden bir ekip tarafından kurulmuştur. Geleneksel SEO araçları Google AI Overviews, ChatGPT web araması ve Perplexity gibi platformları yeterince kapsamıyor. Biz bu boşluğu doldurmak için buradayız."
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Sorularınız için bize ulaşın",
+    "name_label": "Adınız",
+    "email_label": "E-posta",
+    "message_label": "Mesajınız",
+    "submit": "Gönder",
+    "success": "Mesajınız alındı! En kısa sürede dönüş yapacağız."
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "retry": "Tekrar Dene",
+    "close": "Kapat",
+    "back": "Geri",
+    "or": "veya"
+  }
+}
