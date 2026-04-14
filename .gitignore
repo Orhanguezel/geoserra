@@ -142,7 +142,8 @@ vite.config.ts.timestamp-*
 geo-seo-claude/
 .codex/
 storage/
-backend/python/
+backend/python/venv/
+backend/python/__pycache__/
 *.pdf
 !geo-seo-claude/
 

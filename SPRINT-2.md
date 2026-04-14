@@ -64,60 +64,60 @@
 ## 🟡 BLOK B — İçerik & SEO (Codex)
 
 ### B-1 Sitemap & Robots
-- [ ] `frontend/src/app/sitemap.ts` oluştur (Next.js 13+ app router)
+- [x] `frontend/src/app/sitemap.ts` oluştur (Next.js 13+ app router)
   ```ts
   // Sayfalar: /, /analyze, /pricing, /implementation, /hakkimizda, /iletisim
   // Frekans: / → weekly, diğerleri → monthly
   ```
-- [ ] `frontend/src/app/robots.ts` oluştur
+- [x] `frontend/src/app/robots.ts` oluştur
   ```ts
   // Allow: /, Disallow: /checkout, /report, /thank-you
   // Sitemap: https://geoserra.com/sitemap.xml
   ```
 
 ### B-2 Her Sayfa için Metadata (SEO)
-- [ ] `app/analyze/page.tsx` — Metadata export ekle
-- [ ] `app/pricing/page.tsx` — Metadata (zaten var, kontrol et)
-- [ ] `app/hakkimizda/page.tsx` — Metadata export ekle
-- [ ] `app/iletisim/page.tsx` — Metadata export ekle
-- [ ] `app/implementation/page.tsx` — Metadata export ekle
-- [ ] Her sayfada `openGraph` ve `twitter` card bilgileri
+- [x] `app/analyze/page.tsx` — Metadata export ekle
+- [x] `app/pricing/page.tsx` — Metadata (zaten var, kontrol et)
+- [x] `app/hakkimizda/page.tsx` — Metadata export ekle
+- [x] `app/iletisim/page.tsx` — Metadata export ekle
+- [x] `app/implementation/page.tsx` — Metadata export ekle
+- [x] Her sayfada `openGraph` ve `twitter` card bilgileri
 
 ### B-3 JSON-LD Schema Markup
-- [ ] `app/layout.tsx`'e Organization schema ekle:
+- [x] `app/layout.tsx`'e Organization schema ekle:
   ```json
   { "@type": "Organization", "name": "GeoSerra", "url": "https://geoserra.com",
     "logo": "https://geoserra.com/logo-small.png",
     "sameAs": ["https://github.com/Orhanguezel/geoserra"] }
   ```
-- [ ] Ana sayfa için `WebSite` + `SearchAction` schema
-- [ ] Fiyatlandırma sayfası için `Offer` schema (3 paket)
+- [x] Ana sayfa için `WebSite` + `SearchAction` schema
+- [x] Fiyatlandırma sayfası için `Offer` schema (3 paket)
 
 ### B-4 Gizlilik & Kullanım Sayfaları
-- [ ] `app/gizlilik/page.tsx` oluştur
+- [x] `app/gizlilik/page.tsx` oluştur
   - KVKK uyumlu Türkçe gizlilik politikası
   - Veri toplanması: email, URL, analiz sonuçları
   - İletişim: info@geoserra.com
-- [ ] `app/kullanim-sartlari/page.tsx` oluştur
+- [x] `app/kullanim-sartlari/page.tsx` oluştur
   - Hizmet kapsamı, sorumluluk reddi
   - Ücretsiz analiz limiti (1 domain/kişi)
   - Ödeme ve iade politikası
 
 ### B-5 OG Image (Social Share)
-- [ ] `app/opengraph-image.tsx` veya statik `public/og-image.png` (1200×630)
+- [x] `app/opengraph-image.tsx` veya statik `public/og-image.png` (1200×630)
   - GeoSerra logo + "AI & SEO Görünürlük Analizi" + emerald arka plan
 
 ### B-6 Hakkımızda Sayfası İçerik Güçlendirme
-- [ ] Mevcut sayfa `about.*` key'leri kullanıyor — tr.json içeriği dolu mu kontrol et
-- [ ] Eksikse: misyon, vizyon, teknoloji stack'i açıklayan içerik ekle
-- [ ] Kurucuya ait kısa bio ve iletişim CTA
+- [x] Mevcut sayfa `about.*` key'leri kullanıyor — tr.json içeriği dolu mu kontrol et
+- [x] Eksikse: misyon, vizyon, teknoloji stack'i açıklayan içerik ekle
+- [x] Kurucuya ait kısa bio ve iletişim CTA
 
 ### B-7 Admin — Sidebar Navigasyon Düzeni
-- [ ] Settings menü öğesini sidebar'a ekle (eğer yoksa)
+- [x] Settings menü öğesini sidebar'a ekle (eğer yoksa)
   ```
   Dashboard | Analizler | Implementation | Ayarlar
   ```
-- [ ] Aktif link highlight doğru çalışıyor mu?
+- [x] Aktif link highlight doğru çalışıyor mu?
 
 ---
 
@@ -277,4 +277,3 @@ cd geoserra/admin && bun run build
 5. **A-5** → Admin panel smoke test
 6. **A-8** → i18n eksik key'ler
 7. Git commit & push
-

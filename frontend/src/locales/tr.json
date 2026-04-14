@@ -13,10 +13,10 @@
     "start_free": "Ücretsiz Başla"
   },
   "hero": {
-    "badge": "AI Destekli SEO Analizi",
-    "title": "Siteniz AI Aramalarda",
-    "title_highlight": "Ne Kadar Görünür?",
-    "description": "Google AI Overviews, ChatGPT ve Perplexity'de sitenizin neden görünmediğini öğrenin. Ücretsiz GEO SEO analizi ile başlayın.",
+    "badge": "GEO + SEO + Lighthouse — Tek Platform",
+    "title": "AI Aramalarinda",
+    "title_highlight": "Gercek Gorunurlugunuzu Olcun",
+    "description": "Google AI Overviews, ChatGPT ve Perplexity'de neden gorunmediginizi tek bir raporda gorun. Teknik SEO, citability ve Lighthouse metrikleri ayni analizde.",
     "cta_primary": "Ücretsiz Analiz Yap",
     "cta_secondary": "Örnek Raporu Gör",
     "stat_analyses": "Analiz Yapıldı",
@@ -45,14 +45,19 @@
     "issues_title": "Tespit Edilen Sorunlar",
     "upgrade_title": "Detaylı Rapor İster misiniz?",
     "upgrade_desc": "20+ metrik, tam aksiyon planı ve PDF rapor için Pro sürüme geçin.",
-    "upgrade_cta": "Detaylı Rapor Al"
+    "upgrade_cta": "Detayli Rapor Al",
+    "locked_title": "4 kategori daha kilitli",
+    "locked_desc": "Schema, AI citability, teknik SEO ve tam aksiyon plani ucretli raporda acilir."
   },
   "pricing": {
     "title": "Fiyatlandırma",
     "subtitle": "İhtiyacınıza uygun paketi seçin",
+    "once": "Tek Seferlik",
+    "monthly": "Aylik Abonelik",
     "currency_toggle": "Para birimi:",
     "most_popular": "En Popüler",
     "per_report": "rapor başına",
+    "per_month": "ay",
     "cta": "Satın Al",
     "starter": {
       "name": "Başlangıç",
@@ -66,8 +71,85 @@
       "name": "Uzman",
       "desc": "Pro + 1 saatlik teknik implementasyon dahil"
     },
+    "monitor": {
+      "name": "Monitor",
+      "desc": "Aylik izleme, haftalik skor kontrolu ve alarm sistemi"
+    },
+    "growth": {
+      "name": "Growth",
+      "desc": "Surekli AI gorunurluk takibi, oncelikli analiz ve aylik rapor"
+    },
+    "agency": {
+      "name": "Agency",
+      "desc": "Birden fazla domain, ekip raporlari ve ajans seviyesi izleme"
+    },
     "free_tier": "Ücretsiz Deneme",
     "free_tier_desc": "Her domain için 1 kez, temel analiz"
+  },
+  "pricing_features": {
+    "once_1": "Teknik SEO tam analiz",
+    "once_2": "Core Web Vitals ve performans",
+    "once_3": "PDF rapor ve oncelikli sorunlar",
+    "once_4": "30+ uygulanabilir aksiyon",
+    "pro_1": "AI citability ve mention taramasi",
+    "pro_2": "Schema ve JSON-LD onerileri",
+    "pro_3": "Rakip ve keyword analizi",
+    "pro_4": "llms.txt ve E-E-A-T incelemesi",
+    "expert_1": "1 saat teknik implementasyon",
+    "expert_2": "Robots, sitemap ve temel schema kurulumu",
+    "expert_3": "Oncelikli destek kanali",
+    "expert_4": "Uzman seviye teslim raporu",
+    "monitor_1": "Haftalik skor izleme",
+    "monitor_2": "Performans ve SEO alarmi",
+    "monitor_3": "Aylik mini rapor",
+    "monitor_4": "Tek domain takibi",
+    "growth_1": "3 domaine kadar surekli izleme",
+    "growth_2": "Aylik AI gorunurluk raporu",
+    "growth_3": "Oncelikli optimizasyon onerileri",
+    "growth_4": "Ekip icin paylasilabilir dashboard",
+    "agency_1": "10+ domain portfoy takibi",
+    "agency_2": "Musteri bazli rapor paketleri",
+    "agency_3": "Aylik strateji ozeti",
+    "agency_4": "Ajans icin beyaz etiket uygunlugu"
+  },
+  "trust": {
+    "analyses": "Analiz Tamamlandi",
+    "issues": "Sorun Tespit Edildi",
+    "score": "Ortalama Skor Artisi",
+    "satisfaction": "Musteri Memnuniyeti"
+  },
+  "report_preview": {
+    "eyebrow": "ORNEK RAPOR",
+    "title": "Sitenizin Tam Resmini Gorun",
+    "description": "GeoSerra raporu 8 kategoride detayli analiz sunar. Teknik SEO, AI citability, schema, Core Web Vitals ve daha fazlasini tek bakista gorursunuz.",
+    "cta": "Ucretsiz Analizimi Baslat →",
+    "cat_ai": "AI Citability",
+    "cat_schema": "Schema Markup",
+    "cat_technical": "Teknik SEO",
+    "cat_cwv": "Core Web Vitals",
+    "locked": "+4 kategori daha — Rapor satin al"
+  },
+  "testimonials": {
+    "eyebrow": "GERCEK SONUCLAR",
+    "title": "Musteriler Neyi Degistirdi?",
+    "subtitle": "GeoSerra raporlarini uygulayan ekiplerin gorunurluk kazanimi",
+    "before": "Once",
+    "after": "Sonra",
+    "t1": {
+      "name": "Ayse K.",
+      "company": "E-ticaret Girisimcisi",
+      "text": "GeoSerra sayesinde Perplexity'de ilk sayfada gorunmeye basladim. Organik trafigim 3 ayda %40 artti."
+    },
+    "t2": {
+      "name": "Mehmet D.",
+      "company": "Digital Ajans Kurucusu",
+      "text": "Musterilerime sundugum en degerli arac. Schema ve AI visibility raporlari gercekten ise yariyor."
+    },
+    "t3": {
+      "name": "Selin O.",
+      "company": "SaaS Kurucu",
+      "text": "Expert raporu aldik, implementation ile birlikte ChatGPT aramalarinda marka adimiz cikmaya basladi."
+    }
   },
   "features": {
     "title": "Neden GeoSerra?",
@@ -168,13 +250,18 @@
   "about": {
     "title": "Hakkımızda",
     "intro": "GeoSerra, web sitelerinin yapay zeka destekli arama motorlarında daha görünür olmasını sağlamak için geliştirilmiş bir GEO SEO analiz platformudur.",
+    "story_title": "Neden GeoSerra?",
     "ai_title": "AI Odaklı",
     "ai_desc": "Google AI Overviews, ChatGPT ve Perplexity için özel analiz metrikleri",
     "mission_title": "Misyonumuz",
     "mission_desc": "Her boyuttaki işletmenin AI arama görünürlüğüne erişmesini sağlamak",
+    "vision_desc": "Vizyonumuz, klasik SEO metriklerini AI citability ve görünürlük sinyalleriyle birleştiren net bir karar paneli sunmaktır.",
     "speed_title": "Hızlı Sonuç",
     "speed_desc": "2 dakikada analiz, 10 dakikada PDF rapor",
-    "body": "GeoSerra, SEO dünyasının AI ile değiştiğini fark eden bir ekip tarafından kurulmuştur. Geleneksel SEO araçları Google AI Overviews, ChatGPT web araması ve Perplexity gibi platformları yeterince kapsamıyor. Biz bu boşluğu doldurmak için buradayız."
+    "body": "GeoSerra, SEO dunyasinin AI ile degistigini fark eden bir ekip tarafindan kuruldu. Geleneksel SEO araclari Google AI Overviews, ChatGPT web aramasi ve Perplexity gibi platformlari yeterince kapsamiyor. Biz bu boslugu doldurmak icin buradayiz.",
+    "founder_title": "Kurucu Notu",
+    "founder_desc": "GeoSerra, arama davranisindaki degisimi erken fark eden urun ve buyume odakli bir ekip tarafindan gelistirildi. Hedefimiz, isletmelerin AI sonuclarinda daha görünür kararlar alabilmesi.",
+    "cta": "Bize Ulasin"
   },
   "contact": {
     "title": "İletişim",

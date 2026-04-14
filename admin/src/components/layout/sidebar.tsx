@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Search,
   Wrench,
+  Settings2,
   LogOut,
   Activity,
 } from 'lucide-react';
@@ -19,6 +20,7 @@ const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/analyses', label: 'Analizler', icon: Search },
   { href: '/implementation', label: 'Implementation', icon: Wrench },
+  { href: '/settings', label: 'Ayarlar', icon: Settings2 },
 ];
 
 export function Sidebar() {

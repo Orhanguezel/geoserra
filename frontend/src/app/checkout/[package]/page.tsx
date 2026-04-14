@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CheckoutClient } from '@/components/checkout/checkout-client';
 
-const VALID_PACKAGES = ['starter', 'pro', 'expert'];
+const VALID_PACKAGES = ['starter', 'pro', 'expert', 'monitor', 'growth', 'agency'];
 
 export async function generateMetadata({ params }: { params: Promise<{ package: string }> }): Promise<Metadata> {
   const { package: pkg } = await params;
@@ -15,5 +15,5 @@ export default async function CheckoutPage({ params }: { params: Promise<{ packa
   const { package: pkg } = await params;
   if (!VALID_PACKAGES.includes(pkg)) notFound();
 
-  return <CheckoutClient packageSlug={pkg as 'starter' | 'pro' | 'expert'} />;
+  return <CheckoutClient packageSlug={pkg as 'starter' | 'pro' | 'expert' | 'monitor' | 'growth' | 'agency'} />;
 }

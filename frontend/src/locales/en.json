@@ -13,10 +13,10 @@
     "start_free": "Start for Free"
   },
   "hero": {
-    "badge": "AI-Powered SEO Analysis",
-    "title": "How Visible Is Your Site",
-    "title_highlight": "In AI Search?",
-    "description": "Find out why your site isn't appearing in Google AI Overviews, ChatGPT and Perplexity. Start with a free GEO SEO analysis.",
+    "badge": "GEO + SEO + Lighthouse — One Platform",
+    "title": "Measure Your Real Presence",
+    "title_highlight": "Across AI Search",
+    "description": "See why you are missing from Google AI Overviews, ChatGPT and Perplexity in one report. Technical SEO, citability and Lighthouse metrics in a single workflow.",
     "cta_primary": "Analyze for Free",
     "cta_secondary": "See Sample Report",
     "stat_analyses": "Analyses Done",
@@ -45,14 +45,19 @@
     "issues_title": "Detected Issues",
     "upgrade_title": "Want a Detailed Report?",
     "upgrade_desc": "Get 20+ metrics, full action plan and PDF report with the Pro version.",
-    "upgrade_cta": "Get Detailed Report"
+    "upgrade_cta": "Get Detailed Report",
+    "locked_title": "4 more categories locked",
+    "locked_desc": "Schema, AI citability, technical SEO and the full action plan unlock in the paid report."
   },
   "pricing": {
     "title": "Pricing",
     "subtitle": "Choose the plan that fits your needs",
+    "once": "One-Time",
+    "monthly": "Monthly Subscription",
     "currency_toggle": "Currency:",
     "most_popular": "Most Popular",
     "per_report": "per report",
+    "per_month": "month",
     "cta": "Buy Now",
     "starter": {
       "name": "Starter",
@@ -66,8 +71,85 @@
       "name": "Expert",
       "desc": "Pro + 1 hour of technical implementation included"
     },
+    "monitor": {
+      "name": "Monitor",
+      "desc": "Monthly monitoring, weekly score checks and alerting"
+    },
+    "growth": {
+      "name": "Growth",
+      "desc": "Continuous AI visibility tracking, priority analysis and monthly reports"
+    },
+    "agency": {
+      "name": "Agency",
+      "desc": "Multi-domain oversight, client reporting and agency-level monitoring"
+    },
     "free_tier": "Free Trial",
     "free_tier_desc": "Once per domain, basic analysis"
+  },
+  "pricing_features": {
+    "once_1": "Full technical SEO audit",
+    "once_2": "Core Web Vitals and performance",
+    "once_3": "PDF report with top issues",
+    "once_4": "30+ actionable recommendations",
+    "pro_1": "AI citability and mention scanning",
+    "pro_2": "Schema and JSON-LD suggestions",
+    "pro_3": "Competitor and keyword analysis",
+    "pro_4": "llms.txt and E-E-A-T review",
+    "expert_1": "1 hour technical implementation",
+    "expert_2": "Robots, sitemap and baseline schema setup",
+    "expert_3": "Priority support lane",
+    "expert_4": "Expert-grade delivery summary",
+    "monitor_1": "Weekly score monitoring",
+    "monitor_2": "Performance and SEO alerts",
+    "monitor_3": "Monthly mini report",
+    "monitor_4": "Single-domain watch",
+    "growth_1": "Continuous monitoring for up to 3 domains",
+    "growth_2": "Monthly AI visibility report",
+    "growth_3": "Priority optimization recommendations",
+    "growth_4": "Shareable team dashboard",
+    "agency_1": "10+ domain portfolio tracking",
+    "agency_2": "Client-ready report bundles",
+    "agency_3": "Monthly strategy summary",
+    "agency_4": "Agency-friendly white-label workflow"
+  },
+  "trust": {
+    "analyses": "Analyses Completed",
+    "issues": "Issues Detected",
+    "score": "Average Score Lift",
+    "satisfaction": "Customer Satisfaction"
+  },
+  "report_preview": {
+    "eyebrow": "SAMPLE REPORT",
+    "title": "See the Full Picture of Your Site",
+    "description": "GeoSerra reports deliver deep analysis across 8 categories. Review technical SEO, AI citability, schema, Core Web Vitals and more in one view.",
+    "cta": "Start My Free Analysis →",
+    "cat_ai": "AI Citability",
+    "cat_schema": "Schema Markup",
+    "cat_technical": "Technical SEO",
+    "cat_cwv": "Core Web Vitals",
+    "locked": "+4 more categories — Buy the report"
+  },
+  "testimonials": {
+    "eyebrow": "REAL RESULTS",
+    "title": "What Changed for Customers?",
+    "subtitle": "Visibility gains from teams that acted on GeoSerra reports",
+    "before": "Before",
+    "after": "After",
+    "t1": {
+      "name": "Ayse K.",
+      "company": "E-commerce Founder",
+      "text": "Thanks to GeoSerra, I started showing up on the first page in Perplexity. Organic traffic grew 40% in three months."
+    },
+    "t2": {
+      "name": "Mehmet D.",
+      "company": "Digital Agency Founder",
+      "text": "The most valuable tool I offer my clients. The schema and AI visibility reporting creates real action."
+    },
+    "t3": {
+      "name": "Selin O.",
+      "company": "SaaS Founder",
+      "text": "We bought the Expert report and implementation package. Soon after, our brand started appearing in ChatGPT searches."
+    }
   },
   "features": {
     "title": "Why GeoSerra?",
@@ -168,13 +250,18 @@
   "about": {
     "title": "About Us",
     "intro": "GeoSerra is a GEO SEO analysis platform built to help websites become more visible in AI-powered search engines.",
+    "story_title": "Why GeoSerra?",
     "ai_title": "AI-Focused",
     "ai_desc": "Custom analysis metrics for Google AI Overviews, ChatGPT and Perplexity",
     "mission_title": "Our Mission",
     "mission_desc": "Make AI search visibility accessible to businesses of all sizes",
+    "vision_desc": "Our vision is to combine classic SEO metrics with AI citability and visibility signals in one clear decision surface.",
     "speed_title": "Fast Results",
     "speed_desc": "Analysis in 2 minutes, PDF report in 10 minutes",
-    "body": "GeoSerra was built by a team that noticed SEO is changing with AI. Traditional SEO tools don't adequately cover platforms like Google AI Overviews, ChatGPT web search and Perplexity. We're here to fill that gap."
+    "body": "GeoSerra was built by a team that noticed SEO is changing with AI. Traditional SEO tools do not adequately cover platforms like Google AI Overviews, ChatGPT web search and Perplexity. We are here to close that gap.",
+    "founder_title": "Founder Note",
+    "founder_desc": "GeoSerra is built by a product and growth-focused team that noticed the shift in search behavior early. Our goal is to help businesses make clearer decisions for AI visibility.",
+    "cta": "Contact Us"
   },
   "contact": {
     "title": "Contact",

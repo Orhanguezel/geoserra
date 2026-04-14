@@ -53,8 +53,44 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://geoserra.com/#org',
+        name: 'GeoSerra',
+        url: 'https://geoserra.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://geoserra.com/logo-small.png',
+        },
+        description: 'AI destekli GEO ve SEO görünürlük analiz platformu',
+        sameAs: ['https://github.com/Orhanguezel/geoserra'],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://geoserra.com/#website',
+        url: 'https://geoserra.com',
+        name: 'GeoSerra',
+        publisher: { '@id': 'https://geoserra.com/#org' },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: 'https://geoserra.com/analyze?url={search_term_string}',
+          'query-input': 'required name=search_term_string',
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="tr" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      </head>
       <body
         className={`${outfit.variable} ${jetbrains.variable} font-sans antialiased`}
         suppressHydrationWarning
