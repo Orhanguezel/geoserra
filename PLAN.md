@@ -323,6 +323,34 @@ Müşteri → Stripe Subscription oluştur → İlk analiz hemen
 - [x] `project.portfolio.json` (mevcut)
 - [ ] GitHub repo oluştur
 
+### Faz 5 — Sprint 1: Tasarım + Eksik Özellikler + Backend Entegrasyonu
+
+> Detay: `SPRINT-1.md` | Codex talimatları: `AGENTS.md`
+
+#### FAZ A — Tasarım Sistemi (Emerald/Cyan — landing HTML uyumu)
+- [ ] `globals.css` → Emerald/Cyan palet (#10b981, #0ea5e9)
+- [ ] Font geçişi: Inter → Outfit + JetBrains Mono
+- [ ] Grain overlay + hero grid + orb arka plan efektleri
+- [ ] `tailwind.config.ts` emerald token'ları
+
+#### FAZ B — Eksik Frontend Bölümleri
+- [ ] Hero section — floating metric cards + monospace URL input
+- [ ] Trust bar bileşeni (2.400+ analiz, 48K+ sorun, +32% skor, 4.8/5)
+- [ ] Report preview section (score ring mockup, kategori breakdown)
+- [ ] Testimonials section (3 müşteri kartı, before/after skor)
+- [ ] Pricing section — Tek Seferlik / Aylık tab switcher + featured kart
+- [ ] Mobile menu (hamburger + slide panel)
+
+#### FAZ C — Backend Entegrasyonu
+- [ ] `setup-python.sh` çalıştır → `backend/python/` doldur
+- [ ] `analysis.service.ts` Python bridge doğrulama
+- [ ] Ücretsiz analiz uçtan uca testi
+- [ ] PDF üretim testi
+- [ ] Analyze sonuç ekranı: score ring + locked categories + CTA
+
+#### FAZ D — Admin Tamamlama
+- [ ] Admin settings sayfası (fiyat güncelleme, SMTP test, şifre değiştirme)
+
 ---
 
 ## 12. Kesinleşen Kararlar (2026-04-14)
