@@ -1,7 +1,9 @@
 'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { LanguageSwitcher } from './language-switcher';
@@ -15,21 +17,17 @@ const NAV_LINKS = [
   { key: 'nav.contact', href: '/iletisim' },
 ];
 
-import { motion, AnimatePresence } from 'framer-motion';
-
 export function Header() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const locale = useLocaleStore((s) => s.locale);
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <Image src="/logo-dark.png" alt="GeoSerra" width={140} height={36} className="h-8 w-auto" priority />
+        <Link href="/" className="group flex items-center gap-2">
+          <Image src="/logo-small.png" alt="GeoSerra" width={140} height={36} className="h-8 w-auto" priority unoptimized />
         </Link>
 
-        {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
@@ -42,7 +40,6 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Actions */}
         <div className="hidden items-center gap-6 lg:flex">
           <LanguageSwitcher />
           <Link
@@ -53,45 +50,40 @@ export function Header() {
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
-          className="lg:hidden text-white/80 hover:text-white transition-colors"
-          onClick={() => setOpen(!open)}
+          className="text-white/80 transition-colors hover:text-white lg:hidden"
+          onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu Panel */}
       <AnimatePresence>
-        {open && (
+        {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="absolute top-full left-0 right-0 bg-[#06090f]/98 backdrop-blur-xl border-b border-white/5 overflow-hidden lg:hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute left-0 right-0 top-full overflow-hidden border-b border-white/6 bg-[#06090f]/95 px-6 py-6 backdrop-blur-xl lg:hidden"
           >
-            <nav className="container flex flex-col gap-1 py-8 px-6">
+            <nav className="container flex flex-col gap-4">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="py-3 text-lg font-medium text-white/80 hover:text-emerald-400 transition-colors border-b border-white/5"
-                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-white/[0.04] hover:text-white"
+                  onClick={() => setMenuOpen(false)}
                 >
                   {t(link.key, {}, locale)}
                 </Link>
               ))}
-              <div className="mt-6 flex flex-col gap-4">
-                <div className="flex items-center justify-between px-1">
-                  <span className="text-sm text-muted-foreground uppercase tracking-widest font-mono">Dil Seçimi</span>
-                  <LanguageSwitcher />
-                </div>
+              <div className="mt-2 flex items-center gap-3">
+                <LanguageSwitcher />
                 <Link
                   href="/analyze"
-                  className="rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-4 text-center text-sm font-bold text-white uppercase tracking-widest shadow-lg shadow-emerald-500/10"
-                  onClick={() => setOpen(false)}
+                  className={cn('flex-1 rounded-xl bg-primary py-2.5 text-center text-sm font-semibold text-primary-foreground')}
+                  onClick={() => setMenuOpen(false)}
                 >
                   {t('nav.start_free', {}, locale)}
                 </Link>

@@ -17,6 +17,7 @@ import { registerAnalysesAdmin } from '@/modules/analyses/admin.routes';
 import { registerImplementation } from '@/modules/implementation/router';
 import { registerImplementationAdmin } from '@/modules/implementation/admin.routes';
 import { registerStatsAdmin } from '@/modules/stats/router';
+import { registerAssetsAdmin } from '@/modules/assets/admin.routes';
 import { registerCurrency } from '@/modules/currency/router';
 import { registerPayments } from '@/modules/payments/router';
 
@@ -36,6 +37,7 @@ export async function registerAllRoutes(app: FastifyInstance) {
         await registerAnalysesAdmin(adminApi);
         await registerImplementationAdmin(adminApi);
         await registerStatsAdmin(adminApi);
+        await registerAssetsAdmin(adminApi);
       }, { prefix: '/admin' });
 
       // ─── Public ──────────────────────────────────────────────────

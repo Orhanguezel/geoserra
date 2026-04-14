@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
         source: '/reports/:path*',
         destination: `${backendBase}/reports/:path*`,
       },
+      {
+        source: '/assets/:path*',
+        destination: `${backendBase}/assets/:path*`,
+      },
     ];
   },
   images: {

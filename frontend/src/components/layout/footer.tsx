@@ -15,7 +15,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/">
-              <Image src="/logo-dark.png" alt="GeoSerra" width={130} height={34} className="h-8 w-auto mb-3" />
+              <Image src="/logo-small.png" alt="GeoSerra" width={130} height={34} className="h-8 w-auto mb-3" unoptimized />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               {t('footer.tagline', {}, locale)}

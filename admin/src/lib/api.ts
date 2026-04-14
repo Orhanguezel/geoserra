@@ -97,18 +97,6 @@ export const implApi = {
     api.patch(`/admin/implementation/${id}`, data),
 };
 
-// ── Site Settings ─────────────────────────────────────────────────────────────
-export interface SiteSettingsAggregate {
-  [key: string]: unknown;
-}
-
-export const settingsApi = {
-  get: () => api.get<SiteSettingsAggregate>('/admin/site-settings'),
-  put: (data: SiteSettingsAggregate) => api.put('/admin/site-settings', data),
-  bulkUpsert: (items: { key: string; value: unknown }[]) =>
-    api.post('/admin/site-settings/bulk-upsert', { items }),
-};
-
 // ── Stats ─────────────────────────────────────────────────────────────────────
 export interface AdminStats {
   total_analyses: number;
@@ -122,4 +110,49 @@ export interface AdminStats {
 
 export const statsApi = {
   get: () => api.get<AdminStats>('/admin/stats'),
+};
+
+// ── Settings ────────────────────────────────────────────────────────────────
+export interface SiteSettingsPayload {
+  starter_price?: string;
+  pro_price?: string;
+  expert_price?: string;
+  site_name?: string;
+  contact_email?: string;
+}
+
+// ── Assets ────────────────────────────────────────────────────────────────────
+export interface AssetItem {
+  name: string;
+  url: string;
+  exists: boolean;
+  size: number;
+  updated_at: string | null;
+}
+
+const BACKEND_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8095';
+
+export const assetsAdminApi = {
+  list: () => api.get<AssetItem[]>('/admin/assets'),
+  upload: (name: string, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/admin/assets/upload?name=${encodeURIComponent(name)}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  /** Backend base URL for direct asset preview (bypasses Next.js proxy) */
+  previewUrl: (path: string) => `${BACKEND_BASE}${path}`,
+};
+
+export const settingsApi = {
+  get: () => api.get<Record<string, unknown>>('/admin/site-settings'),
+  updateSiteSettings: (data: SiteSettingsPayload) =>
+    api.put('/admin/site-settings', data),
+  bulkUpsert: (items: { key: string; value: unknown }[]) =>
+    api.post('/admin/site-settings/bulk-upsert', { items }),
+  sendSmtpTest: (email: string) =>
+    api.post('/admin/site-settings/test-email', { email }),
+  changePassword: (current_password: string, new_password: string) =>
+    api.put('/auth/change-password', { current_password, new_password }),
 };

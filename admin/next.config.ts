@@ -4,7 +4,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   images: {
-    remotePatterns: [],
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'https', hostname: '**' },
+    ],
   },
 };
 

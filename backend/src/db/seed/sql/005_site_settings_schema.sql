@@ -23,4 +23,8 @@ INSERT IGNORE INTO site_settings (id, key_name, value_text) VALUES
   (UUID(), 'smtp_user', ''),
   (UUID(), 'smtp_pass', ''),
   (UUID(), 'smtp_from_email', 'noreply@geoserra.com'),
-  (UUID(), 'smtp_from_name', 'GeoSerra');
+  (UUID(), 'smtp_from_name', 'GeoSerra'),
+  -- Marka görselleri (backend /assets/ üzerinden servis edilir)
+  (UUID(), 'site.logo', '/assets/logo.png'),
+  (UUID(), 'site.logo_small', '/assets/logo-small.png'),
+  (UUID(), 'site.favicon', '/assets/favicon.png');

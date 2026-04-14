@@ -43,7 +43,13 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
   },
   twitter: { card: 'summary_large_image' },
-  icons: { icon: '/favicon.ico' },
+  icons: {
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
