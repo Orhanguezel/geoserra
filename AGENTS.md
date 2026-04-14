@@ -1,498 +1,285 @@
-# GeoSerra — AGENTS.md (Codex İçin)
+# GeoSerra — AGENTS.md
+# Codex ve Antigravity için görev talimatları
 
-> Bu dosya Codex tarafından okunur. Görev atamaları ve kurallar burada.
-
-## Proje Özeti
-
-GeoSerra bir GEO + SEO analiz SaaS platformu.
-- **Frontend:** Next.js 16, Tailwind v3, Framer Motion — port 3071
-- **Backend:** Fastify 5, Drizzle ORM, MySQL — port 8095
-- **Admin:** Next.js 16 — port 3072
-- **Referans tasarım:** `geoserra-landing.html` (projenin kökünde)
+> Bu dosyayı **Codex** ve **Antigravity** okur.  
+> Claude (Mimar) → CLAUDE.md okur.  
+> Detaylı sprint planı: SPRINT-2.md
 
 ---
 
-## Codex Kuralları
+## CODEX GÖREVLERİ — Sprint 2
 
-1. Değişiklikler yalnızca `geoserra/frontend/` veya `geoserra/admin/` altında
-2. TypeScript strict — hatasız olmalı
-3. `bun run dev` bozulmamalı
-4. **ALTER TABLE yasak** — DB şeması değiştirilmez
-5. Framer Motion ile animasyon yaz, raw CSS keyframe kullanma (globals.css'deki temel utility'ler dışında)
-6. i18n: `import { t } from '@/lib/t'` + `useLocaleStore((s) => s.locale)`
-7. Shadcn/Radix bileşenlerini tercih et
-8. Her `'use client'` bileşeninde hook kullanımı doğru olmalı
-
----
-
-## Renk Paleti (Emerald/Cyan — Landing HTML'den)
-
-```
-Primary (Emerald):  #10b981  → --accent-1
-Secondary (Cyan):   #0ea5e9  → --accent-3
-Accent-2 (Teal):    #06d6a0  → --accent-2
-Accent-4 (Indigo):  #818cf8  → --accent-4
-Warn (Amber):       #f59e0b  → --accent-warn
-
-Background:         #06090f  → --bg-primary
-Card:               #0f1420  → --bg-card
-Card hover:         #141a28  → --bg-card-hover
-Elevated:           #181f30  → --bg-elevated
-
-Text primary:       #f0f2f5
-Text secondary:     #8892a4
-Text muted:         #4a5568
-Text accent:        #34d399
-```
+### ⚙️ Genel Kurallar (Codex için)
+- Tüm değişiklikler `geoserra/frontend/` veya `geoserra/admin/` altında
+- TypeScript strict mode — tip hatası bırakma
+- `'use client'` direktifi interaktif bileşenlerde zorunlu
+- Tailwind emerald/cyan paleti: `emerald-500 (#10b981)`, `cyan-500 (#0ea5e9)`
+- i18n için `t(key, {}, locale)` kullan, `useLocaleStore((s) => s.locale)` ile locale al
+- Her görev sonunda: `bun run build` hatasız geçmeli
 
 ---
 
-## COD-1 — Design System Migration [ÖNCE YAP]
+### COD-10 Sitemap & Robots [BLOK B-1]
 
-**Dosyalar:**
-- `frontend/src/app/globals.css`
-- `frontend/src/app/layout.tsx`
-- `frontend/tailwind.config.ts`
-
-### globals.css değişiklikleri
-
-```css
-/* Mevcut violet/blue palatini BU ile değiştir */
-:root {
-  --background:     220 47% 4%;    /* #06090f */
-  --foreground:     220 15% 95%;   /* #f0f2f5 */
-  --card:           222 40% 8%;    /* #0f1420 */
-  --card-foreground: 220 15% 95%;
-  --primary:        160 84% 39%;   /* #10b981 emerald */
-  --primary-foreground: 0 0% 100%;
-  --secondary:      199 89% 48%;   /* #0ea5e9 cyan */
-  --secondary-foreground: 0 0% 100%;
-  --muted:          222 38% 11%;   /* #141a28 */
-  --muted-foreground: 220 12% 55%; /* #8892a4 */
-  --accent:         199 89% 48%;
-  --accent-foreground: 0 0% 100%;
-  --border:         222 38% 11%;
-  --input:          222 38% 11%;
-  --ring:           160 84% 39%;   /* emerald ring */
-  --radius:         0.5rem;
-  --destructive:    0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-  --font-mono-var: var(--font-jetbrains);
-}
+```
+Dosya: geoserra/frontend/src/app/sitemap.ts  (YENİ)
+Dosya: geoserra/frontend/src/app/robots.ts   (YENİ)
 ```
 
-**Eklenecek utility CSS:**
-
-```css
-/* Grain overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,..."); /* SVG noise */
-}
-
-/* Hero grid */
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(16,185,129,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16,185,129,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 60% 50% at 50% 50%, black, transparent);
-}
-
-/* Float animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-float-delayed { animation: float 6s ease-in-out -2s infinite; }
-
-/* Pulse ring */
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.4; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* Gradient text — emerald/cyan */
-.text-gradient {
-  background: linear-gradient(135deg, #10b981, #0ea5e9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Hero background */
-.hero-mesh {
-  background:
-    radial-gradient(ellipse 600px 600px at -10% -10%, rgba(16,185,129,0.15), transparent),
-    radial-gradient(ellipse 500px 500px at 105% 85%, rgba(14,165,233,0.12), transparent),
-    radial-gradient(ellipse 300px 300px at 80% 30%, rgba(129,140,248,0.06), transparent),
-    #06090f;
-}
-```
-
-### layout.tsx font değişikliği
-
-```tsx
-import { Outfit, JetBrains_Mono } from 'next/font/google';
-
-const outfit = Outfit({
-  variable: '--font-outfit',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  display: 'swap',
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: '--font-jetbrains',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
-// body className:
-// className={`${outfit.variable} ${jetbrains.variable} font-sans antialiased`}
-```
-
-### tailwind.config.ts eklentileri
-
+**sitemap.ts:**
 ```ts
-extend: {
-  colors: {
-    emerald: colors.emerald,    // import colors from 'tailwindcss/colors'
-    cyan: colors.cyan,
-  },
-  fontFamily: {
-    sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
-    mono: ['var(--font-jetbrains)', 'monospace'],
-  },
-  animation: {
-    float: 'float 6s ease-in-out infinite',
-    'float-delayed': 'float 6s ease-in-out -2s infinite',
-    'pulse-ring': 'pulse-ring 2s infinite',
-  },
+import type { MetadataRoute } from 'next';
+const base = 'https://geoserra.com';
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    { url: base,                    lastModified: new Date(), changeFrequency: 'weekly',  priority: 1 },
+    { url: `${base}/analyze`,       lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${base}/pricing`,       lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/implementation`,lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/hakkimizda`,    lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/iletisim`,      lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  ];
+}
+```
+
+**robots.ts:**
+```ts
+import type { MetadataRoute } from 'next';
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      { userAgent: '*', allow: '/', disallow: ['/checkout', '/report', '/thank-you', '/api/'] },
+      { userAgent: ['GPTBot', 'Google-Extended', 'PerplexityBot', 'ClaudeBot'], allow: '/' },
+    ],
+    sitemap: 'https://geoserra.com/sitemap.xml',
+  };
 }
 ```
 
 ---
 
-## COD-2 — Hero Section Tam Yeniden Yazım
-
-**Dosya:** `frontend/src/components/home/hero-section.tsx`
-
-### Yapı
+### COD-11 JSON-LD Schema Markup [BLOK B-3]
 
 ```
-<section className="hero-mesh relative min-h-screen flex items-center overflow-hidden">
-  <div className="hero-grid" />                    ← arka plan grid
-
-  {/* Sol floating cards */}
-  <FloatCards side="left" />
-
-  {/* Merkez içerik */}
-  <div className="container relative z-10 text-center">
-    <Badge />          ← "● GEO + SEO + Lighthouse — Tek Platform"
-    <Heading />        ← h1, clamp(42px → 72px), font-weight: 800
-    <Subtitle />       ← max-w-[560px] metin
-    <UrlInputBox />    ← monospace input + "Analiz Et" btn inline
-    <HeroNote />       ← "Ücretsiz · 1 analiz/domain · Kredi kartı gerekmez"
-    <PlatformTags />   ← ChatGPT ● Gemini ● Perplexity ● Google AI ● Bing
-  </div>
-
-  {/* Sağ floating cards */}
-  <FloatCards side="right" />
-</section>
+Dosya: geoserra/frontend/src/app/layout.tsx  (GÜNCELLE)
 ```
 
-### FloatCards — Sol (sol: 5%, top: 50% transform -50%)
-
+`<head>` içine script ekle:
 ```tsx
-// Sol kart 1: GEO Skoru
-{ label: 'GEO SKORU', value: '94', color: 'green' }  // animate-float
-
-// Sol kart 2: AI Citability
-{ label: 'AI CITABILITY', value: '87', color: 'blue', delay: '-2s' }
-```
-
-### FloatCards — Sağ (sağ: 5%, top: 50% transform -50%)
-
-```tsx
-// Sağ kart 1: Lighthouse
-{ label: 'LIGHTHOUSE', value: '91', color: 'green' }
-
-// Sağ kart 2: Sorun sayısı
-{ label: 'SORUN TESPİT', value: '23', sub: 'aksiyona hazır', color: 'amber' }
-```
-
-### URL Input Box
-
-```tsx
-<div className="mx-auto max-w-[580px] rounded-2xl border border-white/10 bg-[#0f1420] p-1.5
-                focus-within:border-emerald-500 focus-within:shadow-[0_0_0_4px_rgba(16,185,129,0.1)]">
-  <div className="flex">
-    <input
-      type="url"
-      placeholder="https://siteniz.com"
-      className="flex-1 bg-transparent font-mono text-[15px] px-4 py-3.5 outline-none
-                 text-white placeholder-[#4a5568]"
-    />
-    <button className="rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600
-                       px-7 py-3.5 font-semibold text-sm text-white hover:-translate-y-px
-                       hover:shadow-[0_6px_24px_rgba(16,185,129,0.35)] transition-all">
-      Analiz Et →
-    </button>
-  </div>
-</div>
-```
-
-### Platform Tags
-
-```tsx
-const platforms = ['ChatGPT', 'Gemini', 'Perplexity', 'Google AI', 'Bing'];
-// Her biri: <span>● {name}</span> — font-mono text-xs text-muted
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://geoserra.com/#org",
+        "name": "GeoSerra",
+        "url": "https://geoserra.com",
+        "logo": { "@type": "ImageObject", "url": "https://geoserra.com/logo-small.png" },
+        "description": "AI destekli GEO ve SEO görünürlük analiz platformu",
+        "sameAs": ["https://github.com/Orhanguezel/geoserra"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://geoserra.com/#website",
+        "url": "https://geoserra.com",
+        "name": "GeoSerra",
+        "publisher": { "@id": "https://geoserra.com/#org" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://geoserra.com/analyze?url={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  })}}
+/>
 ```
 
 ---
 
-## COD-3 — Trust Bar [YENİ BİLEŞEN]
+### COD-12 Her Sayfa için Metadata [BLOK B-2]
 
-**Dosya:** `frontend/src/components/home/trust-bar.tsx`  
-**Konum:** `page.tsx`'de `<HeroSection />` ile `<HowItWorksSection />` arasına ekle
+```
+Dosya: geoserra/frontend/src/app/analyze/page.tsx       (GÜNCELLE)
+Dosya: geoserra/frontend/src/app/hakkimizda/page.tsx    (GÜNCELLE)
+Dosya: geoserra/frontend/src/app/iletisim/page.tsx      (GÜNCELLE)
+Dosya: geoserra/frontend/src/app/implementation/page.tsx (GÜNCELLE)
+```
 
-```tsx
-const stats = [
-  { num: '2.400+', lbl: 'Analiz Tamamlandı' },
-  { num: '48.000+', lbl: 'Sorun Tespit Edildi' },
-  { num: '+32%', lbl: 'Ortalama Skor Artışı' },
-  { num: '4.8/5', lbl: 'Müşteri Memnuniyeti' },
-];
-// border-t border-b border-white/6 py-14
-// flex gap-12 justify-center items-center flex-wrap
-// Aralarına 1px dikey çizgi ekle (hidden sm:block)
+Her sayfaya `export const metadata: Metadata = { ... }` ekle.
+
+**Örnek (analyze):**
+```ts
+export const metadata: Metadata = {
+  title: 'Ücretsiz GEO SEO Analizi — URL Gir, Skoru Gör',
+  description: 'Web sitenizin ChatGPT, Gemini ve Perplexity görünürlüğünü saniyeler içinde analiz et. Ücretsiz, kayıt gerekmez.',
+  openGraph: { title: 'Ücretsiz GEO SEO Analizi', description: '...', url: 'https://geoserra.com/analyze' },
+};
+```
+
+NOT: `'use client'` olan sayfalarda metadata export çalışmaz.
+Bunun için `page.tsx` ayrı bir server component wrapper yapısına geçirilmeli:
+```
+app/analyze/
+  page.tsx         ← metadata export, imports AnalyzeClient
+  analyze-client.tsx ← 'use client'
 ```
 
 ---
 
-## COD-4 — Report Preview Section [YENİ BİLEŞEN]
+### COD-13 Gizlilik & Kullanım Şartları Sayfaları [BLOK B-4]
 
-**Dosya:** `frontend/src/components/home/report-preview-section.tsx`  
-**Konum:** PricingSection'dan önce
-
-### Sol taraf (metin)
 ```
-Eyebrow: "ÖRNEK RAPOR" (mono, emerald, uppercase letter-spacing)
-H2: "Sitenizin Tam Resmini Görün"
-P: "GeoSerra raporu 8 kategoride detaylı analiz sunar..."
-CTA: "Ücretsiz Analizimi Başlat →" (emerald btn)
+Dosya: geoserra/frontend/src/app/gizlilik/page.tsx         (YENİ)
+Dosya: geoserra/frontend/src/app/kullanim-sartlari/page.tsx (YENİ)
 ```
 
-### Sağ taraf (mockup kart)
+**gizlilik/page.tsx** içeriği:
+- Başlık: "Gizlilik Politikası"
+- Bölümler: Toplanan Veriler, Kullanım Amacı, Veri Güvenliği, KVKK Hakları, İletişim
+- Emerald aksan renklerle stillendir, PLAN.md'den içerik alabilirsin
 
-```tsx
-// Kart: bg-[#0f1420] border border-white/8 rounded-2xl p-6
-// Üst: "GeoSerra Raporu — example.com"
-
-// Score circles (SVG ring):
-<ScoreRing score={78} label="GEO" color="#10b981" />
-<ScoreRing score={85} label="SEO" color="#0ea5e9" />
-<ScoreRing score={91} label="LH"  color="#f59e0b" />
-
-// Kategori listesi (kısmi):
-[
-  { name: 'AI Citability', score: 72, color: 'emerald' },
-  { name: 'Schema Markup', score: 45, color: 'red' },  // kötü → kırmızı
-  { name: 'Teknik SEO', score: 88, color: 'emerald' },
-  { name: 'Core Web Vitals', score: 91, color: 'emerald' },
-]
-// Alt: "🔒 +4 kategori daha — Rapor satın al"
-```
+**kullanim-sartlari/page.tsx** içeriği:
+- Başlık: "Kullanım Şartları"
+- Bölümler: Hizmet Kapsamı, Ücretsiz Analiz Limiti, Ödeme & İade, Sorumluluk Reddi
 
 ---
 
-## COD-5 — Testimonials Section [YENİ BİLEŞEN]
+### COD-14 OG Image [BLOK B-5]
 
-**Dosya:** `frontend/src/components/home/testimonials-section.tsx`
-
-```tsx
-const testimonials = [
-  {
-    name: 'Ayşe K.',
-    company: 'E-ticaret Girişimcisi',
-    text: 'GeoSerra sayesinde Perplexity\'de ilk sayfada görünmeye başladım. Organik trafiğim 3 ayda %40 arttı.',
-    before: 34,
-    after: 81,
-  },
-  {
-    name: 'Mehmet D.',
-    company: 'Digital Ajans Kurucusu',
-    text: 'Müşterilerime sunduğum en değerli araç. Schema ve AI visibility raporları gerçekten işe yarıyor.',
-    before: 48,
-    after: 76,
-  },
-  {
-    name: 'Selin Ö.',
-    company: 'SaaS Kurucu',
-    text: 'Expert raporu aldık, implementation ile birlikte ChatGPT aramalarında marka adımız çıkmaya başladı.',
-    before: 29,
-    after: 88,
-  },
-];
-// Her kart: Skor before → after oklu gösterim
-// Framer Motion: whileInView, once:true
+```
+Dosya: geoserra/frontend/public/og-image.png  (OLUŞTUR — 1200×630)
 ```
 
----
-
-## COD-6 — Pricing Section Güncelleme
-
-**Dosya:** `frontend/src/components/home/pricing-section.tsx`
-
-### Tab switcher ekle
-
+Alternatif olarak `app/opengraph-image.tsx` dynamic OG image:
 ```tsx
-const [tab, setTab] = useState<'once' | 'monthly'>('once');
-// "Tek Seferlik" | "Aylık Abonelik" tab butonları
-// bg-[#0f1420] border rounded-lg p-1 — tab:active → bg-[#181f30]
-```
-
-### Tek Seferlik paketler (tab='once')
-- Starter $29 → `/checkout/starter`
-- Pro $59 → `/checkout/pro` — **featured**
-- Expert $99 → `/checkout/expert`
-
-### Aylık paketler (tab='monthly')
-- Monitor $39/ay → `/checkout/monitor`
-- Growth $79/ay → `/checkout/growth` — **featured**
-- Agency $149/ay → `/checkout/agency`
-
-### Featured kart tasarımı
-```tsx
-// border-emerald-500 — üstte "EN POPÜLER" band
-// background: linear-gradient(180deg, rgba(16,185,129,0.06), #0f1420)
-// ::before absolute top-[-12px] rounded-full bg-emerald-500 text-xs
-```
-
----
-
-## COD-7 — Mobile Menu
-
-**Dosya:** `frontend/src/components/layout/header.tsx`
-
-```tsx
-const [menuOpen, setMenuOpen] = useState(false);
-
-// Hamburger (lg:hidden):
-<button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden">
-  {menuOpen ? <X size={24} /> : <Menu size={24} />}
-</button>
-
-// Mobile panel:
-<AnimatePresence>
-  {menuOpen && (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="absolute top-full left-0 right-0 bg-[#06090f]/95 backdrop-blur-xl
-                 border-b border-white/6 py-6 px-6 flex flex-col gap-4 lg:hidden"
-    >
-      {navLinks.map(...)}
-      <Link href="/analyze">Ücretsiz Analiz</Link>
-    </motion.div>
-  )}
-</AnimatePresence>
-```
-
----
-
-## COD-8 — Analyze Sonuç Ekranı Geliştirme
-
-**Dosya:** `frontend/src/components/analyze/analyze-client.tsx`
-
-### Mevcut durumu gözlemle, eklentiler:
-
-```tsx
-// 1. Score ring (SVG circle progress)
-function ScoreRing({ score, label }: { score: number; label: string }) {
-  const r = 36;
-  const c = 2 * Math.PI * r;
-  const offset = c - (score / 100) * c;
-  return (
-    <svg width="88" height="88" viewBox="0 0 88 88">
-      <circle cx="44" cy="44" r={r} fill="none" stroke="#1a2035" strokeWidth="8" />
-      <circle cx="44" cy="44" r={r} fill="none" stroke="#10b981" strokeWidth="8"
-        strokeDasharray={c} strokeDashoffset={offset}
-        className="score-ring transition-all duration-1000" />
-      <text x="44" y="44" textAnchor="middle" dominantBaseline="middle"
-        className="font-bold text-lg fill-white">{score}</text>
-    </svg>
+import { ImageResponse } from 'next/og';
+export const size = { width: 1200, height: 630 };
+export default function OGImage() {
+  return new ImageResponse(
+    <div style={{ background: '#06090f', display: 'flex', ... }}>
+      <img src="https://geoserra.com/logo.png" />
+      <h1 style={{ color: '#10b981' }}>AI & SEO Görünürlük Platformu</h1>
+    </div>
   );
 }
-
-// 2. Kilitli kategori kartları (4 adet, ücretsiz = kısıtlı)
-// Blur overlay üzerinde lock icon + "Rapor Satın Al" CTA
-
-// 3. Top 5 sorun listesi (numbered, kırmızı bullet)
-
-// 4. Upgrade CTA box (emerald gradient border)
-// "Tam rapor için $29'dan başlayan paketler →"
 ```
 
 ---
 
-## COD-9 — Admin Settings Sayfası
+### COD-15 Admin Sidebar Kontrolü [BLOK B-7]
 
-**Dosya:** `admin/src/app/(main)/settings/page.tsx`
-
-```tsx
-// Bölümler:
-// 1. Fiyatlandırma (starter/pro/expert USD fiyatları — input)
-//    PUT /api/v1/admin/site-settings
-// 2. SMTP Test (test email gönder butonu)
-// 3. Yönetici Şifre Değiştirme
-//    PUT /api/v1/auth/change-password
-// 4. Site Bilgileri (site adı, iletişim email)
 ```
+Dosya: geoserra/admin/src/components/layout/sidebar.tsx (GÜNCELLE)
+```
+
+- "Ayarlar" menü öğesi var mı kontrol et
+- Yoksa ekle: `{ href: '/settings', label: 'Ayarlar', icon: Settings2 }`
+- Aktif rota highlight: `usePathname()` ile mevcut sayfayı belirle
 
 ---
 
-## Öncelik Sırası (Codex Çalışma Akışı)
+## ANTİGRAVİTY GÖREVLERİ — Sprint 2
 
-```
-1. COD-1  → Design system (globals.css + layout + tailwind)
-2. COD-2  → Hero section
-3. COD-3  → Trust bar + page.tsx güncelle
-4. COD-7  → Mobile menu (hızlı)
-5. COD-6  → Pricing tab switcher
-6. COD-4  → Report preview section
-7. COD-5  → Testimonials
-8. COD-8  → Analyze sonuç ekranı
-9. COD-9  → Admin settings
-```
+> Codex görevi bitince başla. Önce frontend build al, sonra Antigravity başlat.
+
+### AG-5 Ana Sayfa Tam Visual Audit [BLOK D-1]
+
+**Kontrol URL:** `https://geoserra.com` (veya `localhost:3071`)
+
+Karşılaştırma referansı: `geoserra/geoserra-landing.html`
+
+| Bölüm | Kontrol Noktası |
+|-------|----------------|
+| Header | Logo görünüyor, nav linkleri çalışıyor |
+| Hero | Floating cards hizalı, URL input monospace, badge pulse-ring animasyonu |
+| Trust bar | 4 stat rakamı görünüyor, mobilde tek satır |
+| How it works | 3 adım kartı, numaralar emerald renkli |
+| Report preview | Score ring animasyonu, kategori listesi |
+| Testimonials | 3 kart, before/after skor |
+| Pricing | Tab switcher çalışıyor, featured kart vurgulanmış |
+| Footer | Logo, linkler, gizlilik/kullanım sayfaları |
 
 ---
 
-## Test Komutları
+### AG-6 Analiz Akışı UX Audit [BLOK D-2]
 
-```bash
-# Frontend başlat
-cd geoserra/frontend && bun run dev
+**Kontrol URL:** `localhost:3071/analyze`
 
-# Backend başlat
-cd geoserra/backend && bun run dev
+1. Geçerli URL gir → "Analiz Et" → yükleniyor skeleton görünüyor
+2. Sonuç ekranı: GEO skor dairesi animasyonlu açılıyor (sayaç 0'dan skora)
+3. 4 kategori kartı: ücretsiz açık, 4+ kilitli (blur overlay)
+4. "Kilidi Aç — Tam Raporu Al" butonu → checkout'a yönlendirir
+5. Geçersiz URL girişi → hata mesajı
+6. Daha önce analiz edilmiş domain → "Bu domain analiz edildi" mesajı
+7. Mobil (360px): form ve skor kartları üst üste gelmeden okunuyor
 
-# Ücretsiz analiz testi
-curl -X POST http://localhost:8095/api/v1/analyze/free \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com","email":"test@test.com"}'
+---
 
-# TypeScript kontrolü
-cd geoserra/frontend && bun x tsc --noEmit
-```
+### AG-7 Checkout & Ödeme Akışı [BLOK D-3]
+
+**Kontrol URL:** `localhost:3071/checkout/starter`
+
+1. Sayfa yüklendiğinde Stripe Elements formu render oluyor
+2. PayPal buton görünüyor (sandbox logo)
+3. Test kart: `4242 4242 4242 4242` → başarılı mesaj
+4. Test kart: `4000 0000 0000 9995` → "Kart reddedildi" hatası
+5. Başarılı ödeme → `/thank-you` redirect
+6. Thank-you sayfası: "Analiz başlatıldı" mesajı + analiz ID'si
+
+---
+
+### AG-8 Admin Panel Tam Audit [BLOK D-4]
+
+**Kontrol URL:** `localhost:3072`
+
+1. `/login` → yanlış şifre → hata mesajı (kırmızı)
+2. `/login` → doğru giriş → dashboard redirect
+3. Dashboard: 6 stat kartı loading skeleton → gerçek veri
+4. `/analyses` → tablo pagination çalışıyor, search filter
+5. `/analyses/[id]` → detay sayfası, "PDF Gönder" butonu
+6. `/implementation` → liste, durum dropdown çalışıyor
+7. `/settings` → Marka Görselleri section görünüyor
+8. Upload test: logo-small.png yükle → preview anında güncelleniyor
+
+---
+
+### AG-9 Lighthouse & Responsive Audit [BLOK D-5]
+
+**Araçlar:** Chrome DevTools Lighthouse, Mobile viewport
+
+| Test | Hedef |
+|------|-------|
+| Lighthouse Performance | ≥ 80 |
+| Lighthouse SEO | ≥ 90 |
+| Lighthouse Accessibility | ≥ 85 |
+| FCP (First Contentful Paint) | < 2s |
+| CLS (Layout Shift) | < 0.1 |
+| 360px viewport | Bozulma yok |
+| 768px viewport | 2 kolon düzeni doğru |
+
+Lighthouse raporu sonuçlarını not et ve kritik sorunları Claude'a bildir.
+
+---
+
+## Tamamlanma Sinyali
+
+Her ajan görevi bitirdiğinde buraya işaret et:
+
+| Görev | Ajan | Durum |
+|-------|------|-------|
+| SPRINT-2 A-1..A-8 | Claude | [ ] |
+| COD-10 Sitemap/Robots | Codex | [ ] |
+| COD-11 JSON-LD Schema | Codex | [ ] |
+| COD-12 Sayfa Metadata | Codex | [ ] |
+| COD-13 Gizlilik/Kullanım | Codex | [ ] |
+| COD-14 OG Image | Codex | [ ] |
+| COD-15 Admin Sidebar | Codex | [ ] |
+| AG-5 Ana Sayfa Audit | Antigravity | [ ] |
+| AG-6 Analiz Akışı | Antigravity | [ ] |
+| AG-7 Checkout | Antigravity | [ ] |
+| AG-8 Admin Panel | Antigravity | [ ] |
+| AG-9 Lighthouse | Antigravity | [ ] |
+
