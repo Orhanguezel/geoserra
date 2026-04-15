@@ -71,7 +71,7 @@ export function PricingSection() {
               }`}
             >
               {pkg.popular ? (
-                <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary-foreground shadow-lg shadow-emerald-500/20">
+                <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-700 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-emerald-700/20">
                   {t('pricing.most_popular', {}, locale)}
                 </div>
               ) : null}
@@ -104,7 +104,7 @@ export function PricingSection() {
                 href={`/checkout/${pkg.slug}`}
                 className={`block w-full rounded-2xl py-4 text-center text-sm font-bold uppercase tracking-widest transition-all ${
                   pkg.popular
-                    ? 'bg-emerald-500 text-primary-foreground hover:bg-emerald-600 hover:shadow-xl hover:shadow-emerald-500/25'
+                    ? 'bg-emerald-700 text-white hover:bg-emerald-800 hover:shadow-xl hover:shadow-emerald-700/25'
                     : 'bg-muted text-foreground hover:bg-muted/80'
                 }`}
               >
@@ -117,7 +117,7 @@ export function PricingSection() {
         <p className="mt-8 text-center text-sm text-muted-foreground">
           <span className="font-medium text-foreground">{t('pricing.free_tier', {}, locale)}:</span>{' '}
           {t('pricing.free_tier_desc', {}, locale)} —{' '}
-          <Link href="/analyze" className="text-primary hover:underline">{t('nav.analyze', {}, locale)}</Link>
+          <Link href="/analyze" className="text-primary underline underline-offset-2">{t('nav.analyze', {}, locale)}</Link>
         </p>
       </div>
     </section>

@@ -6,7 +6,6 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from 'sonner';
 import { CurrencyInitializer } from '@/components/providers/currency-initializer';
-import { GoogleAuthProvider } from '@/components/providers/google-oauth-provider';
 import { AuthInitializer } from '@/components/providers/auth-initializer';
 import './globals.css';
 
@@ -100,10 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Preconnect for performance - saves ~180ms per Lighthouse */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://accounts.google.com" />
+        <link rel="preconnect" href="https://accounts.google.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://accounts.google.com" />
         <script
           type="application/ld+json"
@@ -116,16 +112,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem themes={['dark', 'light']}>
           <QueryProvider>
-            <GoogleAuthProvider>
-              <AuthInitializer />
-              <CurrencyInitializer />
-              <div className="flex min-h-screen flex-col">
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
-              <Toaster position="top-right" richColors />
-            </GoogleAuthProvider>
+            <AuthInitializer />
+            <CurrencyInitializer />
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster position="top-right" richColors />
           </QueryProvider>
         </ThemeProvider>
       </body>

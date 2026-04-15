@@ -271,15 +271,15 @@ Her ajan görevi bitirdiğinde buraya işaret et:
 | Görev | Ajan | Durum |
 |-------|------|-------|
 | SPRINT-2 A-1..A-8 | Claude | [ ] |
-| COD-10 Sitemap/Robots | Codex | [ ] |
-| COD-11 JSON-LD Schema | Codex | [ ] |
-| COD-12 Sayfa Metadata | Codex | [ ] |
-| COD-13 Gizlilik/Kullanım | Codex | [ ] |
-| COD-14 OG Image | Codex | [ ] |
-| COD-15 Admin Sidebar | Codex | [ ] |
-| AG-5 Ana Sayfa Audit | Antigravity | [ ] |
-| AG-6 Analiz Akışı | Antigravity | [ ] |
-| AG-7 Checkout | Antigravity | [ ] |
-| AG-8 Admin Panel | Antigravity | [ ] |
-| AG-9 Lighthouse | Antigravity | [ ] |
+| COD-10 Sitemap/Robots | Codex | [x] |
+| COD-11 JSON-LD Schema | Codex | [x] |
+| COD-12 Sayfa Metadata | Codex | [x] |
+| COD-13 Gizlilik/Kullanım | Codex | [x] |
+| COD-14 OG Image | Codex | [x] |
+| COD-15 Admin Sidebar | Codex | [x] |
+| AG-5 Ana Sayfa Audit | Antigravity | [x] |
+| AG-6 Analiz Akışı | Antigravity | [x] |
+| AG-7 Checkout | Antigravity | [x] |
+| AG-8 Admin Panel | Antigravity | [x] |
+| AG-9 Lighthouse | Antigravity | [x] |
 

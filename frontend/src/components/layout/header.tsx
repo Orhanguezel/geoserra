@@ -42,7 +42,7 @@ function UserMenu() {
         <Link href="/giris" className="text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors">
           Giriş Yap
         </Link>
-        <Link href="/kayit" className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-bold uppercase tracking-wider text-white hover:bg-emerald-600 transition-all hover:shadow-[0_4px_12px_rgba(16,185,129,0.3)]">
+        <Link href="/kayit" className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold uppercase tracking-wider text-white hover:bg-emerald-800 transition-all hover:shadow-[0_4px_12px_rgba(4,120,87,0.3)]">
           Üye Ol
         </Link>
       </div>
@@ -110,7 +110,7 @@ export function Header() {
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center py-2">
-          <Image src={logoSrc} alt="GeoSerra" width={406} height={98} className="h-12 w-auto" priority unoptimized />
+          <Image src={logoSrc} alt="GeoSerra" width={406} height={98} className="h-12 w-auto" priority />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -131,7 +131,7 @@ export function Header() {
           {!user && (
             <Link
               href="/analyze"
-              className="rounded-lg bg-emerald-500 px-5 py-2 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-emerald-600 hover:shadow-[0_4px_12px_rgba(16,185,129,0.3)]"
+              className="rounded-lg bg-emerald-700 px-5 py-2 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-emerald-800 hover:shadow-[0_4px_12px_rgba(4,120,87,0.3)]"
             >
               {t('nav.start_free', {}, locale)}
             </Link>

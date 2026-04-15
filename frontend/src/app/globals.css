@@ -12,7 +12,7 @@
     --card-foreground: 220 15% 95%;
     --popover:        222 40% 8%;
     --popover-foreground: 220 15% 95%;
-    --primary:        160 84% 39%;   /* #10b981 emerald */
+    --primary:        161 93% 24%;   /* #047857 emerald-700 — WCAG 4.5:1 white contrast */
     --primary-foreground: 0 0% 100%;
     --secondary:      199 89% 48%;   /* #0ea5e9 cyan */
     --secondary-foreground: 0 0% 100%;
@@ -22,7 +22,7 @@
     --accent-foreground: 0 0% 100%;
     --border:         222 38% 11%;
     --input:          222 38% 11%;
-    --ring:           160 84% 39%;
+    --ring:           161 93% 24%;
     --radius:         0.5rem;
     --destructive:    0 72% 51%;
     --destructive-foreground: 0 0% 100%;
