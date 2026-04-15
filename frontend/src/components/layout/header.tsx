@@ -108,9 +108,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="group flex items-center gap-2">
-          <Image src={logoSrc} alt="GeoSerra" width={406} height={98} className="h-9 w-auto" priority unoptimized />
+      <div className="container flex h-14 items-center justify-between">
+        <Link href="/" className="flex h-full items-center">
+          <Image src={logoSrc} alt="GeoSerra" width={406} height={98} className="h-full w-auto" priority unoptimized />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
