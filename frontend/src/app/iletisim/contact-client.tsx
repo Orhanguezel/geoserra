@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, CheckCircle2, AlertCircle, Mail } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertCircle, Mail, Clock, MessageSquare, Briefcase, HelpCircle } from 'lucide-react';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
 import { api } from '@/lib/api';
@@ -32,7 +32,7 @@ export function ContactClient() {
 
   return (
     <main className="min-h-screen py-20 md:py-28">
-      <div className="container max-w-lg">
+      <div className="container max-w-3xl">
         <div className="mb-10 text-center">
           <div className="mb-4 inline-flex rounded-2xl bg-primary/10 p-3">
             <Mail size={28} className="text-primary" />
@@ -40,6 +40,66 @@ export function ContactClient() {
           <h1 className="text-3xl font-bold">{t('contact.title', {}, locale)}</h1>
           <p className="mt-3 text-muted-foreground">{t('contact.subtitle', {}, locale)}</p>
         </div>
+
+        {/* Bilgi Kartları */}
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              icon: Clock,
+              title: 'Yanıt Süresi',
+              desc: 'İş günlerinde 24 saat içinde yanıtlanır. Acil teknik sorular 4 saat SLA.',
+              color: 'text-emerald-400',
+            },
+            {
+              icon: MessageSquare,
+              title: 'Rapor Soruları',
+              desc: 'GEO/SEO rapor içeriği, metrik açıklamaları ve öneri detayları için yazın.',
+              color: 'text-cyan-400',
+            },
+            {
+              icon: Briefcase,
+              title: 'İş Birliği',
+              desc: 'Ajans ortaklığı, white-label rapor ve toplu lisans görüşmeleri.',
+              color: 'text-amber-400',
+            },
+            {
+              icon: HelpCircle,
+              title: 'Teknik Destek',
+              desc: 'Ödeme, erişim ve rapor teslimi konularında doğrudan destek.',
+              color: 'text-violet-400',
+            },
+          ].map(({ icon: Icon, title, desc, color }) => (
+            <div key={title} className="rounded-2xl border border-border bg-card p-5 space-y-2">
+              <div className={`inline-flex rounded-lg bg-muted p-2 ${color}`}><Icon size={16} /></div>
+              <h3 className="text-sm font-semibold">{title}</h3>
+              <p className="text-xs leading-5 text-muted-foreground">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* İletişim Bilgileri */}
+        <div className="mb-8 rounded-2xl border border-border bg-card p-6">
+          <h2 className="mb-4 text-base font-semibold">İletişim Bilgileri</h2>
+          <div className="grid gap-4 sm:grid-cols-3 text-sm">
+            <div>
+              <p className="font-medium text-foreground">E-posta</p>
+              <p className="mt-1 text-muted-foreground">info@geoserra.com</p>
+              <p className="text-xs text-muted-foreground/70">Genel iletişim</p>
+            </div>
+            <div>
+              <p className="font-medium text-foreground">Çalışma Saatleri</p>
+              <p className="mt-1 text-muted-foreground">Pazartesi – Cuma</p>
+              <p className="text-xs text-muted-foreground/70">09:00 – 18:00 (TSİ)</p>
+            </div>
+            <div>
+              <p className="font-medium text-foreground">Konum</p>
+              <p className="mt-1 text-muted-foreground">Türkiye</p>
+              <p className="text-xs text-muted-foreground/70">Uzaktan hizmet, tüm Türkiye</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-lg mx-auto">
 
         <AnimatePresence mode="wait">
           {uiState === 'success' ? (
@@ -91,6 +151,7 @@ export function ContactClient() {
             </motion.form>
           )}
         </AnimatePresence>
+        </div>
       </div>
     </main>
   );

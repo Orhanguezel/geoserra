@@ -8,21 +8,21 @@
 
 ## 🔴 KRİTİK — Bu Gün
 
-- [ ] **llms.txt oluştur** — `/public/llms.txt` → brand tanımı, ana hizmetler, fiyatlar, önemli URL'ler markdown formatında `+6 puan`
-- [ ] **H1 typography hatası düzelt** — `'AramalarındaGerçek'` birleşik kelime → araya whitespace veya `<span>` ekle `+2 puan`
-- [ ] **Brand sameAs genişlet** — Organization schema'ya LinkedIn + X/Twitter + YouTube URL'leri ekle `+7 puan`
+- [x] **llms.txt oluştur** — `/public/llms.txt` → brand tanımı, ana hizmetler, fiyatlar, önemli URL'ler markdown formatında `+6 puan`
+- [x] **H1 typography hatası düzelt** — `'AramalarındaGerçek'` birleşik kelime → `{' '}` ile explicit whitespace eklendi `+2 puan`
+- [x] **Brand sameAs genişlet** — Organization schema'ya LinkedIn + X/Twitter + YouTube + ProductHunt + founder Person + contactPoint eklendi `+7 puan`
 
 ---
 
 ## 🟠 YÜKSEK — Bu Hafta
 
-- [ ] **Homepage FAQPage JSON-LD ekle** — mevcut SSS bölümündeki soruları `FAQPage` + `Question` + `acceptedAnswer` schema'ya dönüştür `+4 puan`
-- [ ] **Pricing Product + Offer schema** — her paket için `Product` + `Offer{price, priceCurrency, availability}` JSON-LD ekle `+3 puan`
+- [x] **Homepage FAQPage JSON-LD ekle** — 6 soru `FAQPage` + `Question` + `acceptedAnswer` schema olarak page.tsx'e eklendi `+4 puan`
+- [x] **Pricing Product + Offer schema** — 3 paket için `Product` + `Offer` ItemList JSON-LD eklendi `+3 puan`
 - [ ] **E-E-A-T: Hakkımızda sayfasına kurucu bilgisi ekle** — Orhan Güzel için `Person` schema, LinkedIn linki, fotoğraf `+5 puan`
 - [ ] **Thin content — /analyze genişlet** — 500+ kelime: 'Ne ölçülür', 'Nasıl çalışır', örnek sonuç blokları `+4 puan`
 - [ ] **Thin content — /iletisim genişlet** — adres, saatler, SLA, süreçler (14 kelimeden kurtul)
 - [ ] **Thin content — /implementation genişlet** — gerçekleme süreci, SLA, örnekler
-- [ ] **HSTS + CSP + Permissions-Policy header** — nginx/Next.js middleware (`max-age=63072000; includeSubDomains; preload`) `+2 puan`
+- [x] **HSTS + CSP + Permissions-Policy header** — next.config.ts headers'a HSTS + CSP + Permissions-Policy eklendi `+2 puan`
 
 ---
 
