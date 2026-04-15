@@ -142,11 +142,11 @@ export function ImplementationClient() {
               <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
                 <Field label={t('implementation.email_label', {}, locale)}>
                   <input type="email" value={form.email} onChange={set('email')} required
-                    className="input-field" placeholder="siz@ornek.com" />
+                    className="input-field" placeholder={locale === 'tr' ? 'siz@ornek.com' : 'you@example.com'} />
                 </Field>
                 <Field label={t('implementation.domain_label', {}, locale)}>
                   <input type="text" value={form.domain} onChange={set('domain')} required
-                    className="input-field" placeholder="siteniz.com" />
+                    className="input-field" placeholder={locale === 'tr' ? 'siteniz.com' : 'yoursite.com'} />
                 </Field>
                 <Field label={t('implementation.notes_label', {}, locale)}>
                   <textarea value={form.notes} onChange={set('notes')} rows={3}
@@ -165,11 +165,11 @@ export function ImplementationClient() {
                 </p>
                 <Field label={t('implementation.cpanel_host', {}, locale)}>
                   <input type="text" value={form.cpanel_host} onChange={set('cpanel_host')}
-                    className="input-field" placeholder="cpanel.siteniz.com" />
+                    className="input-field" placeholder={locale === 'tr' ? 'cpanel.siteniz.com' : 'cpanel.yoursite.com'} />
                 </Field>
                 <Field label={t('implementation.cpanel_user', {}, locale)}>
                   <input type="text" value={form.cpanel_user} onChange={set('cpanel_user')}
-                    className="input-field" placeholder="kullanici_adi" />
+                    className="input-field" placeholder={locale === 'tr' ? 'kullanici_adi' : 'username'} />
                 </Field>
                 <Field label={t('implementation.cpanel_pass', {}, locale)}>
                   <div className="relative">

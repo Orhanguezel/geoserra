@@ -16,11 +16,11 @@ const categories = [
   { nameKey: 'report_preview.cat_platform', score: 71, color: '#38bdf8' },
 ];
 
-const sampleIssues = [
-  { priority: 'KRİTİK', text: 'llms.txt dosyası bulunamadı — AI tarayıcılar içeriğe erişemiyor', color: 'text-red-400 bg-red-500/10' },
-  { priority: 'YÜKSEK', text: 'Organization schema sameAs dizisi eksik — brand authority düşük', color: 'text-amber-400 bg-amber-500/10' },
-  { priority: 'YÜKSEK', text: 'FAQPage JSON-LD yok — AI sistemleri soru-cevap formatı bulamıyor', color: 'text-amber-400 bg-amber-500/10' },
-  { priority: 'ORTA', text: 'Canonical URL tanımlı değil — duplicate content riski mevcut', color: 'text-yellow-400 bg-yellow-500/10' },
+const ISSUE_COLORS = [
+  'text-red-400 bg-red-500/10',
+  'text-amber-400 bg-amber-500/10',
+  'text-amber-400 bg-amber-500/10',
+  'text-yellow-400 bg-yellow-500/10',
 ];
 
 export function ReportPreviewSection() {
@@ -97,22 +97,22 @@ export function ReportPreviewSection() {
               <div className="border-t border-border pt-5">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
-                    {locale === 'tr' ? 'Öncelikli Aksiyonlar' : 'Priority Actions'}
+                    {t('report_preview_issues.actions_label', {}, locale)}
                   </span>
                   <Lock size={11} className="text-muted-foreground/50" />
                 </div>
                 <div className="space-y-2">
-                  {sampleIssues.map((issue, i) => (
-                    <div key={i} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 ${issue.color}`}>
+                  {([1, 2, 3, 4] as const).map((n, i) => (
+                    <div key={n} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 ${ISSUE_COLORS[i]}`}>
                       <span className="mt-px shrink-0 rounded px-1 py-0.5 text-[9px] font-bold font-mono opacity-80">
-                        {issue.priority}
+                        {t(`report_preview_issues.i${n}_priority`, {}, locale)}
                       </span>
-                      <span className="text-[11px] leading-5 opacity-90">{issue.text}</span>
+                      <span className="text-[11px] leading-5 opacity-90">{t(`report_preview_issues.i${n}_text`, {}, locale)}</span>
                     </div>
                   ))}
                 </div>
                 <Link href="/pricing" className="mt-4 block text-center text-xs font-bold text-emerald-400 hover:underline">
-                  {locale === 'tr' ? '+ 26 aksiyon maddesi → Raporu Satın Al' : '+ 26 more actions → Buy Report'}
+                  {t('report_preview_issues.more_actions', {}, locale)}
                 </Link>
               </div>
             </div>
