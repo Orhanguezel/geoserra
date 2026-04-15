@@ -36,7 +36,7 @@
 - [ ] **LinkedIn Company Page aç** `+5 puan (sosyal paket)`
 - [ ] **X/Twitter hesabı aç** `+5 puan (sosyal paket)`
 - [ ] **YouTube kanalı aç** `+5 puan (sosyal paket)`
-- [ ] **Müşteri testimonial'ları doğrulanabilir yap** — tam isim + şirket + LinkedIn + `Review` schema `+3 puan`
+- [x] **Müşteri testimonial'ları doğrulanabilir yap** — tam isim, role, company, sector; 5 yıldız; Review microdata; SoftwareApplication AggregateRating JSON-LD (5.0/3) `+3 puan`
 - [ ] **i18n routing altyapısı** — `/tr` ve `/en` URL yapısı, `hreflang` hazırlığı `+2 puan`
 - [ ] **Ekran görüntüleri + demo içerik** — product screenshot, örnek rapor, interaktif demo `+2 puan`
 

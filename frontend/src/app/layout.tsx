@@ -39,10 +39,19 @@ export const metadata: Metadata = {
   },
   description:
     'Web sitenizin ChatGPT, Gemini ve Perplexity\'deki görünürlüğünü analiz edin. GEO + SEO + Lighthouse raporu tek platformda.',
+  alternates: {
+    canonical: siteUrl,
+    languages: {
+      'tr': siteUrl,
+      'en': siteUrl,
+      'x-default': siteUrl,
+    },
+  },
   openGraph: {
     type: 'website',
     siteName: 'GeoSerra',
     locale: 'tr_TR',
+    alternateLocale: ['en_US'],
     images: [
       {
         url: '/og-image.png',
