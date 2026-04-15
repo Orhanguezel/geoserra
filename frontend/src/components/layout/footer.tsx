@@ -3,10 +3,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
+import { useTheme } from 'next-themes';
 
 export function Footer() {
   const locale = useLocaleStore((s) => s.locale);
   const year = new Date().getFullYear();
+  const { resolvedTheme } = useTheme();
+  const logoSrc = resolvedTheme === 'light' ? '/logo-small-light.png' : '/logo-small.png';
 
   return (
     <footer className="border-t border-border bg-card/50 py-12">
@@ -15,12 +18,12 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/">
-              <Image src="/logo-small.png" alt="GeoSerra" width={130} height={34} className="h-8 w-auto mb-3" unoptimized />
+              <Image src={logoSrc} alt="GeoSerra" width={130} height={34} className="h-8 w-auto mb-3" unoptimized />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               {t('footer.tagline', {}, locale)}
             </p>
-            <p className="mt-4 text-xs text-muted-foreground/70">
+            <p className="mt-4 text-xs text-muted-foreground">
               {t('footer.copyright', { year }, locale)}
             </p>
           </div>

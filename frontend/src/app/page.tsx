@@ -12,6 +12,12 @@ import { CtaBanner } from '@/components/home/cta-banner';
 export const metadata: Metadata = {
   title: 'GeoSerra — GEO SEO Performance',
   description: 'Yapay zeka destekli SEO analizi. Sitenizin Google AI, ChatGPT ve Perplexity\'deki görünürlüğünü artırın.',
+  openGraph: {
+    title: 'GeoSerra — AI Görünürlük & SEO Analiz Platformu',
+    description: 'Web sitenizin ChatGPT, Gemini ve Perplexity\'deki görünürlüğünü analiz edin.',
+    url: 'https://geoserra.com',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+  },
 };
 
 export default function HomePage() {

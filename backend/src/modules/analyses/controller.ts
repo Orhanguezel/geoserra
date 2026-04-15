@@ -207,3 +207,38 @@ export function extractDomain(url: string): string {
     return url.toLowerCase().replace(/^https?:\/\/(www\.)?/, '').split('/')[0] ?? url;
   }
 }
+
+/** GET /api/v1/analyses/mine — oturum açmış kullanıcının analizleri */
+export async function getMyAnalyses(req: FastifyRequest, reply: FastifyReply) {
+  const user = (req as any).user as { email?: string; sub?: string };
+  const email = user?.email;
+  if (!email) return reply.code(401).send({ error: 'UNAUTHORIZED' });
+
+  const page = Number((req.query as any).page ?? 1);
+  const limit = 20;
+  const offset = (page - 1) * limit;
+
+  const { repoGetAnalysesByEmail, repoCountAnalysesByEmail } = await import('./repository');
+  const [items, total] = await Promise.all([
+    repoGetAnalysesByEmail(email, limit, offset),
+    repoCountAnalysesByEmail(email),
+  ]);
+
+  return reply.send({
+    items: items.map((a) => ({
+      id: a.id,
+      url: a.url,
+      domain: a.domain,
+      status: a.status,
+      package_slug: a.package_slug,
+      geo_score: (a.free_data as any)?.geo_score ?? null,
+      performance_score: (a.free_data as any)?.performance_score ?? null,
+      pdf_ready: !!a.pdf_path && a.package_slug !== 'free',
+      created_at: a.created_at,
+      completed_at: a.completed_at,
+    })),
+    total,
+    page,
+    pages: Math.ceil(total / limit),
+  });
+}

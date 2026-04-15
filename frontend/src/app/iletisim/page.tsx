@@ -10,11 +10,13 @@ export const metadata: Metadata = {
     url: 'https://geoserra.com/iletisim',
     siteName: 'GeoSerra',
     type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'GeoSerra İletişim',
     description: 'Rapor, implementation ve iş birliği konuları için bize ulaşın.',
+    images: ['/og-image.png'],
   },
 };
 

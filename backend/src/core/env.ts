@@ -69,11 +69,16 @@ export const env = {
   PYTHON_SCRIPTS_DIR: process.env.PYTHON_SCRIPTS_DIR || './python',
   GOOGLE_PSI_API_KEY: process.env.GOOGLE_PSI_API_KEY || '',
 
+  // Google OAuth (sign-in with Google) — id_token doğrulama için aud kontrolü
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+
   // Raporlar
   REPORTS_DIR: process.env.REPORTS_DIR || './storage/reports',
 
   // Auth admin allowlist
   AUTH_ADMIN_EMAILS: process.env.AUTH_ADMIN_EMAILS || '',
+
+  // AI / LLM — sadece ücretli analizde kullanılır (shared-backend env ile yönetilir)
 
   // Storage (shared-backend uyumluluğu için)
   STORAGE_DRIVER: 'local' as const,

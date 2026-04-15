@@ -15,8 +15,8 @@ export const PACKAGES: Record<string, PackageDefinition> = {
       tr: '8 kategori tam analiz, PDF rapor, 30 aksiyon maddesi',
       en: '8 category full analysis, PDF report, 30 action items',
     },
-    price_usd: 29,
-    price_usd_cents: 2900,
+    price_usd: 9,
+    price_usd_cents: 900,
     features: {
       tr: [
         'Technical SEO tam analiz',
@@ -47,8 +47,8 @@ export const PACKAGES: Record<string, PackageDefinition> = {
       tr: 'Starter + Schema JSON-LD oluşturma, AI visibility tam analiz',
       en: 'Starter + Schema JSON-LD generation, full AI visibility analysis',
     },
-    price_usd: 59,
-    price_usd_cents: 5900,
+    price_usd: 29,
+    price_usd_cents: 2900,
     features: {
       tr: [
         'Starter paketteki her şey',

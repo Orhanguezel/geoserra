@@ -11,14 +11,17 @@ import { formatCurrency } from '@/lib/utils';
 import { PayPalButton } from './paypal-button';
 
 const PACKAGES = {
-  starter: { price: 29, color: 'border-border' },
-  pro:     { price: 59, color: 'border-primary' },
-  expert:  { price: 99, color: 'border-border' },
+  starter: { price: 9,   color: 'border-border' },
+  pro:     { price: 29,  color: 'border-primary' },
+  expert:  { price: 99,  color: 'border-border' },
+  monitor: { price: 19,  color: 'border-border' },
+  growth:  { price: 49,  color: 'border-primary' },
+  agency:  { price: 129, color: 'border-border' },
 };
 
 type CheckoutStep = 'form' | 'paying' | 'success' | 'error';
 
-export function CheckoutClient({ packageSlug }: { packageSlug: 'starter' | 'pro' | 'expert' }) {
+export function CheckoutClient({ packageSlug }: { packageSlug: 'starter' | 'pro' | 'expert' | 'monitor' | 'growth' | 'agency' }) {
   const locale = useLocaleStore((s) => s.locale);
   const { currency, rates } = useCurrencyStore();
   const router = useRouter();
@@ -77,13 +80,12 @@ export function CheckoutClient({ packageSlug }: { packageSlug: 'starter' | 'pro'
   return (
     <main className="min-h-screen py-20 md:py-28">
       <div className="container max-w-lg">
-        {/* Package badge */}
         <div className="mb-8 text-center">
           <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-sm font-semibold text-primary capitalize">
             {t(`pricing.${packageSlug}.name`, {}, locale)}
           </span>
           <p className="mt-2 text-3xl font-bold">{formatCurrency(pkg.price, currency, rates)}</p>
-          <p className="text-sm text-muted-foreground">/ {t('pricing.per_report', {}, locale)}</p>
+          <p className="text-sm text-muted-foreground">/ {['monitor', 'growth', 'agency'].includes(packageSlug) ? t('pricing.per_month', {}, locale) : t('pricing.per_report', {}, locale)}</p>
         </div>
 
         {step === 'form' && (
@@ -92,6 +94,13 @@ export function CheckoutClient({ packageSlug }: { packageSlug: 'starter' | 'pro'
             animate={{ opacity: 1, y: 0 }}
             className="space-y-4"
           >
+            {['monitor', 'growth', 'agency'].includes(packageSlug) ? (
+              <div className="rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 text-sm text-amber-100">
+                {locale === 'tr'
+                  ? 'Aylik paketlerin backend odeme akisi henuz aktif degil. Plan secimi ve checkout arayuzu hazirlandi.'
+                  : 'Monthly package backend payment flow is not active yet. Plan selection and checkout UI are ready.'}
+              </div>
+            ) : null}
             <div className={`rounded-2xl border ${pkg.color} bg-card p-6 space-y-4`}>
               <h2 className="font-bold">{t('checkout.details', {}, locale)}</h2>
               <div>

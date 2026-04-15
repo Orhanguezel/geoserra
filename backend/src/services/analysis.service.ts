@@ -1,8 +1,10 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import { env } from '@/core/env';
-import { repoUpdateAnalysis } from '@/modules/analyses/repository';
+import { repoUpdateAnalysis, repoGetAnalysisById } from '@/modules/analyses/repository';
 import { PdfService } from './pdf.service';
+import { sendAnalysisCompleteEmail } from './mail.service';
+import { runAiInsights } from './ai-insights.service';
 
 interface ScriptResult {
   success: boolean;
@@ -22,6 +24,7 @@ interface FullAnalysisData {
   keywords: any;
   llmstxt: any;
   geo_score?: number;
+  ai_insights?: any;
 }
 
 /**
@@ -85,6 +88,19 @@ async function runFreeAnalysis(analysisId: string, url: string): Promise<void> {
       free_data: limitedData,
       completed_at: new Date(),
     });
+
+    // Analiz tamamlandı e-postası
+    const saved = await repoGetAnalysisById(analysisId);
+    if (saved?.email) {
+      sendAnalysisCompleteEmail({
+        to: saved.email,
+        domain: saved.domain,
+        geoScore: (limitedData as any)?.geo_score ?? null,
+        performanceScore: (limitedData as any)?.performance_score ?? null,
+        pdfUrl: null,
+        analysisId,
+      }).catch(() => {});
+    }
   } catch (err: any) {
     await repoUpdateAnalysis(analysisId, {
       status: 'failed',
@@ -124,6 +140,19 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
     // GEO skoru hesapla
     fullData.geo_score = calculateGeoScore(fullData);
 
+    // AI Insights — Groq LLM ile görünürlük analizi + aksiyon planı
+    // Paket slug'ını analysis kaydından alıyoruz
+    const analysisRecord = await repoGetAnalysisById(analysisId);
+    const packageSlug = analysisRecord?.package_slug ?? 'starter';
+    const aiInsights = await runAiInsights(fullData, packageSlug);
+    if (aiInsights) {
+      fullData.ai_insights = aiInsights;
+      // AI görünürlük skorunu GEO skoruna dahil et (ağırlık: %20)
+      if (typeof fullData.geo_score === 'number') {
+        fullData.geo_score = Math.round(fullData.geo_score * 0.8 + aiInsights.visibility_score * 0.2);
+      }
+    }
+
     // PDF üret
     const pdfPath = await PdfService.generatePdf(analysisId, fullData);
 
@@ -134,11 +163,20 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
       completed_at: new Date(),
     });
 
-    // PDF'i email ile gönder
-    const analysis = { id: analysisId, email, pdf_path: pdfPath } as any;
-    await PdfService.sendPdfEmail(analysis);
-
     await repoUpdateAnalysis(analysisId, { pdf_sent_at: new Date() });
+
+    // Analiz tamamlandı e-postası (PDF linki ile)
+    const publicPdfUrl = pdfPath ? `${env.PUBLIC_URL}/reports/${path.basename(pdfPath)}` : null;
+    sendAnalysisCompleteEmail({
+      to: email,
+      domain: new URL(url.startsWith('http') ? url : `https://${url}`).hostname,
+      geoScore: fullData.geo_score ?? null,
+      performanceScore: (fullData.lighthouse as any)?.categories?.performance?.score != null
+        ? Math.round((fullData.lighthouse as any).categories.performance.score * 100)
+        : null,
+      pdfUrl: publicPdfUrl,
+      analysisId,
+    }).catch(() => {});
   } catch (err: any) {
     await repoUpdateAnalysis(analysisId, {
       status: 'failed',

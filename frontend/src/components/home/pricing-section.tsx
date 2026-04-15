@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Sparkles, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
 import { useCurrencyStore } from '@/stores/currency-store';
@@ -11,15 +11,15 @@ import { formatCurrency } from '@/lib/utils';
 import { CurrencyToggle } from './currency-toggle';
 
 const ONCE_PACKAGES = [
-  { slug: 'starter', price: 29, features: ['Technical SEO tam analiz', 'Performance & Core Web Vitals', 'On-Page SEO', 'Schema markup', 'AI crawler analizi', '30+ aksiyon', 'PDF rapor'] },
-  { slug: 'pro', price: 59, popular: true, features: ["Starter'daki her şey", 'AI Citability skoru', 'Marka mention analizi', 'Schema JSON-LD önerileri', 'Keyword analizi', 'Rakip karşılaştırması', 'E-E-A-T değerlendirmesi'] },
-  { slug: 'expert', price: 99, features: ["Pro'daki her şey", '1 saat implementasyon', 'robots.txt optimizasyonu', 'Sitemap güncelleme', 'Temel schema kurulumu', 'Öncelikli destek'] },
+  { slug: 'starter', price: 9, featureKeys: ['pricing_features.once_1', 'pricing_features.once_2', 'pricing_features.once_3', 'pricing_features.once_4'] },
+  { slug: 'pro', price: 29, popular: true, featureKeys: ['pricing_features.pro_1', 'pricing_features.pro_2', 'pricing_features.pro_3', 'pricing_features.pro_4'] },
+  { slug: 'expert', price: 99, featureKeys: ['pricing_features.expert_1', 'pricing_features.expert_2', 'pricing_features.expert_3', 'pricing_features.expert_4'] },
 ];
 
 const MONTHLY_PACKAGES = [
-  { slug: 'monitor', price: 39, features: ['Haftalık otomatik tarama', 'Email bildirimleri', 'Performance tracking', 'Keyword takibi (5)', 'AI visibility monitoring'] },
-  { slug: 'growth', price: 79, popular: true, features: ['Günlük otomatik tarama', 'Rakip takibi (3)', 'Keyword takibi (20)', 'Öncelikli raporlama', 'Aylık uzman görüşü'] },
-  { slug: 'agency', price: 149, features: ['Sınırsız proje (5)', 'Agency white-label PDF', 'API erişimi', 'Özel destek hattı', 'Ekiplerle paylaşım'] },
+  { slug: 'monitor', price: 19, featureKeys: ['pricing_features.monitor_1', 'pricing_features.monitor_2', 'pricing_features.monitor_3', 'pricing_features.monitor_4'] },
+  { slug: 'growth', price: 49, popular: true, featureKeys: ['pricing_features.growth_1', 'pricing_features.growth_2', 'pricing_features.growth_3', 'pricing_features.growth_4'] },
+  { slug: 'agency', price: 129, featureKeys: ['pricing_features.agency_1', 'pricing_features.agency_2', 'pricing_features.agency_3', 'pricing_features.agency_4'] },
 ];
 
 export function PricingSection() {
@@ -30,106 +30,94 @@ export function PricingSection() {
   const activePackages = tab === 'once' ? ONCE_PACKAGES : MONTHLY_PACKAGES;
 
   return (
-    <section id="pricing" className="py-24 md:py-32 relative overflow-hidden">
+    <section id="pricing" className="relative overflow-hidden py-24 md:py-32">
       <div className="container relative z-10 px-4">
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <div className="section-eyebrow mb-4">Fiyatlandırma</div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-            Sizin İçin En Uygun Paketi Seçin
-          </h2>
-          <p className="text-muted-foreground text-lg">
-            Kısa süreli ihtiyaçlarınız için tek seferlik analizler veya sürekli takip için abonelik modelleri.
-          </p>
+          <h2 className="mb-6 text-3xl font-extrabold tracking-tight text-foreground md:text-5xl">{t('pricing.title', {}, locale)}</h2>
+          <p className="text-lg text-muted-foreground">{t('pricing.subtitle', {}, locale)}</p>
         </div>
 
-        {/* Tab Switcher & Currency Toggle Row */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-16">
-          <div className="bg-[#0f1420] border border-white/10 rounded-xl p-1 flex">
+        <div className="mb-16 flex flex-col items-center justify-center gap-6 md:flex-row">
+          <div className="flex rounded-xl border border-border bg-card p-1">
             <button
               onClick={() => setTab('once')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${tab === 'once' ? 'bg-[#181f30] text-emerald-400 border border-emerald-500/20 shadow-lg' : 'text-muted-foreground hover:text-white'}`}
+              className={`rounded-lg px-6 py-2.5 text-sm font-bold transition-all ${tab === 'once' ? 'border border-emerald-500/20 bg-muted text-emerald-500 shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
             >
-              Tek Seferlik
+              {t('pricing.once', {}, locale)}
             </button>
             <button
               onClick={() => setTab('monthly')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${tab === 'monthly' ? 'bg-[#181f30] text-emerald-400 border border-emerald-500/20 shadow-lg' : 'text-muted-foreground hover:text-white'}`}
+              className={`rounded-lg px-6 py-2.5 text-sm font-bold transition-all ${tab === 'monthly' ? 'border border-emerald-500/20 bg-muted text-emerald-500 shadow-lg' : 'text-muted-foreground hover:text-foreground'}`}
             >
-              Aylık Abonelik
+              {t('pricing.monthly', {}, locale)}
             </button>
           </div>
-          <div className="hidden md:block w-px h-8 bg-white/10" />
+          <div className="hidden h-8 w-px bg-border md:block" />
           <CurrencyToggle />
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3 relative">
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={tab}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="grid gap-8 md:grid-cols-3 col-span-3"
+        <div className="grid gap-8 md:grid-cols-3">
+          {activePackages.map((pkg, i) => (
+            <motion.div
+              key={`${tab}-${pkg.slug}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className={`relative flex flex-col rounded-3xl border p-8 transition-all duration-500 ${
+                pkg.popular
+                  ? 'border-emerald-500/50 bg-gradient-to-b from-emerald-500/5 to-card shadow-[0_20px_60px_-15px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/20'
+                  : 'border-border bg-card hover:border-emerald-500/20'
+              }`}
             >
-              {activePackages.map((pkg, i) => (
-                <div
-                  key={`${tab}-${pkg.slug}`}
-                  className={`relative flex flex-col rounded-3xl border border-white/6 p-8 transition-all duration-500 ${
-                    pkg.popular 
-                      ? 'border-emerald-500/50 bg-gradient-to-b from-emerald-500/10 to-[#0f1420] shadow-[0_20px_60px_-15px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/20' 
-                      : 'bg-[#0f1420] hover:border-white/10'
-                  }`}
-                >
-                  {pkg.popular && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-[10px] font-bold uppercase tracking-[0.2em] text-white px-4 py-1.5 rounded-full shadow-lg shadow-emerald-500/20 flex items-center gap-2">
-                      <Sparkles size={10} /> En Popüler
-                    </div>
-                  )}
-
-                  <div className="mb-8">
-                    <h3 className="text-xl font-bold text-white mb-2">{t(`pricing.${pkg.slug}.name`, { defaultValue: pkg.slug.toUpperCase() }, locale)}</h3>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-extrabold text-white tracking-tight">
-                        {formatCurrency(pkg.price, currency, rates)}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        / {tab === 'once' ? 'rapor' : 'ay'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <ul className="mb-10 flex-1 space-y-4">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-[13px] text-muted-foreground leading-snug">
-                        <div className="mt-1 h-4 w-4 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                          <Check size={10} className="text-emerald-500" />
-                        </div>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    href={`/checkout/${pkg.slug}`}
-                    className={`group relative flex items-center justify-center gap-2 w-full rounded-2xl py-4 text-sm font-bold uppercase tracking-widest transition-all ${
-                      pkg.popular 
-                        ? 'bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-xl hover:shadow-emerald-500/25' 
-                        : 'bg-white/5 text-white hover:bg-white/10'
-                    }`}
-                  >
-                    Paketi Seç
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                  </Link>
+              {pkg.popular ? (
+                <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary-foreground shadow-lg shadow-emerald-500/20">
+                  {t('pricing.most_popular', {}, locale)}
                 </div>
-              ))}
+              ) : null}
+
+              <div className={pkg.popular ? 'pt-2' : ''}>
+                <h3 className="mb-2 text-xl font-bold text-foreground">{t(`pricing.${pkg.slug}.name`, {}, locale)}</h3>
+                <p className="text-sm text-muted-foreground">{t(`pricing.${pkg.slug}.desc`, {}, locale)}</p>
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="text-4xl font-extrabold tracking-tight text-foreground">
+                    {formatCurrency(pkg.price, currency, rates)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    / {tab === 'once' ? t('pricing.per_report', {}, locale) : t('pricing.per_month', {}, locale)}
+                  </span>
+                </div>
+              </div>
+
+              <ul className="mb-10 mt-8 flex-1 space-y-4">
+                {pkg.featureKeys.map((featureKey) => (
+                  <li key={featureKey} className="flex items-start gap-3 text-[13px] leading-snug text-muted-foreground">
+                    <div className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
+                      <Check size={10} className="text-emerald-500" />
+                    </div>
+                    {t(featureKey, {}, locale)}
+                  </li>
+                ))}
+              </ul>
+
+              <Link
+                href={`/checkout/${pkg.slug}`}
+                className={`block w-full rounded-2xl py-4 text-center text-sm font-bold uppercase tracking-widest transition-all ${
+                  pkg.popular
+                    ? 'bg-emerald-500 text-primary-foreground hover:bg-emerald-600 hover:shadow-xl hover:shadow-emerald-500/25'
+                    : 'bg-muted text-foreground hover:bg-muted/80'
+                }`}
+              >
+                {t('pricing.cta', {}, locale)}
+              </Link>
             </motion.div>
-          </AnimatePresence>
+          ))}
         </div>
 
-        <p className="mt-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          Kredi kartı gerekmez. İstediğiniz zaman iptal edin.
+        <p className="mt-8 text-center text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">{t('pricing.free_tier', {}, locale)}:</span>{' '}
+          {t('pricing.free_tier_desc', {}, locale)} —{' '}
+          <Link href="/analyze" className="text-primary hover:underline">{t('nav.analyze', {}, locale)}</Link>
         </p>
       </div>
     </section>

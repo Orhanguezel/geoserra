@@ -14,9 +14,9 @@
   },
   "hero": {
     "badge": "GEO + SEO + Lighthouse — Tek Platform",
-    "title": "AI Aramalarinda",
-    "title_highlight": "Gercek Gorunurlugunuzu Olcun",
-    "description": "Google AI Overviews, ChatGPT ve Perplexity'de neden gorunmediginizi tek bir raporda gorun. Teknik SEO, citability ve Lighthouse metrikleri ayni analizde.",
+    "title": "AI Aramalarında",
+    "title_highlight": "Gerçek Görünürlüğünüzü Ölçün",
+    "description": "Google AI Overviews, ChatGPT ve Perplexity'de neden görünmediğinizi tek bir raporda görün. Teknik SEO, citability ve Lighthouse metrikleri aynı analizde.",
     "cta_primary": "Ücretsiz Analiz Yap",
     "cta_secondary": "Örnek Raporu Gör",
     "stat_analyses": "Analiz Yapıldı",
@@ -45,15 +45,15 @@
     "issues_title": "Tespit Edilen Sorunlar",
     "upgrade_title": "Detaylı Rapor İster misiniz?",
     "upgrade_desc": "20+ metrik, tam aksiyon planı ve PDF rapor için Pro sürüme geçin.",
-    "upgrade_cta": "Detayli Rapor Al",
+    "upgrade_cta": "Detaylı Rapor Al",
     "locked_title": "4 kategori daha kilitli",
-    "locked_desc": "Schema, AI citability, teknik SEO ve tam aksiyon plani ucretli raporda acilir."
+    "locked_desc": "Schema, AI citability, teknik SEO ve tam aksiyon planı ücretli raporda açılır."
   },
   "pricing": {
     "title": "Fiyatlandırma",
     "subtitle": "İhtiyacınıza uygun paketi seçin",
     "once": "Tek Seferlik",
-    "monthly": "Aylik Abonelik",
+    "monthly": "Aylık Abonelik",
     "currency_toggle": "Para birimi:",
     "most_popular": "En Popüler",
     "per_report": "rapor başına",
@@ -73,15 +73,15 @@
     },
     "monitor": {
       "name": "Monitor",
-      "desc": "Aylik izleme, haftalik skor kontrolu ve alarm sistemi"
+      "desc": "Aylık izleme, haftalık skor kontrolü ve alarm sistemi"
     },
     "growth": {
       "name": "Growth",
-      "desc": "Surekli AI gorunurluk takibi, oncelikli analiz ve aylik rapor"
+      "desc": "Sürekli AI görünürlük takibi, öncelikli analiz ve aylık rapor"
     },
     "agency": {
       "name": "Agency",
-      "desc": "Birden fazla domain, ekip raporlari ve ajans seviyesi izleme"
+      "desc": "Birden fazla domain, ekip raporları ve ajans seviyesi izleme"
     },
     "free_tier": "Ücretsiz Deneme",
     "free_tier_desc": "Her domain için 1 kez, temel analiz"
@@ -89,66 +89,66 @@
   "pricing_features": {
     "once_1": "Teknik SEO tam analiz",
     "once_2": "Core Web Vitals ve performans",
-    "once_3": "PDF rapor ve oncelikli sorunlar",
+    "once_3": "PDF rapor ve öncelikli sorunlar",
     "once_4": "30+ uygulanabilir aksiyon",
-    "pro_1": "AI citability ve mention taramasi",
-    "pro_2": "Schema ve JSON-LD onerileri",
+    "pro_1": "AI citability ve mention taraması",
+    "pro_2": "Schema ve JSON-LD önerileri",
     "pro_3": "Rakip ve keyword analizi",
     "pro_4": "llms.txt ve E-E-A-T incelemesi",
     "expert_1": "1 saat teknik implementasyon",
     "expert_2": "Robots, sitemap ve temel schema kurulumu",
-    "expert_3": "Oncelikli destek kanali",
+    "expert_3": "Öncelikli destek kanalı",
     "expert_4": "Uzman seviye teslim raporu",
-    "monitor_1": "Haftalik skor izleme",
-    "monitor_2": "Performans ve SEO alarmi",
-    "monitor_3": "Aylik mini rapor",
+    "monitor_1": "Haftalık skor izleme",
+    "monitor_2": "Performans ve SEO alarmı",
+    "monitor_3": "Aylık mini rapor",
     "monitor_4": "Tek domain takibi",
-    "growth_1": "3 domaine kadar surekli izleme",
-    "growth_2": "Aylik AI gorunurluk raporu",
-    "growth_3": "Oncelikli optimizasyon onerileri",
-    "growth_4": "Ekip icin paylasilabilir dashboard",
-    "agency_1": "10+ domain portfoy takibi",
-    "agency_2": "Musteri bazli rapor paketleri",
-    "agency_3": "Aylik strateji ozeti",
-    "agency_4": "Ajans icin beyaz etiket uygunlugu"
+    "growth_1": "3 domaine kadar sürekli izleme",
+    "growth_2": "Aylık AI görünürlük raporu",
+    "growth_3": "Öncelikli optimizasyon önerileri",
+    "growth_4": "Ekip için paylaşılabilir dashboard",
+    "agency_1": "10+ domain portföy takibi",
+    "agency_2": "Müşteri bazlı rapor paketleri",
+    "agency_3": "Aylık strateji özeti",
+    "agency_4": "Ajans için beyaz etiket uygunluğu"
   },
   "trust": {
-    "analyses": "Analiz Tamamlandi",
+    "analyses": "Analiz Tamamlandı",
     "issues": "Sorun Tespit Edildi",
-    "score": "Ortalama Skor Artisi",
-    "satisfaction": "Musteri Memnuniyeti"
+    "score": "Ortalama Skor Artışı",
+    "satisfaction": "Müşteri Memnuniyeti"
   },
   "report_preview": {
-    "eyebrow": "ORNEK RAPOR",
-    "title": "Sitenizin Tam Resmini Gorun",
-    "description": "GeoSerra raporu 8 kategoride detayli analiz sunar. Teknik SEO, AI citability, schema, Core Web Vitals ve daha fazlasini tek bakista gorursunuz.",
-    "cta": "Ucretsiz Analizimi Baslat →",
+    "eyebrow": "ÖRNEK RAPOR",
+    "title": "Sitenizin Tam Resmini Görün",
+    "description": "GeoSerra raporu 8 kategoride detaylı analiz sunar. Teknik SEO, AI citability, schema, Core Web Vitals ve daha fazlasını tek bakışta görürsünüz.",
+    "cta": "Ücretsiz Analizimi Başlat →",
     "cat_ai": "AI Citability",
     "cat_schema": "Schema Markup",
     "cat_technical": "Teknik SEO",
     "cat_cwv": "Core Web Vitals",
-    "locked": "+4 kategori daha — Rapor satin al"
+    "locked": "+4 kategori daha — Rapor satın al"
   },
   "testimonials": {
-    "eyebrow": "GERCEK SONUCLAR",
-    "title": "Musteriler Neyi Degistirdi?",
-    "subtitle": "GeoSerra raporlarini uygulayan ekiplerin gorunurluk kazanimi",
-    "before": "Once",
+    "eyebrow": "GERÇEK SONUÇLAR",
+    "title": "Müşteriler Neyi Değiştirdi?",
+    "subtitle": "GeoSerra raporlarını uygulayan ekiplerin görünürlük kazanımı",
+    "before": "Önce",
     "after": "Sonra",
     "t1": {
-      "name": "Ayse K.",
-      "company": "E-ticaret Girisimcisi",
-      "text": "GeoSerra sayesinde Perplexity'de ilk sayfada gorunmeye basladim. Organik trafigim 3 ayda %40 artti."
+      "name": "Ayşe K.",
+      "company": "E-ticaret Girişimcisi",
+      "text": "GeoSerra sayesinde Perplexity'de ilk sayfada görünmeye başladım. Organik trafiğim 3 ayda %40 arttı."
     },
     "t2": {
       "name": "Mehmet D.",
-      "company": "Digital Ajans Kurucusu",
-      "text": "Musterilerime sundugum en degerli arac. Schema ve AI visibility raporlari gercekten ise yariyor."
+      "company": "Dijital Ajans Kurucusu",
+      "text": "Müşterilerime sunduğum en değerli araç. Schema ve AI visibility raporları gerçekten işe yarıyor."
     },
     "t3": {
-      "name": "Selin O.",
+      "name": "Selin Ö.",
       "company": "SaaS Kurucu",
-      "text": "Expert raporu aldik, implementation ile birlikte ChatGPT aramalarinda marka adimiz cikmaya basladi."
+      "text": "Expert raporu aldık, implementasyon ile birlikte ChatGPT aramalarında marka adımız çıkmaya başladı."
     }
   },
   "features": {
@@ -258,10 +258,10 @@
     "vision_desc": "Vizyonumuz, klasik SEO metriklerini AI citability ve görünürlük sinyalleriyle birleştiren net bir karar paneli sunmaktır.",
     "speed_title": "Hızlı Sonuç",
     "speed_desc": "2 dakikada analiz, 10 dakikada PDF rapor",
-    "body": "GeoSerra, SEO dunyasinin AI ile degistigini fark eden bir ekip tarafindan kuruldu. Geleneksel SEO araclari Google AI Overviews, ChatGPT web aramasi ve Perplexity gibi platformlari yeterince kapsamiyor. Biz bu boslugu doldurmak icin buradayiz.",
+    "body": "GeoSerra, SEO dünyasının AI ile değiştiğini fark eden bir ekip tarafından kuruldu. Geleneksel SEO araçları Google AI Overviews, ChatGPT web araması ve Perplexity gibi platformları yeterince kapsamamaktadır. Biz bu boşluğu doldurmak için buradayız.",
     "founder_title": "Kurucu Notu",
-    "founder_desc": "GeoSerra, arama davranisindaki degisimi erken fark eden urun ve buyume odakli bir ekip tarafindan gelistirildi. Hedefimiz, isletmelerin AI sonuclarinda daha görünür kararlar alabilmesi.",
-    "cta": "Bize Ulasin"
+    "founder_desc": "GeoSerra, arama davranışındaki değişimi erken fark eden ürün ve büyüme odaklı bir ekip tarafından geliştirildi. Hedefimiz, işletmelerin AI sonuçlarında daha görünür kararlar alabilmesi.",
+    "cta": "Bize Ulaşın"
   },
   "contact": {
     "title": "İletişim",

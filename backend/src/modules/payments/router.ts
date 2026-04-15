@@ -3,6 +3,8 @@ import { verifyStripeWebhook } from './stripe.service';
 import { verifyPayPalWebhookSignature, capturePayPalOrder } from './paypal.service';
 import { repoGetAnalysisByPaymentId, repoUpdateAnalysis } from '@/modules/analyses/repository';
 import { AnalysisService } from '@/services/analysis.service';
+import { sendPaymentSuccessEmail } from '@/services/mail.service';
+import { PACKAGES } from './packages';
 
 export async function registerPayments(app: FastifyInstance) {
   /** POST /api/v1/payments/webhook/stripe */
@@ -93,7 +95,19 @@ async function onPaymentSuccess(params: {
     status: 'processing',
     payment_currency: 'USD',
     payment_amount: params.amount,
+    payment_provider: params.provider,
   });
+
+  // Ödeme başarı e-postası
+  const pkg = (PACKAGES as any)[analysis.package_slug];
+  const pkgLabel = pkg?.name?.tr ?? analysis.package_slug;
+  sendPaymentSuccessEmail({
+    to: analysis.email,
+    plan: pkgLabel,
+    amount: params.amount,
+    currency: 'USD',
+    domain: analysis.domain,
+  }).catch(() => {});
 
   // Tam analizi başlat (asenkron)
   AnalysisService.runFullAnalysis(analysis.id, analysis.url as string, analysis.email).catch((err) =>

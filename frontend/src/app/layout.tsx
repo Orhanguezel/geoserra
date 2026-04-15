@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 import { Outfit, JetBrains_Mono } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 import { QueryProvider } from '@/lib/query-provider';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from 'sonner';
 import { CurrencyInitializer } from '@/components/providers/currency-initializer';
+import { GoogleAuthProvider } from '@/components/providers/google-oauth-provider';
+import { AuthInitializer } from '@/components/providers/auth-initializer';
 import './globals.css';
 
 const outfit = Outfit({
@@ -41,8 +44,19 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'GeoSerra',
     locale: 'tr_TR',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'GeoSerra — AI Görünürlük & SEO Analiz Platformu',
+      },
+    ],
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/og-image.png'],
+  },
   icons: {
     icon: [
       { url: '/favicon.png', type: 'image/png' },
@@ -86,6 +100,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
+        {/* Preconnect for performance - saves ~180ms per Lighthouse */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://accounts.google.com" />
+        <link rel="dns-prefetch" href="https://accounts.google.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
@@ -95,15 +114,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${outfit.variable} ${jetbrains.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        <QueryProvider>
-          <CurrencyInitializer />
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster position="top-right" richColors />
-        </QueryProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem themes={['dark', 'light']}>
+          <QueryProvider>
+            <GoogleAuthProvider>
+              <AuthInitializer />
+              <CurrencyInitializer />
+              <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              <Toaster position="top-right" richColors />
+            </GoogleAuthProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

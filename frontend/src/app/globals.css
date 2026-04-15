@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* ─── DARK (default) ────────────────────────── */
+  :root,
+  .dark {
     --background:     220 47% 4%;    /* #06090f */
     --foreground:     220 15% 95%;   /* #f0f2f5 */
     --card:           222 40% 8%;    /* #0f1420 */
@@ -20,11 +22,38 @@
     --accent-foreground: 0 0% 100%;
     --border:         222 38% 11%;
     --input:          222 38% 11%;
-    --ring:           160 84% 39%;   /* emerald ring */
+    --ring:           160 84% 39%;
     --radius:         0.5rem;
     --destructive:    0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     --font-mono-var: var(--font-jetbrains);
+    color-scheme: dark;
+  }
+
+  /* ─── LIGHT ─────────────────────────────────── */
+  .light {
+    --background:     210 20% 98%;   /* #f8fafc */
+    --foreground:     222 47% 11%;   /* #0f172a */
+    --card:           0 0% 100%;     /* #ffffff */
+    --card-foreground: 222 47% 11%;
+    --popover:        0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary:        160 84% 30%;   /* #0d9669 — darker for light bg */
+    --primary-foreground: 0 0% 100%;
+    --secondary:      199 89% 38%;   /* #0284c7 */
+    --secondary-foreground: 0 0% 100%;
+    --muted:          210 16% 93%;   /* #e9eef5 */
+    --muted-foreground: 215 25% 32%; /* darker — better contrast on white */
+    --accent:         160 84% 93%;   /* emerald tint */
+    --accent-foreground: 160 84% 20%;
+    --border:         214 22% 82%;   /* slightly darker border */
+    --input:          214 22% 87%;
+    --ring:           160 84% 30%;
+    --radius:         0.5rem;
+    --destructive:    0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --font-mono-var: var(--font-jetbrains);
+    color-scheme: light;
   }
 }
 
@@ -97,12 +126,12 @@
       radial-gradient(ellipse 600px 600px at -10% -10%, rgba(16,185,129,0.15), transparent),
       radial-gradient(ellipse 500px 500px at 105% 85%, rgba(14,165,233,0.12), transparent),
       radial-gradient(ellipse 300px 300px at 80% 30%, rgba(129,140,248,0.06), transparent),
-      #06090f;
+      hsl(var(--background));
   }
 
   /* Glass effect */
   .glass {
-    background: hsl(var(--card) / 0.8);
+    background: hsl(var(--card) / 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--border) / 0.5);
@@ -119,4 +148,77 @@
     scrollbar-width: none;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
+}
+
+/* ─── LIGHT MODE: global overrides for hardcoded dark classes ─────────────── */
+
+html.light {
+  /* text-white → foreground */
+  .text-white                         { color: hsl(var(--foreground)) !important; }
+  .text-white\/90                     { color: hsl(var(--foreground) / 0.9) !important; }
+  .text-white\/80                     { color: hsl(var(--foreground) / 0.8) !important; }
+  .text-white\/70                     { color: hsl(var(--foreground) / 0.7) !important; }
+  .text-white\/60                     { color: hsl(var(--foreground) / 0.6) !important; }
+  .text-white\/50                     { color: hsl(var(--foreground) / 0.5) !important; }
+  .hover\:text-white:hover            { color: hsl(var(--foreground)) !important; }
+  .hover\:text-white\/80:hover        { color: hsl(var(--foreground) / 0.8) !important; }
+
+  /* text-gray-* → theme foreground */
+  .text-gray-300                      { color: hsl(var(--foreground) / 0.75) !important; }
+  .text-gray-400                      { color: hsl(var(--muted-foreground)) !important; }
+  .text-gray-500                      { color: hsl(var(--muted-foreground)) !important; }
+  .text-slate-400                     { color: hsl(var(--muted-foreground)) !important; }
+
+  /* bg-white/* → foreground tint */
+  .bg-white\/5                        { background-color: hsl(var(--foreground) / 0.05) !important; }
+  .bg-white\/10                       { background-color: hsl(var(--foreground) / 0.07) !important; }
+  .hover\:bg-white\/5:hover           { background-color: hsl(var(--foreground) / 0.05) !important; }
+  .hover\:bg-white\/10:hover          { background-color: hsl(var(--foreground) / 0.07) !important; }
+
+  /* border-white/* → foreground tint */
+  .border-white\/5                    { border-color: hsl(var(--foreground) / 0.08) !important; }
+  .border-white\/6                    { border-color: hsl(var(--foreground) / 0.10) !important; }
+  .border-white\/10                   { border-color: hsl(var(--border)) !important; }
+  .border-white\/20                   { border-color: hsl(var(--border)) !important; }
+
+  /* Hardcoded dark hex backgrounds */
+  .bg-\[\#181f30\]                    { background-color: hsl(var(--muted)) !important; }
+  .bg-\[\#06090f\]                    { background-color: hsl(var(--background)) !important; }
+  .bg-\[\#0f1420\]                    { background-color: hsl(var(--card)) !important; }
+  .bg-\[\#0a0f1a\]                    { background-color: hsl(var(--muted)) !important; }
+  .bg-\[\#090d16\]                    { background-color: hsl(var(--background)) !important; }
+
+  /* Hero mesh gradient — lighter on white */
+  .hero-mesh {
+    background:
+      radial-gradient(ellipse 600px 600px at -10% -10%, rgba(16,185,129,0.07), transparent),
+      radial-gradient(ellipse 500px 500px at 105% 85%, rgba(14,165,233,0.05), transparent),
+      hsl(var(--background)) !important;
+  }
+
+  /* Platform border separator */
+  .border-t.border-white\/5           { border-top-color: hsl(var(--border)) !important; }
+
+  /* FloatCard shadow */
+  .shadow-\[0_24px_80px_rgba\(0\2c 0\2c 0\2c 0\.28\)\] {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
+  }
+
+  /* Pricing non-featured CTA button */
+  .bg-white\/5.text-white             {
+    background-color: hsl(var(--muted)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  .hover\:bg-white\/10.text-white:hover {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  /* Mobile menu background */
+  .bg-background\/95                  { background-color: hsl(var(--background) / 0.97) !important; }
+
+  /* Input placeholder */
+  input::placeholder                  { color: hsl(var(--muted-foreground)); }
+
+  /* Hero input text */
+  .font-mono.text-\[15px\]            { color: hsl(var(--foreground)); }
 }

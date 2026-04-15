@@ -18,7 +18,10 @@ import { registerImplementation } from '@/modules/implementation/router';
 import { registerImplementationAdmin } from '@/modules/implementation/admin.routes';
 import { registerStatsAdmin } from '@/modules/stats/router';
 import { registerAssetsAdmin } from '@/modules/assets/admin.routes';
+import { registerAdminMail } from '@/modules/admin-mail/routes';
 import { registerCurrency } from '@/modules/currency/router';
+import { registerGoogleAuth } from '@/modules/oauth-google/router';
+import { registerAuthReset } from '@/modules/auth-reset/router';
 import { registerPayments } from '@/modules/payments/router';
 
 export async function registerAllRoutes(app: FastifyInstance) {
@@ -38,10 +41,13 @@ export async function registerAllRoutes(app: FastifyInstance) {
         await registerImplementationAdmin(adminApi);
         await registerStatsAdmin(adminApi);
         await registerAssetsAdmin(adminApi);
+        await registerAdminMail(adminApi);
       }, { prefix: '/admin' });
 
       // ─── Public ──────────────────────────────────────────────────
       await registerAuth(v1);
+      await registerGoogleAuth(v1);
+      await registerAuthReset(v1);
       await registerHealth(v1);
       await registerSiteSettings(v1);
       await registerContacts(v1);

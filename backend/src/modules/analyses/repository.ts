@@ -90,3 +90,26 @@ export async function repoCountAnalyses(params: AnalysisListParams): Promise<num
   const rows = await filtered;
   return rows.length;
 }
+
+export async function repoGetAnalysesByEmail(
+  email: string,
+  limit = 20,
+  offset = 0,
+): Promise<Analysis[]> {
+  const rows = await db
+    .select()
+    .from(analyses)
+    .where(eq(analyses.email, email))
+    .orderBy(desc(analyses.created_at))
+    .limit(limit)
+    .offset(offset);
+  return rows as Analysis[];
+}
+
+export async function repoCountAnalysesByEmail(email: string): Promise<number> {
+  const rows = await db
+    .select({ id: analyses.id })
+    .from(analyses)
+    .where(eq(analyses.email, email));
+  return rows.length;
+}

@@ -14,8 +14,9 @@ export default function OGImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '56px 64px',
-          background:
-            'radial-gradient(circle at 15% 20%, rgba(16,185,129,0.26), transparent 32%), radial-gradient(circle at 85% 80%, rgba(14,165,233,0.22), transparent 28%), #06090f',
+          backgroundColor: '#06090f',
+          backgroundImage:
+            'radial-gradient(circle at 15% 20%, rgba(16,185,129,0.26), transparent 32%), radial-gradient(circle at 85% 80%, rgba(14,165,233,0.22), transparent 28%)',
           color: '#f0f2f5',
           fontFamily: 'sans-serif',
         }}
@@ -44,10 +45,11 @@ export default function OGImage() {
           <div style={{ fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: '#34d399' }}>
             AI & SEO Gorunurluk Platformu
           </div>
-          <div style={{ fontSize: 78, lineHeight: 1.02, fontWeight: 800 }}>
-            ChatGPT, Gemini ve
-            <span style={{ color: '#10b981' }}> Perplexity</span> icin
-            <span style={{ color: '#0ea5e9' }}> raporla.</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', fontSize: 78, lineHeight: 1.02, fontWeight: 800 }}>
+            <span>ChatGPT, Gemini ve</span>
+            <span style={{ color: '#10b981', marginLeft: 16 }}>Perplexity</span>
+            <span style={{ marginLeft: 16 }}>icin</span>
+            <span style={{ color: '#0ea5e9', marginLeft: 16 }}>raporla.</span>
           </div>
           <div style={{ fontSize: 30, color: '#8892a4' }}>
             GEO + SEO + Lighthouse analizi tek platformda.

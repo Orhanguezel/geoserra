@@ -1,13 +1,13 @@
 'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Loader2, AlertCircle, Lock, CheckCircle2, XCircle, Minus } from 'lucide-react';
+import { ArrowRight, Loader2, AlertCircle, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
 import { startFreeAnalysis, getAnalysisStatus } from '@/lib/api';
 import type { AnalysisStatus } from '@/lib/api';
-import { scoreColor } from '@/lib/utils';
 
 type UIState = 'idle' | 'submitting' | 'polling' | 'done' | 'locked' | 'error';
 
@@ -21,7 +21,15 @@ export function AnalyzeClient() {
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParam = new URLSearchParams(window.location.search).get('url');
+    if (urlParam) setUrl(urlParam);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -71,7 +79,6 @@ export function AnalyzeClient() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* Form */}
           {(uiState === 'idle' || uiState === 'submitting' || uiState === 'error') && (
             <motion.form
               key="form"
@@ -82,9 +89,7 @@ export function AnalyzeClient() {
               className="rounded-2xl border border-border bg-card p-6 space-y-4"
             >
               <div>
-                <label className="mb-1.5 block text-sm font-medium">
-                  {t('analyze.url_label', {}, locale)}
-                </label>
+                <label className="mb-1.5 block text-sm font-medium">{t('analyze.url_label', {}, locale)}</label>
                 <input
                   type="url"
                   value={url}
@@ -95,9 +100,7 @@ export function AnalyzeClient() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium">
-                  {t('analyze.email_label', {}, locale)}
-                </label>
+                <label className="mb-1.5 block text-sm font-medium">{t('analyze.email_label', {}, locale)}</label>
                 <input
                   type="email"
                   value={email}
@@ -129,7 +132,6 @@ export function AnalyzeClient() {
             </motion.form>
           )}
 
-          {/* Polling */}
           {uiState === 'polling' && (
             <motion.div
               key="polling"
@@ -143,7 +145,6 @@ export function AnalyzeClient() {
             </motion.div>
           )}
 
-          {/* Domain locked */}
           {uiState === 'locked' && (
             <motion.div
               key="locked"
@@ -163,7 +164,6 @@ export function AnalyzeClient() {
             </motion.div>
           )}
 
-          {/* Results */}
           {uiState === 'done' && result?.free_data && (
             <FreeResults data={result.free_data} locale={locale} domain={result.domain} />
           )}
@@ -172,8 +172,6 @@ export function AnalyzeClient() {
     </main>
   );
 }
-
-// ─── Free Results ─────────────────────────────────────────────────────────────
 
 function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en'; domain: string }) {
   const geoScore: number = data?.geo_score ?? 0;
@@ -188,69 +186,65 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      {/* Score Grid */}
-      <div className="rounded-3xl border border-white/5 bg-[#0f1420] p-8 md:p-10">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-bold text-white">{t('analyze.free_result_title', { defaultValue: 'Analiz Sonucu' }, locale)}</h2>
-          <div className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-            Ücretsiz Sürüm
+      <div className="rounded-3xl border border-white/5 bg-card p-8 md:p-10">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-white">{t('analyze.free_result_title', {}, locale)}</h2>
+          <div className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-500">
+            {locale === 'tr' ? 'Ucretsiz Surum' : 'Free Tier'}
           </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ScoreRing label="GEO SKORU" score={geoScore} big color="#10b981" />
-          <ScoreRing label="PERFORMANS" score={perfScore} color="#0ea5e9" />
-          <ScoreRing label="TEKNİK SEO" score={seoScore} color="#f59e0b" />
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <ScoreRing label={t('analyze.geo_score', {}, locale)} score={geoScore} big />
+          <ScoreRing label={t('analyze.performance', {}, locale)} score={perfScore} />
+          <ScoreRing label={t('analyze.seo', {}, locale)} score={seoScore} />
         </div>
       </div>
 
-      {/* Top Issues */}
-      <div className="rounded-3xl border border-white/5 bg-[#0f1420] p-8">
+      <div className="rounded-3xl border border-white/5 bg-card p-8">
         <h3 className="mb-6 flex items-center gap-2 font-bold text-white">
           <AlertCircle size={18} className="text-red-400" />
-          {t('analyze.issues_title', { defaultValue: 'Kritik Sorunlar' }, locale)}
+          {t('analyze.issues_title', {}, locale)}
         </h3>
-        <ul className="space-y-4">
+        <ol className="space-y-4">
           {issues.slice(0, 5).map((issue, i) => (
-            <motion.li 
+            <motion.li
               key={i}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="flex items-start gap-3 text-sm text-white/80 p-4 rounded-xl bg-white/5 border border-white/5"
+              className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/5 p-4 text-sm text-white/80"
             >
-              <div className="mt-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500/10 text-[10px] font-bold text-red-400 shrink-0">
+              <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-[10px] font-bold text-red-400">
                 {i + 1}
               </div>
               {issue}
             </motion.li>
           ))}
-          {issues.length === 0 && (
-            <li className="text-sm text-muted-foreground italic">Hiç kritik sorun bulunamadı.</li>
-          )}
-        </ul>
+          {issues.length === 0 ? (
+            <li className="text-sm italic text-muted-foreground">
+              {locale === 'tr' ? 'Kritik sorun bulunamadi.' : 'No critical issues found.'}
+            </li>
+          ) : null}
+        </ol>
       </div>
 
-      {/* Locked Categories */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
+      <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2">
         <LockedCard label="AI Citability" />
         <LockedCard label="Schema Markup" />
         <LockedCard label="E-E-A-T Score" />
         <LockedCard label="Keywords & LLMs" />
-        
-        {/* Overlay CTA */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center p-6 bg-gradient-to-b from-transparent via-[#06090f]/80 to-[#06090f]">
-          <div className="text-center space-y-4 max-w-sm bg-[#0f1420] border border-emerald-500/30 p-8 rounded-3xl shadow-2xl shadow-emerald-500/20">
-            <Lock className="mx-auto text-emerald-500 mb-2" size={32} />
-            <h4 className="font-bold text-white">Kategorileri Kilidini Aç</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Tüm detayları, SVG raporunu ve profesyonel çözüm önerilerini görmek için paketini yükselt.
-            </p>
+
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-b from-transparent via-[#06090f]/80 to-[#06090f] p-6">
+          <div className="max-w-sm space-y-4 rounded-3xl border border-emerald-500/30 bg-card p-8 text-center shadow-2xl shadow-emerald-500/20">
+            <Lock className="mx-auto mb-2 text-emerald-500" size={32} />
+            <h4 className="font-bold text-white">{t('analyze.locked_title', {}, locale)}</h4>
+            <p className="text-sm leading-relaxed text-muted-foreground">{t('analyze.locked_desc', {}, locale)}</p>
             <Link
               href={`/pricing?domain=${encodeURIComponent(domain)}`}
-              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-bold text-white hover:bg-emerald-600 transition-all"
+              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-bold text-white transition-all hover:bg-emerald-600"
             >
-              Tam Raporu Al $29'dan <ArrowRight size={16} />
+              {t('analyze.upgrade_cta', {}, locale)} <ArrowRight size={16} />
             </Link>
           </div>
         </div>
@@ -259,47 +253,52 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
   );
 }
 
-function ScoreRing({ score, label, color, big }: { score: number; label: string; color: string; big?: boolean }) {
+function ScoreRing({ score, label, big }: { score: number; label: string; big?: boolean }) {
   const r = big ? 42 : 36;
   const c = 2 * Math.PI * r;
   const offset = c - (score / 100) * c;
-  
+
   return (
     <div className="flex flex-col items-center gap-3">
       <div className={`relative ${big ? 'h-32 w-32' : 'h-24 w-24'}`}>
         <svg className="h-full w-full" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
-          <motion.circle 
-            cx="50" cy="50" r={r} fill="none" stroke={color} strokeWidth="8" 
-            strokeDasharray={c} strokeDashoffset={c}
+          <motion.circle
+            cx="50"
+            cy="50"
+            r={r}
+            fill="none"
+            stroke="#10b981"
+            strokeWidth="8"
+            strokeDasharray={c}
+            strokeDashoffset={c}
             animate={{ strokeDashoffset: offset }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
             strokeLinecap="round"
             className="score-ring"
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={`${big ? 'text-3xl' : 'text-xl'} font-extrabold text-white tracking-tighter`}>{score}</span>
-          {big && <span className="text-[8px] font-bold text-muted-foreground uppercase -mt-1">GENEL</span>}
+          <span className={`${big ? 'text-3xl' : 'text-xl'} font-extrabold tracking-tighter text-white`}>{score}</span>
         </div>
       </div>
-      <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-[0.2em]">{label}</span>
+      <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
     </div>
   );
 }
 
 function LockedCard({ label }: { label: string }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-[#0f1420]/50 p-6 flex flex-col gap-3 blur-[2px] pointer-events-none opacity-50">
+    <div className="pointer-events-none flex flex-col gap-3 rounded-2xl border border-white/5 bg-card/50 p-6 opacity-50 blur-[2px]">
       <div className="flex items-center justify-between">
-        <div className="h-4 w-24 bg-white/10 rounded-full" />
+        <div className="h-4 w-24 rounded-full bg-white/10" />
         <Lock size={14} className="text-white/20" />
       </div>
       <div className="space-y-2">
-        <div className="h-2 w-full bg-white/5 rounded-full" />
-        <div className="h-2 w-2/3 bg-white/5 rounded-full" />
+        <div className="h-2 w-full rounded-full bg-white/5" />
+        <div className="h-2 w-2/3 rounded-full bg-white/5" />
       </div>
-      <div className="mt-2 text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">{label}</div>
+      <div className="mt-2 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
     </div>
   );
 }

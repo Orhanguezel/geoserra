@@ -10,11 +10,13 @@ export const metadata: Metadata = {
     url: 'https://geoserra.com/analyze',
     siteName: 'GeoSerra',
     type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ücretsiz GEO SEO Analizi',
     description: 'AI aramalardaki görünürlüğünü saniyeler içinde analiz et.',
+    images: ['/og-image.png'],
   },
 };
 

@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
-import { analyzeFree, analyzePaid, getAnalysisStatus, downloadAnalysisPdf } from './controller';
+import { requireAuth } from '@vps/shared-backend/middleware/auth';
+import { analyzeFree, analyzePaid, getAnalysisStatus, downloadAnalysisPdf, getMyAnalyses } from './controller';
 
 export async function registerAnalyses(app: FastifyInstance) {
   const B = '/analyze';
@@ -14,4 +15,7 @@ export async function registerAnalyses(app: FastifyInstance) {
 
   app.get(`${B}/:id/status`, getAnalysisStatus);
   app.get(`${B}/:id/download`, downloadAnalysisPdf);
+
+  // Oturum açmış kullanıcının kendi analizleri
+  app.get('/analyses/mine', { preHandler: [requireAuth] }, getMyAnalyses);
 }

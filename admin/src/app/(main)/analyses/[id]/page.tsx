@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { use } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { analysesApi } from '@/lib/api';
+import type { Analysis } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -32,17 +33,20 @@ export default function AnalysisDetailPage({ params }: { params: Promise<{ id: s
   const [notes, setNotes] = useState('');
   const [notesEdited, setNotesEdited] = useState(false);
 
-  const { data: analysis, isLoading } = useQuery({
+  const { data: analysis, isLoading } = useQuery<Analysis>({
     queryKey: ['admin-analysis', id],
     queryFn: () => analysesApi.get(id).then((r) => r.data),
-    onSuccess: (d) => {
-      if (!notesEdited) setNotes(d.error_message ?? '');
-    },
-    refetchInterval: (data) => {
-      if (data?.status === 'processing') return 4000;
+    refetchInterval: (query) => {
+      if (query.state.data?.status === 'processing') return 4000;
       return false;
     },
-  } as any);
+  });
+
+  useEffect(() => {
+    if (analysis && !notesEdited) {
+      setNotes(analysis.error_message ?? '');
+    }
+  }, [analysis, notesEdited]);
 
   const resendMutation = useMutation({
     mutationFn: () => analysesApi.resendPdf(id),

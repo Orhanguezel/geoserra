@@ -38,11 +38,11 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-screen w-56 flex-col border-r border-white/10 bg-[hsl(222,47%,9%)]">
+    <aside className="flex h-screen w-56 flex-col border-r border-white/5 bg-[#0a0f1a]">
       {/* Logo */}
-      <div className="flex h-14 items-center gap-2 border-b border-white/10 px-4">
-        <Activity className="h-5 w-5 text-violet-400" />
-        <span className="text-sm font-semibold text-white">GeoSerra Admin</span>
+      <div className="flex h-14 items-center gap-2 border-b border-white/5 px-4">
+        <Activity className="h-5 w-5 text-emerald-400" />
+        <span className="text-sm font-bold text-white tracking-tight">GeoSerra <span className="text-emerald-500/70 font-normal">Admin</span></span>
       </div>
 
       {/* Nav */}
@@ -54,10 +54,10 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all',
                 active
-                  ? 'bg-violet-600/20 text-violet-300'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white',
+                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                  : 'text-slate-400 hover:bg-white/5 hover:text-white border border-transparent',
               )}
             >
               <Icon className="h-4 w-4" />
