@@ -3,13 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
-import { useTheme } from 'next-themes';
 
 export function Footer() {
   const locale = useLocaleStore((s) => s.locale);
   const year = new Date().getFullYear();
-  const { resolvedTheme } = useTheme();
-  const logoSrc = resolvedTheme === 'light' ? '/logo-small-light.png' : '/logo-small.png';
 
   return (
     <footer className="border-t border-border bg-card/50 py-12">
@@ -17,8 +14,11 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/">
-              <Image src={logoSrc} alt="GeoSerra" width={130} height={34} className="h-8 w-auto mb-3" unoptimized />
+            <Link href="/" className="inline-block mb-4">
+              {/* Dark mode logo */}
+              <Image src="/assets/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-14 w-auto hidden dark:block" />
+              {/* Light mode logo */}
+              <Image src="/assets/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-14 w-auto block dark:hidden" />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               {t('footer.tagline', {}, locale)}
