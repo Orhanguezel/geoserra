@@ -10,7 +10,12 @@
     "pricing": "Pricing",
     "about": "About",
     "contact": "Contact",
-    "start_free": "Start for Free"
+    "start_free": "Start for Free",
+    "login": "Sign In",
+    "register": "Sign Up",
+    "account": "My Account",
+    "logout": "Sign Out",
+    "logout_short": "Sign Out"
   },
   "hero": {
     "badge": "GEO + SEO + Lighthouse — One Platform",

@@ -24,6 +24,7 @@ const NAV_LINKS = [
 function UserMenu() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const locale = useLocaleStore((s) => s.locale);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -40,10 +41,10 @@ function UserMenu() {
     return (
       <div className="flex items-center gap-3">
         <Link href="/giris" className="text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors">
-          Giriş Yap
+          {t('nav.login', {}, locale)}
         </Link>
         <Link href="/kayit" className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold uppercase tracking-wider text-white hover:bg-emerald-800 transition-all hover:shadow-[0_4px_12px_rgba(4,120,87,0.3)]">
-          Üye Ol
+          {t('nav.register', {}, locale)}
         </Link>
       </div>
     );
@@ -80,7 +81,7 @@ function UserMenu() {
               className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
               <User size={14} />
-              Hesabım
+              {t('nav.account', {}, locale)}
             </Link>
             <div className="my-1 border-t border-white/10" />
             <button
@@ -88,7 +89,7 @@ function UserMenu() {
               className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-red-400 transition-colors"
             >
               <LogOut size={14} />
-              Çıkış Yap
+              {t('nav.logout', {}, locale)}
             </button>
           </motion.div>
         )}
@@ -172,22 +173,22 @@ export function Header() {
                 {user ? (
                   <>
                     <Link href="/hesabim" className="flex-1 rounded-xl bg-muted py-2.5 text-center text-sm font-semibold text-foreground" onClick={() => setMenuOpen(false)}>
-                      Hesabım
+                      {t('nav.account', {}, locale)}
                     </Link>
                     <button
                       onClick={async () => { setMenuOpen(false); await logout(); router.push('/'); }}
                       className="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-red-400"
                     >
-                      Çıkış
+                      {t('nav.logout_short', {}, locale)}
                     </button>
                   </>
                 ) : (
                   <>
                     <Link href="/giris" className="flex-1 rounded-xl border border-border py-2.5 text-center text-sm font-semibold text-foreground" onClick={() => setMenuOpen(false)}>
-                      Giriş Yap
+                      {t('nav.login', {}, locale)}
                     </Link>
                     <Link href="/kayit" className={cn('flex-1 rounded-xl bg-primary py-2.5 text-center text-sm font-semibold text-primary-foreground')} onClick={() => setMenuOpen(false)}>
-                      Üye Ol
+                      {t('nav.register', {}, locale)}
                     </Link>
                   </>
                 )}

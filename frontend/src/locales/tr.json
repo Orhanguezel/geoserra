@@ -10,7 +10,12 @@
     "pricing": "Fiyatlandırma",
     "about": "Hakkımızda",
     "contact": "İletişim",
-    "start_free": "Ücretsiz Başla"
+    "start_free": "Ücretsiz Başla",
+    "login": "Giriş Yap",
+    "register": "Üye Ol",
+    "account": "Hesabım",
+    "logout": "Çıkış Yap",
+    "logout_short": "Çıkış"
   },
   "hero": {
     "badge": "GEO + SEO + Lighthouse — Tek Platform",
