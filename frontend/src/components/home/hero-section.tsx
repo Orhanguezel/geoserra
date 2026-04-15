@@ -80,7 +80,7 @@ export function HeroSection() {
           transition={{ delay: 0.1 }}
           className="mx-auto mb-6 max-w-4xl text-5xl font-extrabold tracking-tight text-foreground md:text-7xl"
         >
-          {t('hero.title', {}, locale)} <span className="text-gradient">{t('hero.title_highlight', {}, locale)}</span>
+          {t('hero.title', {}, locale)}{' '}<span className="text-gradient">{t('hero.title_highlight', {}, locale)}</span>
         </motion.h1>
 
         <motion.p

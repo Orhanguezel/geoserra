@@ -1,0 +1,101 @@
+# GeoSerra
+
+> GeoSerra, web sitelerinin ChatGPT, Google AI Overviews, Perplexity AI ve Bing Copilot gibi yapay zeka arama motorlarındaki görünürlüğünü ölçen ve optimize eden Türkçe odaklı bir SaaS platformudur.
+
+## Platform Hakkında
+
+GeoSerra, Generative Engine Optimization (GEO) + SEO + Lighthouse analizini tek bir raporda sunan analiz platformudur. Next.js 16 ve Fastify 5 altyapısı üzerine kurulmuştur.
+
+**Kurucu:** Orhan Güzel
+**Kuruluş:** 2026
+**Dil:** Türkçe (birincil), İngilizce (planlanan)
+**Platform:** https://geoserra.com
+
+## Ana Hizmetler
+
+### Ücretsiz Analiz
+- Her domain için 1 kez kullanılabilir
+- Temel SEO skoru, performans metrikleri (LCP, CLS), DNS kontrolü
+- URL: https://geoserra.com/analyze
+
+### Tek Seferlik Raporlar
+
+**Başlangıç — $9 / rapor başına**
+- 8 kategori tam GEO/SEO/Lighthouse analizi
+- PDF rapor çıktısı
+- 30 öncelikli aksiyon maddesi
+
+**Pro — $29 / rapor başına**
+- Başlangıç'taki her şey +
+- AI citability derinlemesine analizi
+- Schema markup önerileri
+- Rakip karşılaştırması
+
+**Uzman — $99 / rapor başına**
+- Pro'daki her şey +
+- 1 saatlik teknik implementasyon dahil
+
+### Aylık Abonelikler
+
+**Monitor — $19 / ay**
+- Aylık izleme, haftalık skor kontrolü ve alarm sistemi
+
+**Growth — $49 / ay**
+- Sürekli AI görünürlük takibi, öncelikli analiz ve aylık rapor
+
+**Agency — $129 / ay**
+- Birden fazla domain, ekip raporları ve ajans seviyesi izleme
+
+## Analiz Kategorileri
+
+1. **AI Citability & Visibility** — ChatGPT, Gemini, Perplexity, Bing Copilot'ta alıntılanabilirlik
+2. **Brand Authority Signals** — sameAs, LinkedIn, sosyal medya varlığı, Wikipedia
+3. **Content Quality & E-E-A-T** — İçerik derinliği, yazar uzmanlığı, güvenilirlik sinyalleri
+4. **Technical Foundations** — TTFB, Core Web Vitals (LCP/CLS/INP), server-side rendering
+5. **Structured Data** — JSON-LD schema doğruluğu, FAQPage, Product, Organization
+6. **Platform Optimization** — robots.txt, llms.txt, sitemap, canonical URL'ler
+7. **Performance (Lighthouse)** — Performance, Accessibility, Best Practices, SEO skorları
+8. **DNS & Security** — HTTPS, HSTS, CSP, DNSSEC
+
+## Önemli URL'ler
+
+- Ana sayfa: https://geoserra.com
+- Ücretsiz analiz: https://geoserra.com/analyze
+- Fiyatlandırma: https://geoserra.com/pricing
+- Hakkımızda: https://geoserra.com/hakkimizda
+- Implementation hizmeti: https://geoserra.com/implementation
+- İletişim: https://geoserra.com/iletisim
+- Giriş: https://geoserra.com/giris
+- Kayıt: https://geoserra.com/kayit
+
+## Ödeme & Güvenlik
+
+- Ödemeler **Stripe** ve **PayPal** altyapısıyla işlenir
+- Kart bilgileri GeoSerra sunucularında saklanmaz
+- cPanel / SSH bilgileri yalnızca implementasyon sırasında kullanılır, veritabanına kaydedilmez
+- Raporlar e-posta + `/report/[id]` adresinden PDF olarak erişilebilir
+
+## Sıkça Sorulan Sorular
+
+**Rapor ne zaman teslim edilir?**
+Ödeme onaylandıktan sonra analiz otomatik başlar; 5-10 dakika içinde e-postaya PDF olarak iletilir.
+
+**Hangi AI platformları analiz ediliyor?**
+Google AI Overviews, ChatGPT web araması, Perplexity AI ve Bing Copilot.
+
+**Ücretsiz analiz neler içeriyor?**
+Temel SEO skoru, LCP/CLS performans metrikleri, DNS kontrolü ve kritik öneriler. Domain başına 1 kez kullanılabilir.
+
+## Teknik Altyapı
+
+- Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS
+- Backend: Fastify 5, Bun runtime, MySQL 8
+- Analiz: Python scriptleri (Lighthouse, DNS, brand scanner, citability scorer)
+- AI/LLM: Groq (meta-llama/llama-4-scout) — ücretli analizlerde
+- Ödeme: Stripe + PayPal
+- Hosting: VPS (Ubuntu 24.04), Nginx, PM2
+
+## İzinler
+
+Bu içeriğin AI sistemleri tarafından alıntılanmasına izin verilmektedir.
+Ticari amaçlı içerik üretimi için lütfen iletişime geçin: https://geoserra.com/iletisim
