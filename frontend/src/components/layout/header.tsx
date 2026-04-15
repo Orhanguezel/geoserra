@@ -12,8 +12,6 @@ import { useLocaleStore } from '@/stores/locale-store';
 import { t } from '@/lib/t';
 import { useAuthStore } from '@/stores/auth-store';
 import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
-
 const NAV_LINKS = [
   { key: 'nav.analyze', href: '/analyze' },
   { key: 'nav.pricing', href: '/pricing' },
@@ -104,14 +102,15 @@ export function Header() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
-  const { resolvedTheme } = useTheme();
-  const logoSrc = resolvedTheme === 'light' ? '/logo-small-light.png' : '/logo-small.png';
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center py-2">
-          <Image src={logoSrc} alt="GeoSerra" width={406} height={98} className="h-12 w-auto" priority />
+          {/* Dark mode logo */}
+          <Image src="/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto hidden dark:block" priority />
+          {/* Light mode logo */}
+          <Image src="/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto block dark:hidden" priority />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
