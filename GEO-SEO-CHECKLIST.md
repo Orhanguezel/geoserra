@@ -28,8 +28,8 @@
 
 ## 🟡 ORTA — Bu Ay
 
-- [ ] **Canonical URL** — tüm sayfalara `metadata.alternates.canonical` ile `+1 puan`
-- [ ] **BreadcrumbList schema** — tüm alt sayfalara JSON-LD + UI breadcrumb `+1 puan`
+- [x] **Canonical URL** — tüm sayfalara `metadata.alternates.canonical` ile `+1 puan`
+- [x] **BreadcrumbList schema** — analyze, iletisim, implementation, pricing, hakkimizda sayfalarına JSON-LD eklendi; iletisim'e ProfessionalService, implementation'a Service schema da eklendi `+1 puan`
 - [ ] **Image alt text + og:image** — homepage görsellerine `alt` tag, `og:image` tek kaynakta sabitle `+1 puan`
 - [ ] **Hakkımızda 800+ kelimeye çıkar** — misyon, teknoloji stack, değerler, basın bağlantıları + `Person` schema `+2 puan`
 - [ ] **Blog altyapısı kur** — `/blog` dizini, MDX, `Article` schema + author `Person` + FAQPage `+4 puan`
