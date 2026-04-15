@@ -28,9 +28,10 @@ INSERT IGNORE INTO site_settings (id, `key`, locale, value) VALUES
   (UUID(), 'smtp_from_email',  '*', '"info@koenigsmassage.com"'),
   (UUID(), 'smtp_from_name',   '*', '"GeoSerra"'),
   -- Marka görselleri (backend /assets/ üzerinden servis edilir)
-  (UUID(), 'site.logo',        '*', '"/assets/logo.png"'),
-  (UUID(), 'site.logo_small',  '*', '"/assets/logo-small.png"'),
-  (UUID(), 'site.favicon',     '*', '"/assets/favicon.png"'),
+  (UUID(), 'site.logo',             '*', '"/assets/logo.png"'),
+  (UUID(), 'site.logo_small',       '*', '"/assets/logo-small.png"'),
+  (UUID(), 'site.logo_small_light', '*', '"/assets/logo-small-light.png"'),
+  (UUID(), 'site.favicon',          '*', '"/assets/favicon.png"'),
   -- Fiyatlar
   (UUID(), 'price.starter',    '*', '"9"'),
   (UUID(), 'price.pro',        '*', '"29"'),

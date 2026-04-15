@@ -114,6 +114,24 @@ async function runSqlFile(
   logStep(`✅ ${name} bitti`);
 }
 
+async function copyBrandAssets() {
+  const srcDir = path.resolve(__dirname, 'assets');
+  const destDir = path.resolve(process.cwd(), 'storage', 'assets');
+
+  if (!fs.existsSync(srcDir)) {
+    logStep('⚠️  seed/assets dizini bulunamadı, marka görselleri atlandı');
+    return;
+  }
+
+  if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
+
+  const files = fs.readdirSync(srcDir);
+  for (const file of files) {
+    fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file));
+  }
+  logStep(`🖼️  Marka görselleri kopyalandı: ${files.join(', ')}`);
+}
+
 async function main() {
   const flags = parseFlags(process.argv);
 
@@ -159,6 +177,8 @@ async function main() {
   } finally {
     await conn.end();
   }
+
+  await copyBrandAssets();
 }
 
 main().catch((err) => {

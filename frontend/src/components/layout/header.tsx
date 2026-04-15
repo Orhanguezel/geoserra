@@ -108,9 +108,9 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center py-2">
           {/* Dark mode logo */}
-          <Image src="/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto hidden dark:block" priority />
+          <Image src="/assets/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto hidden dark:block" priority />
           {/* Light mode logo */}
-          <Image src="/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto block dark:hidden" priority />
+          <Image src="/assets/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto block dark:hidden" priority />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
