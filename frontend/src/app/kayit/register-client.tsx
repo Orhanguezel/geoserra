@@ -8,11 +8,14 @@ import { Eye, EyeOff, ArrowRight, Chrome, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/auth-store';
 import { authGoogleLogin, authSignup } from '@/lib/api';
+import { t } from '@/lib/t';
+import { useLocaleStore } from '@/stores/locale-store';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '';
 
 export function RegisterClient() {
   const router = useRouter();
+  const locale = useLocaleStore((s) => s.locale);
   const setAuth = useAuthStore((s) => s.setAuth);
 
   const [fullName, setFullName] = useState('');
@@ -25,23 +28,28 @@ export function RegisterClient() {
 
   const passwordStrength = password.length === 0 ? 0 : password.length < 6 ? 1 : password.length < 10 ? 2 : 3;
   const strengthColors = ['', 'bg-red-500', 'bg-amber-500', 'bg-emerald-500'];
-  const strengthLabels = ['', 'Zayıf', 'Orta', 'Güçlü'];
+  const strengthTextColors = ['', 'text-red-400', 'text-amber-400', 'text-emerald-400'];
+
+  function strengthLabel() {
+    if (passwordStrength === 1) return t('register.strength_weak', {}, locale);
+    if (passwordStrength === 2) return t('register.strength_medium', {}, locale);
+    if (passwordStrength === 3) return t('register.strength_strong', {}, locale);
+    return '';
+  }
 
   async function handleGoogleClick() {
     if (!GOOGLE_CLIENT_ID) {
-      toast.error('Google OAuth henüz yapılandırılmadı');
+      toast.error(t('register.toast_google_not_configured', {}, locale));
       return;
     }
-    // Trigger google one-tap or redirect
     setGoogleLoading(true);
     try {
-      // dynamically load google accounts script
       await new Promise<void>((resolve, reject) => {
-      if (window.google?.accounts) { resolve(); return; }
+        if (window.google?.accounts) { resolve(); return; }
         const script = document.createElement('script');
         script.src = 'https://accounts.google.com/gsi/client';
         script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Google script yüklenemedi'));
+        script.onerror = () => reject(new Error('Google script load failed'));
         document.head.appendChild(script);
       });
       window.google!.accounts.id.initialize({
@@ -50,16 +58,16 @@ export function RegisterClient() {
           try {
             const res = await authGoogleLogin(resp.credential);
             setAuth(res.user, res.access_token);
-            toast.success('Google ile kayıt olundu');
+            toast.success(t('register.toast_google_success', {}, locale));
             router.push('/hesabim');
           } catch (err: any) {
-            toast.error(err?.message ?? 'Google kaydı başarısız');
+            toast.error(err?.message ?? t('register.toast_google_fail', {}, locale));
           }
         },
       });
       window.google!.accounts.id.prompt();
     } catch (err: any) {
-      toast.error(err?.message ?? 'Google servisi başlatılamadı');
+      toast.error(err?.message ?? t('register.toast_google_init_fail', {}, locale));
     } finally {
       setGoogleLoading(false);
     }
@@ -68,17 +76,17 @@ export function RegisterClient() {
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     if (!rulesAccepted) {
-      toast.error('Kullanım koşullarını kabul etmelisiniz');
+      toast.error(t('register.toast_terms_required', {}, locale));
       return;
     }
     try {
       setLoading(true);
       const res = await authSignup({ full_name: fullName, email, password, rules_accepted: true });
       setAuth(res.user, res.access_token);
-      toast.success('Hesabınız oluşturuldu');
+      toast.success(t('register.toast_success', {}, locale));
       router.push('/hesabim');
     } catch (err: any) {
-      toast.error(err?.message ?? 'Kayıt başarısız');
+      toast.error(err?.message ?? t('register.toast_fail', {}, locale));
     } finally {
       setLoading(false);
     }
@@ -98,18 +106,17 @@ export function RegisterClient() {
         transition={{ duration: 0.4 }}
         className="relative w-full max-w-md"
       >
-        {/* Card */}
         <div className="rounded-2xl border border-white/[0.08] bg-card/90 p-8 shadow-2xl backdrop-blur-xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/30">
               <Check size={22} strokeWidth={2.5} />
             </div>
-            <h1 className="text-2xl font-bold text-white">Üye Ol</h1>
+            <h1 className="text-2xl font-bold text-white">{t('register.title', {}, locale)}</h1>
             <p className="mt-2 text-sm text-white/50">
-              Zaten hesabınız var mı?{' '}
+              {t('register.has_account', {}, locale)}{' '}
               <Link href="/giris" className="font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
-                Giriş Yap
+                {t('register.login_link', {}, locale)}
               </Link>
             </p>
           </div>
@@ -132,12 +139,12 @@ export function RegisterClient() {
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
               )}
-              Google ile Üye Ol
+              {t('register.google_btn', {}, locale)}
             </button>
           ) : (
             <div className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-white/5 bg-white/[0.02] px-4 py-3 text-sm text-white/30">
               <Chrome size={18} />
-              Google OAuth yapılandırılmadı
+              {t('register.google_not_configured', {}, locale)}
             </div>
           )}
 
@@ -148,7 +155,7 @@ export function RegisterClient() {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-card px-3 text-[11px] font-mono uppercase tracking-widest text-white/30">
-                veya e-posta ile
+                {t('register.divider', {}, locale)}
               </span>
             </div>
           </div>
@@ -157,7 +164,7 @@ export function RegisterClient() {
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <label htmlFor="fullName" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-white/50">
-                Ad Soyad
+                {t('register.name_label', {}, locale)}
               </label>
               <input
                 id="fullName"
@@ -167,13 +174,13 @@ export function RegisterClient() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition-all focus:border-emerald-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-emerald-500/20"
-                placeholder="Adınız Soyadınız"
+                placeholder={t('register.name_placeholder', {}, locale)}
               />
             </div>
 
             <div>
               <label htmlFor="email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-white/50">
-                E-posta
+                {t('register.email_label', {}, locale)}
               </label>
               <input
                 id="email"
@@ -183,13 +190,13 @@ export function RegisterClient() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition-all focus:border-emerald-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-emerald-500/20"
-                placeholder="ornek@email.com"
+                placeholder={t('register.email_placeholder', {}, locale)}
               />
             </div>
 
             <div>
               <label htmlFor="password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-white/50">
-                Şifre
+                {t('register.password_label', {}, locale)}
               </label>
               <div className="relative">
                 <input
@@ -201,7 +208,7 @@ export function RegisterClient() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 pr-11 text-sm text-white placeholder-white/20 outline-none transition-all focus:border-emerald-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-emerald-500/20"
-                  placeholder="En az 8 karakter"
+                  placeholder={t('register.password_placeholder', {}, locale)}
                 />
                 <button
                   type="button"
@@ -224,8 +231,8 @@ export function RegisterClient() {
                       />
                     ))}
                   </div>
-                  <span className={`text-[10px] font-mono font-medium ${passwordStrength === 1 ? 'text-red-400' : passwordStrength === 2 ? 'text-amber-400' : 'text-emerald-400'}`}>
-                    {strengthLabels[passwordStrength]}
+                  <span className={`text-[10px] font-mono font-medium ${strengthTextColors[passwordStrength]}`}>
+                    {strengthLabel()}
                   </span>
                 </div>
               )}
@@ -246,14 +253,15 @@ export function RegisterClient() {
                 )}
               </div>
               <span className="text-[13px] leading-relaxed text-white/50">
+                {t('register.terms_prefix', {}, locale)}{t('register.terms_prefix', {}, locale) ? ' ' : ''}
                 <Link href="/kullanim-sartlari" className="text-emerald-400 hover:text-emerald-300 transition-colors">
-                  Kullanım Şartları
+                  {t('register.terms_link', {}, locale)}
                 </Link>
-                {' '}ve{' '}
+                {' '}{t('register.terms_and', {}, locale)}{' '}
                 <Link href="/gizlilik" className="text-emerald-400 hover:text-emerald-300 transition-colors">
-                  Gizlilik Politikası
+                  {t('register.privacy_link', {}, locale)}
                 </Link>
-                'nı okudum ve kabul ediyorum.
+                {t('register.terms_suffix', {}, locale)}
               </span>
             </label>
 
@@ -265,16 +273,18 @@ export function RegisterClient() {
               {loading ? (
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
               ) : (
-                <>Üye Ol <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" /></>
+                <>{t('register.submit', {}, locale)} <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" /></>
               )}
             </button>
           </form>
 
           {/* Footer note */}
           <p className="mt-6 text-center text-[11px] text-white/25">
-            Üye olarak{' '}
-            <Link href="/kullanim-sartlari" className="hover:text-white/50 transition-colors">kullanım şartlarını</Link>
-            {' '}kabul etmiş olursunuz.
+            {t('register.footer_prefix', {}, locale)}{' '}
+            <Link href="/kullanim-sartlari" className="hover:text-white/50 transition-colors">
+              {t('register.footer_link', {}, locale)}
+            </Link>
+            {t('register.footer_suffix', {}, locale)}
           </p>
         </div>
       </motion.div>

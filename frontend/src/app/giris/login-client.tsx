@@ -8,11 +8,14 @@ import { Eye, EyeOff, ArrowRight, LogIn } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/auth-store';
 import { authGoogleLogin, authLogin } from '@/lib/api';
+import { t } from '@/lib/t';
+import { useLocaleStore } from '@/stores/locale-store';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '';
 
 export function LoginClient() {
   const router = useRouter();
+  const locale = useLocaleStore((s) => s.locale);
   const setAuth = useAuthStore((s) => s.setAuth);
 
   const [email, setEmail] = useState('');
@@ -23,7 +26,7 @@ export function LoginClient() {
 
   async function handleGoogleClick() {
     if (!GOOGLE_CLIENT_ID) {
-      toast.error('Google OAuth henüz yapılandırılmadı');
+      toast.error(t('login.toast_google_not_configured', {}, locale));
       return;
     }
     setGoogleLoading(true);
@@ -33,7 +36,7 @@ export function LoginClient() {
         const script = document.createElement('script');
         script.src = 'https://accounts.google.com/gsi/client';
         script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Google script yüklenemedi'));
+        script.onerror = () => reject(new Error('Google script load failed'));
         document.head.appendChild(script);
       });
       window.google!.accounts.id.initialize({
@@ -42,16 +45,16 @@ export function LoginClient() {
           try {
             const res = await authGoogleLogin(resp.credential);
             setAuth(res.user, res.access_token);
-            toast.success('Google ile giriş yapıldı');
+            toast.success(t('login.toast_google_success', {}, locale));
             router.push('/hesabim');
           } catch (err: any) {
-            toast.error(err?.message ?? 'Google girişi başarısız');
+            toast.error(err?.message ?? t('login.toast_google_fail', {}, locale));
           }
         },
       });
       window.google!.accounts.id.prompt();
     } catch (err: any) {
-      toast.error(err?.message ?? 'Google servisi başlatılamadı');
+      toast.error(err?.message ?? t('login.toast_google_init_fail', {}, locale));
     } finally {
       setGoogleLoading(false);
     }
@@ -64,10 +67,10 @@ export function LoginClient() {
       setLoading(true);
       const res = await authLogin(email, password);
       setAuth(res.user, res.access_token);
-      toast.success('Giriş yapıldı');
+      toast.success(t('login.toast_success', {}, locale));
       router.push('/hesabim');
     } catch (err: any) {
-      toast.error(err?.message ?? 'E-posta veya şifre hatalı');
+      toast.error(err?.message ?? t('login.toast_wrong_credentials', {}, locale));
     } finally {
       setLoading(false);
     }
@@ -87,18 +90,17 @@ export function LoginClient() {
         transition={{ duration: 0.4 }}
         className="relative w-full max-w-md"
       >
-        {/* Card */}
         <div className="rounded-2xl border border-white/[0.08] bg-card/90 p-8 shadow-2xl backdrop-blur-xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/30">
               <LogIn size={20} strokeWidth={2.5} />
             </div>
-            <h1 className="text-2xl font-bold text-white">Giriş Yap</h1>
+            <h1 className="text-2xl font-bold text-white">{t('login.title', {}, locale)}</h1>
             <p className="mt-2 text-sm text-white/50">
-              Hesabınız yok mu?{' '}
+              {t('login.no_account', {}, locale)}{' '}
               <Link href="/kayit" className="font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
-                Üye Ol
+                {t('login.register_link', {}, locale)}
               </Link>
             </p>
           </div>
@@ -108,7 +110,7 @@ export function LoginClient() {
             type="button"
             onClick={handleGoogleClick}
             disabled={googleLoading || !GOOGLE_CLIENT_ID}
-            title={!GOOGLE_CLIENT_ID ? 'Google OAuth yapılandırılmadı' : undefined}
+            title={!GOOGLE_CLIENT_ID ? t('login.google_not_configured', {}, locale) : undefined}
             className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/80 transition-all hover:border-white/20 hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
           >
             {googleLoading ? (
@@ -121,7 +123,7 @@ export function LoginClient() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
             )}
-            {GOOGLE_CLIENT_ID ? 'Google ile Giriş Yap' : 'Google OAuth yapılandırılmadı'}
+            {GOOGLE_CLIENT_ID ? t('login.google_btn', {}, locale) : t('login.google_not_configured', {}, locale)}
           </button>
 
           {/* Divider */}
@@ -131,7 +133,7 @@ export function LoginClient() {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-card px-3 text-[11px] font-mono uppercase tracking-widest text-white/30">
-                veya e-posta ile
+                {t('login.divider', {}, locale)}
               </span>
             </div>
           </div>
@@ -140,7 +142,7 @@ export function LoginClient() {
           <form onSubmit={handleEmailLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-white/50">
-                E-posta
+                {t('login.email_label', {}, locale)}
               </label>
               <input
                 id="email"
@@ -150,17 +152,17 @@ export function LoginClient() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder-white/20 outline-none transition-all focus:border-emerald-500/50 focus:bg-white/[0.06] focus:ring-1 focus:ring-emerald-500/20"
-                placeholder="ornek@email.com"
+                placeholder={t('login.email_placeholder', {}, locale)}
               />
             </div>
 
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-white/50">
-                  Şifre
+                  {t('login.password_label', {}, locale)}
                 </label>
                 <Link href="/sifremi-unuttum" className="text-[11px] text-emerald-400 hover:text-emerald-300 transition-colors">
-                  Şifremi Unuttum
+                  {t('login.forgot_password', {}, locale)}
                 </Link>
               </div>
               <div className="relative">
@@ -192,14 +194,13 @@ export function LoginClient() {
               {loading ? (
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
               ) : (
-                <>Giriş Yap <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" /></>
+                <>{t('login.submit', {}, locale)} <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" /></>
               )}
             </button>
           </form>
 
-          {/* Social proof footer */}
           <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-widest text-white/20">
-            GeoSerra — AI & SEO Analiz Platformu
+            {t('login.footer', {}, locale)}
           </p>
         </div>
       </motion.div>
