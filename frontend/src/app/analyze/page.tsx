@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     url: 'https://geoserra.com/analyze',
     siteName: 'GeoSerra',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GeoSerra — Ücretsiz GEO SEO Analizi' }],
   },
   twitter: {
     card: 'summary_large_image',
