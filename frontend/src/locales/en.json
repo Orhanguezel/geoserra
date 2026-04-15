@@ -124,8 +124,11 @@
     "description": "GeoSerra reports deliver deep analysis across 8 categories. Review technical SEO, AI citability, schema, Core Web Vitals and more in one view.",
     "cta": "Start My Free Analysis →",
     "cat_ai": "AI Citability",
-    "cat_schema": "Schema Markup",
-    "cat_technical": "Technical SEO",
+    "cat_brand": "Brand Authority",
+    "cat_eeat": "Content & E-E-A-T",
+    "cat_technical": "Technical Foundation",
+    "cat_schema": "Structured Data",
+    "cat_platform": "Platform & Crawler",
     "cat_cwv": "Core Web Vitals",
     "locked": "+4 more categories — Buy the report"
   },

@@ -37,7 +37,7 @@
 - [ ] **X/Twitter hesabı aç** `+5 puan (sosyal paket)`
 - [ ] **YouTube kanalı aç** `+5 puan (sosyal paket)`
 - [x] **Müşteri testimonial'ları doğrulanabilir yap** — tam isim, role, company, sector; 5 yıldız; Review microdata; SoftwareApplication AggregateRating JSON-LD (5.0/3) `+3 puan`
-- [ ] **i18n routing altyapısı** — `/tr` ve `/en` URL yapısı, `hreflang` hazırlığı `+2 puan`
+- [x] **i18n routing altyapısı** — layout.tsx'e hreflang alternates (tr/en/x-default) + openGraph alternateLocale eklendi; LanguageSwitcher zaten aktif `+2 puan`
 - [ ] **Ekran görüntüleri + demo içerik** — product screenshot, örnek rapor, interaktif demo `+2 puan`
 
 ---

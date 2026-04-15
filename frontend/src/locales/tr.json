@@ -124,8 +124,11 @@
     "description": "GeoSerra raporu 8 kategoride detaylı analiz sunar. Teknik SEO, AI citability, schema, Core Web Vitals ve daha fazlasını tek bakışta görürsünüz.",
     "cta": "Ücretsiz Analizimi Başlat →",
     "cat_ai": "AI Citability",
-    "cat_schema": "Schema Markup",
-    "cat_technical": "Teknik SEO",
+    "cat_brand": "Brand Authority",
+    "cat_eeat": "Content & E-E-A-T",
+    "cat_technical": "Teknik Altyapı",
+    "cat_schema": "Structured Data",
+    "cat_platform": "Platform & Crawler",
     "cat_cwv": "Core Web Vitals",
     "locked": "+4 kategori daha — Rapor satın al"
   },
