@@ -18,10 +18,10 @@
 
 - [x] **Homepage FAQPage JSON-LD ekle** — 6 soru `FAQPage` + `Question` + `acceptedAnswer` schema olarak page.tsx'e eklendi `+4 puan`
 - [x] **Pricing Product + Offer schema** — 3 paket için `Product` + `Offer` ItemList JSON-LD eklendi `+3 puan`
-- [ ] **E-E-A-T: Hakkımızda sayfasına kurucu bilgisi ekle** — Orhan Güzel için `Person` schema, LinkedIn linki, fotoğraf `+5 puan`
+- [x] **E-E-A-T: Hakkımızda sayfasına kurucu bilgisi ekle** — Person schema, GitHub/LinkedIn, 800+ kelime, değerler, GEO skor tablosu `+5 puan`
 - [ ] **Thin content — /analyze genişlet** — 500+ kelime: 'Ne ölçülür', 'Nasıl çalışır', örnek sonuç blokları `+4 puan`
-- [ ] **Thin content — /iletisim genişlet** — adres, saatler, SLA, süreçler (14 kelimeden kurtul)
-- [ ] **Thin content — /implementation genişlet** — gerçekleme süreci, SLA, örnekler
+- [x] **Thin content — /iletisim genişlet** — SLA, konu kartları, iletişim bilgileri, çalışma saatleri eklendi
+- [x] **Thin content — /implementation genişlet** — 4-adım süreç, hizmet listesi, SLA, güvenlik garantisi eklendi
 - [x] **HSTS + CSP + Permissions-Policy header** — next.config.ts headers'a HSTS + CSP + Permissions-Policy eklendi `+2 puan`
 
 ---

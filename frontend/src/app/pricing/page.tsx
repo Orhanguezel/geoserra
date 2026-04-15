@@ -4,6 +4,7 @@ import { PricingSection } from '@/components/home/pricing-section';
 export const metadata: Metadata = {
   title: 'Fiyatlandırma — GeoSerra',
   description: 'GeoSerra GEO SEO rapor paketleri. Starter $29, Pro $59, Expert $99. Tek seferlik ödeme, anında PDF raporu.',
+  alternates: { canonical: 'https://geoserra.com/pricing' },
   openGraph: {
     title: 'GeoSerra Fiyatlandırma',
     description: 'Starter, Pro ve Expert GEO SEO rapor paketlerini karşılaştırın.',
@@ -18,6 +19,15 @@ export const metadata: Metadata = {
     description: 'Starter, Pro ve Expert paketlerini karşılaştırın.',
     images: ['/og-image.png'],
   },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: 'https://geoserra.com' },
+    { '@type': 'ListItem', position: 2, name: 'Fiyatlandırma', item: 'https://geoserra.com/pricing' },
+  ],
 };
 
 export default function PricingPage() {
@@ -80,6 +90,10 @@ export default function PricingPage() {
 
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(offerSchema) }}

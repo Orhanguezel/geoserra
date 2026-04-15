@@ -4,6 +4,7 @@ import { AnalyzeClient } from '@/components/analyze/analyze-client';
 export const metadata: Metadata = {
   title: 'Ücretsiz GEO SEO Analizi — URL Gir, Skoru Gör',
   description: 'Web sitenizin ChatGPT, Gemini ve Perplexity görünürlüğünü saniyeler içinde analiz et. Ücretsiz, kayıt gerekmez.',
+  alternates: { canonical: 'https://geoserra.com/analyze' },
   openGraph: {
     title: 'Ücretsiz GEO SEO Analizi',
     description: 'Web sitenizin ChatGPT, Gemini ve Perplexity görünürlüğünü saniyeler içinde analiz et.',
@@ -20,6 +21,23 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Ana Sayfa', item: 'https://geoserra.com' },
+    { '@type': 'ListItem', position: 2, name: 'Ücretsiz GEO SEO Analizi', item: 'https://geoserra.com/analyze' },
+  ],
+};
+
 export default function AnalyzePage() {
-  return <AnalyzeClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <AnalyzeClient />
+    </>
+  );
 }
