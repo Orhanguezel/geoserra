@@ -1,12 +1,21 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { t } from '@/lib/t';
 import { useLocaleStore } from '@/stores/locale-store';
 
 export function Footer() {
   const locale = useLocaleStore((s) => s.locale);
   const year = new Date().getFullYear();
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const logoSrc = mounted && resolvedTheme === 'light'
+    ? '/assets/logo-small-light.png'
+    : '/assets/logo-small.png';
 
   return (
     <footer className="border-t border-border bg-card/50 py-12">
@@ -15,10 +24,8 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              {/* Dark mode logo */}
-              <Image src="/assets/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-14 w-auto hidden dark:block" />
-              {/* Light mode logo */}
-              <Image src="/assets/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-14 w-auto block dark:hidden" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={logoSrc} alt="GeoSerra" className="h-14 w-auto" width={406} height={98} />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
               {t('footer.tagline', {}, locale)}

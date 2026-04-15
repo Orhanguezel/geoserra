@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, ChevronDown, LogOut, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -98,19 +98,25 @@ function UserMenu() {
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const locale = useLocaleStore((s) => s.locale);
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const logoSrc = mounted && resolvedTheme === 'light'
+    ? '/assets/logo-small-light.png'
+    : '/assets/logo-small.png';
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center py-2">
-          {/* Dark mode logo */}
-          <Image src="/assets/logo-small.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto hidden dark:block" priority />
-          {/* Light mode logo */}
-          <Image src="/assets/logo-small-light.png" alt="GeoSerra" width={406} height={98} className="h-12 w-auto block dark:hidden" priority />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} alt="GeoSerra" className="h-12 w-auto" width={406} height={98} />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
