@@ -44,57 +44,37 @@ export function ContactClient() {
         {/* Bilgi Kartları */}
         <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            {
-              icon: Clock,
-              title: 'Yanıt Süresi',
-              desc: 'İş günlerinde 24 saat içinde yanıtlanır. Acil teknik sorular 4 saat SLA.',
-              color: 'text-emerald-400',
-            },
-            {
-              icon: MessageSquare,
-              title: 'Rapor Soruları',
-              desc: 'GEO/SEO rapor içeriği, metrik açıklamaları ve öneri detayları için yazın.',
-              color: 'text-cyan-400',
-            },
-            {
-              icon: Briefcase,
-              title: 'İş Birliği',
-              desc: 'Ajans ortaklığı, white-label rapor ve toplu lisans görüşmeleri.',
-              color: 'text-amber-400',
-            },
-            {
-              icon: HelpCircle,
-              title: 'Teknik Destek',
-              desc: 'Ödeme, erişim ve rapor teslimi konularında doğrudan destek.',
-              color: 'text-violet-400',
-            },
-          ].map(({ icon: Icon, title, desc, color }) => (
-            <div key={title} className="rounded-2xl border border-border bg-card p-5 space-y-2">
+            { icon: Clock, key: 'c1', color: 'text-emerald-400' },
+            { icon: MessageSquare, key: 'c2', color: 'text-cyan-400' },
+            { icon: Briefcase, key: 'c3', color: 'text-amber-400' },
+            { icon: HelpCircle, key: 'c4', color: 'text-violet-400' },
+          ].map(({ icon: Icon, key, color }) => (
+            <div key={key} className="rounded-2xl border border-border bg-card p-5 space-y-2">
               <div className={`inline-flex rounded-lg bg-muted p-2 ${color}`}><Icon size={16} /></div>
-              <h3 className="text-sm font-semibold">{title}</h3>
-              <p className="text-xs leading-5 text-muted-foreground">{desc}</p>
+              <h3 className="text-sm font-semibold">{t(`contact_info.${key}_title`, {}, locale)}</h3>
+              <p className="text-xs leading-5 text-muted-foreground">{t(`contact_info.${key}_desc`, {}, locale)}</p>
             </div>
           ))}
         </div>
 
         {/* İletişim Bilgileri */}
         <div className="mb-8 rounded-2xl border border-border bg-card p-6">
-          <h2 className="mb-4 text-base font-semibold">İletişim Bilgileri</h2>
+          <h2 className="mb-4 text-base font-semibold">{t('contact_info.info_title', {}, locale)}</h2>
           <div className="grid gap-4 sm:grid-cols-3 text-sm">
             <div>
-              <p className="font-medium text-foreground">E-posta</p>
-              <p className="mt-1 text-muted-foreground">info@geoserra.com</p>
-              <p className="text-xs text-muted-foreground/70">Genel iletişim</p>
+              <p className="font-medium text-foreground">{t('contact_info.email_label', {}, locale)}</p>
+              <p className="mt-1 text-muted-foreground">{t('contact_info.email_value', {}, locale)}</p>
+              <p className="text-xs text-muted-foreground/70">{t('contact_info.email_note', {}, locale)}</p>
             </div>
             <div>
-              <p className="font-medium text-foreground">Çalışma Saatleri</p>
-              <p className="mt-1 text-muted-foreground">Pazartesi – Cuma</p>
-              <p className="text-xs text-muted-foreground/70">09:00 – 18:00 (TSİ)</p>
+              <p className="font-medium text-foreground">{t('contact_info.hours_label', {}, locale)}</p>
+              <p className="mt-1 text-muted-foreground">{t('contact_info.hours_value', {}, locale)}</p>
+              <p className="text-xs text-muted-foreground/70">{t('contact_info.hours_note', {}, locale)}</p>
             </div>
             <div>
-              <p className="font-medium text-foreground">Konum</p>
-              <p className="mt-1 text-muted-foreground">Türkiye</p>
-              <p className="text-xs text-muted-foreground/70">Uzaktan hizmet, tüm Türkiye</p>
+              <p className="font-medium text-foreground">{t('contact_info.location_label', {}, locale)}</p>
+              <p className="mt-1 text-muted-foreground">{t('contact_info.location_value', {}, locale)}</p>
+              <p className="text-xs text-muted-foreground/70">{t('contact_info.location_note', {}, locale)}</p>
             </div>
           </div>
         </div>

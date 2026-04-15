@@ -171,28 +171,27 @@ export function AnalyzeClient() {
 
         {/* Ne Ölçülür */}
         <div className="mt-16 mb-10 rounded-2xl border border-border bg-card p-6">
-          <h2 className="mb-2 text-base font-semibold">Analiz Ne Ölçer?</h2>
+          <h2 className="mb-2 text-base font-semibold">{t('analyze_info.measures_title', {}, locale)}</h2>
           <p className="mb-5 text-sm text-muted-foreground leading-6">
-            GeoSerra, sitenizi altı bağımsız kategoride değerlendirerek tek bir GEO skoru üretir.
-            Her kategori farklı bir AI veya arama sinyalini temsil eder.
+            {t('analyze_info.measures_desc', {}, locale)}
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              { icon: Bot, label: 'AI Citability & Visibility', weight: '%25', desc: 'ChatGPT, Gemini, Perplexity ve Bing Copilot\'un sitenizi alıntılayıp alıntılamadığını ve llms.txt, robots.txt erişim kurallarını kontrol eder.', color: 'text-cyan-400' },
-              { icon: Globe, label: 'Brand Authority Signals', weight: '%20', desc: 'sameAs bağlantıları, sosyal medya varlığı, Wikipedia referansları ve backlink profilini analiz eder. Marka güvenilirliği için temel sinyaller.', color: 'text-amber-400' },
-              { icon: FileSearch, label: 'Content Quality & E-E-A-T', weight: '%20', desc: 'İçerik derinliği, yazar uzmanlığı (Experience, Expertise, Authoritativeness, Trustworthiness) ve güvenilirlik sinyallerini değerlendirir.', color: 'text-violet-400' },
-              { icon: Zap, label: 'Technical Foundations', weight: '%15', desc: 'TTFB, Core Web Vitals (LCP, CLS, INP), sunucu taraflı render kalitesi ve sayfa hız metriklerini Lighthouse ile ölçer.', color: 'text-emerald-400' },
-              { icon: Layers, label: 'Structured Data', weight: '%10', desc: 'JSON-LD schema doğruluğunu, FAQPage, Product, Organization, Person ve BreadcrumbList markup varlığını doğrular.', color: 'text-rose-400' },
-              { icon: Shield, label: 'Platform Optimization', weight: '%10', desc: 'robots.txt, sitemap.xml, canonical URL, hreflang yapılandırması, HSTS ve güvenlik header\'larını inceler.', color: 'text-sky-400' },
-            ].map(({ icon: Icon, label, weight, desc, color }) => (
-              <div key={label} className="flex items-start gap-3 rounded-xl border border-border bg-muted/20 p-4">
+              { icon: Bot, key: 'cat1', weight: '25%', color: 'text-cyan-400' },
+              { icon: Globe, key: 'cat2', weight: '20%', color: 'text-amber-400' },
+              { icon: FileSearch, key: 'cat3', weight: '20%', color: 'text-violet-400' },
+              { icon: Zap, key: 'cat4', weight: '15%', color: 'text-emerald-400' },
+              { icon: Layers, key: 'cat5', weight: '10%', color: 'text-rose-400' },
+              { icon: Shield, key: 'cat6', weight: '10%', color: 'text-sky-400' },
+            ].map(({ icon: Icon, key, weight, color }) => (
+              <div key={key} className="flex items-start gap-3 rounded-xl border border-border bg-muted/20 p-4">
                 <div className={`mt-0.5 shrink-0 ${color}`}><Icon size={16} /></div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-foreground">{label}</p>
+                    <p className="text-sm font-medium text-foreground">{t(`analyze_info.${key}_label`, {}, locale)}</p>
                     <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-bold font-mono text-muted-foreground">{weight}</span>
                   </div>
-                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{desc}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{t(`analyze_info.${key}_desc`, {}, locale)}</p>
                 </div>
               </div>
             ))}
@@ -201,21 +200,21 @@ export function AnalyzeClient() {
 
         {/* Nasıl Çalışır */}
         <div className="mb-10 rounded-2xl border border-border bg-card p-6">
-          <h2 className="mb-5 text-base font-semibold">Nasıl Çalışır?</h2>
+          <h2 className="mb-5 text-base font-semibold">{t('analyze_info.how_title', {}, locale)}</h2>
           <div className="space-y-4">
             {[
-              { icon: Search, step: '1', title: 'URL Girin', desc: 'Analiz etmek istediğiniz web sitesinin adresini girin. https:// ile başlayan tam URL gereklidir. Ücretsiz analizde her domain için bir kez kullanım hakkı tanınır.', color: 'text-emerald-400' },
-              { icon: BarChart3, step: '2', title: 'Otomatik Analiz Başlar', desc: 'Sistem arka planda Lighthouse testi, schema doğrulama, DNS/SSL kontrolü, brand signal taraması ve AI crawler erişim kontrollerini paralel olarak yürütür. Ortalama süre 30-60 saniyedir.', color: 'text-cyan-400' },
-              { icon: FileCheck, step: '3', title: 'GEO Skoru Hesaplanır', desc: 'Altı kategoriden elde edilen ham veriler ağırlıklı formülle birleştirilir. Her kategori kendi alt metriklerini 0-100 arasında skorlar; genel GEO skoru bu skorların ağırlıklı ortalamasıdır.', color: 'text-amber-400' },
-              { icon: CheckCheck, step: '4', title: 'Sonuçlar ve Öncelikli Aksiyonlar', desc: 'Ücretsiz raporda genel GEO skoru, Lighthouse performans puanı ve en kritik 5 sorun gösterilir. Ücretli raporlarda tüm kategoriler, kategori bazlı öneri listesi ve indirilebilir PDF sunulur.', color: 'text-violet-400' },
-            ].map(({ icon: Icon, step, title, desc, color }) => (
+              { icon: Search, step: '1', key: 'step1', color: 'text-emerald-400' },
+              { icon: BarChart3, step: '2', key: 'step2', color: 'text-cyan-400' },
+              { icon: FileCheck, step: '3', key: 'step3', color: 'text-amber-400' },
+              { icon: CheckCheck, step: '4', key: 'step4', color: 'text-violet-400' },
+            ].map(({ icon: Icon, step, key, color }) => (
               <div key={step} className="flex gap-4">
                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted ${color}`}>
                   <Icon size={15} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">{step}. {title}</p>
-                  <p className="mt-1 text-sm text-muted-foreground leading-6">{desc}</p>
+                  <p className="text-sm font-semibold">{step}. {t(`analyze_info.${key}_title`, {}, locale)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground leading-6">{t(`analyze_info.${key}_desc`, {}, locale)}</p>
                 </div>
               </div>
             ))}
@@ -224,24 +223,23 @@ export function AnalyzeClient() {
 
         {/* Skor Referans Tablosu */}
         <div className="mb-10 rounded-2xl border border-border bg-card p-6">
-          <h2 className="mb-2 text-base font-semibold">Skor Ne Anlama Gelir?</h2>
+          <h2 className="mb-2 text-base font-semibold">{t('analyze_info.score_title', {}, locale)}</h2>
           <p className="mb-5 text-sm text-muted-foreground leading-6">
-            GEO skoru 0-100 arasında bir sayıdır. Sektör ortalaması 45-55 bandında seyrediyor.
-            Aşağıdaki tabloya göre sitenizin konumunu değerlendirin:
+            {t('analyze_info.score_desc', {}, locale)}
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {[
-              { range: '0 – 40', label: 'Kritik', desc: 'AI sistemleri bu siteyi büyük olasılıkla görmüyor. Temel teknik sorunlar mevcut.', color: 'text-red-400 bg-red-500/10 border-red-500/20' },
-              { range: '41 – 60', label: 'Ortalama Altı', desc: 'Bazı kategoriler iyi, ama AI görünürlüğü yetersiz. İyileştirme fırsatı yüksek.', color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },
-              { range: '61 – 75', label: 'Ortalama', desc: 'Temel GEO sinyalleri mevcut. Rakipler arasında görünürlük için daha fazlası gerekiyor.', color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' },
-              { range: '76 – 90', label: 'İyi', desc: 'AI sistemleri bu siteyi büyük olasılıkla buluyor ve alıntılıyor. Öne çıkma fırsatları var.', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
-              { range: '91 – 100', label: 'Mükemmel', desc: 'Sektörde en üst segment. AI ve arama görünürlüğünde güçlü bir otorite sinyali.', color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
-            ].map(({ range, label, desc, color }) => (
+              { range: '0 – 40', key: 'score_critical', color: 'text-red-400 bg-red-500/10 border-red-500/20' },
+              { range: '41 – 60', key: 'score_below', color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },
+              { range: '61 – 75', key: 'score_avg', color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' },
+              { range: '76 – 90', key: 'score_good', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
+              { range: '91 – 100', key: 'score_excellent', color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
+            ].map(({ range, key, color }) => (
               <div key={range} className={`flex items-start gap-3 rounded-xl border p-4 ${color}`}>
                 <span className="shrink-0 rounded-full px-2 py-0.5 text-xs font-bold font-mono">{range}</span>
                 <div>
-                  <p className="text-sm font-semibold">{label}</p>
-                  <p className="mt-0.5 text-xs leading-5 opacity-80">{desc}</p>
+                  <p className="text-sm font-semibold">{t(`analyze_info.${key}`, {}, locale)}</p>
+                  <p className="mt-0.5 text-xs leading-5 opacity-80">{t(`analyze_info.${key}_desc`, {}, locale)}</p>
                 </div>
               </div>
             ))}
@@ -250,17 +248,12 @@ export function AnalyzeClient() {
 
         {/* SSS */}
         <div className="mb-10 rounded-2xl border border-border bg-card p-6">
-          <h2 className="mb-5 text-base font-semibold">Sıkça Sorulan Sorular</h2>
+          <h2 className="mb-5 text-base font-semibold">{t('analyze_info.faq_title', {}, locale)}</h2>
           <div className="space-y-4">
-            {[
-              { q: 'Ücretsiz analiz ile ücretli analiz arasındaki fark nedir?', a: 'Ücretsiz analiz, genel GEO skoru, Lighthouse performans puanı ve en kritik 5 sorunu gösterir. Ücretli rapor; AI Citability, Schema, E-E-A-T, Brand Authority detaylarını, öncelikli aksiyon planını ve indirilebilir PDF\'i içerir.' },
-              { q: 'Analiz kaç saniyede tamamlanır?', a: 'Çoğu site için 30-60 saniye yeterlidir. Yüklenmesi yavaş siteler veya karmaşık teknik yapılar 90 saniyeye kadar sürebilir.' },
-              { q: 'Sonuçlar ne kadar süre geçerlidir?', a: 'GEO skoru anlık bir ölçümdür. SEO ve GEO değişkenleri hızla değiştiğinden, site önemli değişiklikler aldığında yeniden analiz önerilir.' },
-              { q: 'Rakibimin sitesini analiz edebilir miyim?', a: 'Evet. Herhangi bir public URL girebilirsiniz. Rakip analizi, kendi sitenizle karşılaştırma yapmanızı sağlar.' },
-            ].map(({ q, a }) => (
-              <div key={q} className="rounded-xl border border-border bg-muted/20 p-4">
-                <p className="text-sm font-semibold text-foreground">{q}</p>
-                <p className="mt-2 text-sm text-muted-foreground leading-6">{a}</p>
+            {(['faq1', 'faq2', 'faq3', 'faq4'] as const).map((key) => (
+              <div key={key} className="rounded-xl border border-border bg-muted/20 p-4">
+                <p className="text-sm font-semibold text-foreground">{t(`analyze_info.${key}_q`, {}, locale)}</p>
+                <p className="mt-2 text-sm text-muted-foreground leading-6">{t(`analyze_info.${key}_a`, {}, locale)}</p>
               </div>
             ))}
           </div>
@@ -288,7 +281,7 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-xl font-bold text-white">{t('analyze.free_result_title', {}, locale)}</h2>
           <div className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-500">
-            {locale === 'tr' ? 'Ucretsiz Surum' : 'Free Tier'}
+            {t('analyze_info.free_tier', {}, locale)}
           </div>
         </div>
 
@@ -321,7 +314,7 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
           ))}
           {issues.length === 0 ? (
             <li className="text-sm italic text-muted-foreground">
-              {locale === 'tr' ? 'Kritik sorun bulunamadi.' : 'No critical issues found.'}
+              {t('analyze_info.no_issues', {}, locale)}
             </li>
           ) : null}
         </ol>
