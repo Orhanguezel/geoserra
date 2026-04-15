@@ -318,9 +318,10 @@
   "contact": {
     "title": "İletişim",
     "subtitle": "Sorularınız için bize ulaşın",
-    "name_label": "Adınız",
+    "form_title": "Mesaj Gönder",
+    "name_label": "Ad Soyad",
     "email_label": "E-posta",
-    "message_label": "Mesajınız",
+    "message_label": "Mesaj",
     "submit": "Gönder",
     "success": "Mesajınız alındı! En kısa sürede dönüş yapacağız."
   },

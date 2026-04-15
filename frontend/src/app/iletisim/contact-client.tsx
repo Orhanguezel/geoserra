@@ -80,17 +80,18 @@ export function ContactClient() {
         </div>
 
         <div className="max-w-lg mx-auto">
-
         <AnimatePresence mode="wait">
           {uiState === 'success' ? (
             <motion.div
               key="success"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-10 text-center space-y-3"
+              className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-12 text-center space-y-4"
             >
-              <CheckCircle2 size={48} className="mx-auto text-emerald-400" />
-              <p className="font-semibold">{t('contact.success', {}, locale)}</p>
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
+                <CheckCircle2 size={36} className="text-emerald-500" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">{t('contact.success', {}, locale)}</p>
             </motion.div>
           ) : (
             <motion.form
@@ -99,35 +100,78 @@ export function ContactClient() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               onSubmit={handleSubmit}
-              className="rounded-2xl border border-border bg-card p-6 space-y-4"
+              className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden"
             >
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t('contact.name_label', {}, locale)}</label>
-                <input type="text" value={form.name} onChange={set('name')} required className="input-field" />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t('contact.email_label', {}, locale)}</label>
-                <input type="email" value={form.email} onChange={set('email')} required className="input-field" />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-medium">{t('contact.message_label', {}, locale)}</label>
-                <textarea value={form.message} onChange={set('message')} required rows={5} className="input-field resize-none" />
-              </div>
-
-              {uiState === 'error' && (
-                <div className="flex items-center gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                  <AlertCircle size={14} /> {t('common.error', {}, locale)}
+              {/* Form header */}
+              <div className="border-b border-border bg-muted/40 px-6 py-4 flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
+                  <Mail size={15} className="text-emerald-500" />
                 </div>
-              )}
+                <span className="text-sm font-semibold text-foreground">{t('contact.form_title', {}, locale)}</span>
+              </div>
 
-              <button
-                type="submit"
-                disabled={uiState === 'submitting'}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-60 transition-all"
-              >
-                {uiState === 'submitting' && <Loader2 size={16} className="animate-spin" />}
-                {t('contact.submit', {}, locale)}
-              </button>
+              <div className="p-6 space-y-5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {t('contact.name_label', {}, locale)}
+                  </label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={set('name')}
+                    required
+                    placeholder={locale === 'tr' ? 'Adınız Soyadınız' : 'Your full name'}
+                    className="input-field"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {t('contact.email_label', {}, locale)}
+                  </label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={set('email')}
+                    required
+                    placeholder={locale === 'tr' ? 'siz@ornek.com' : 'you@example.com'}
+                    className="input-field"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {t('contact.message_label', {}, locale)}
+                  </label>
+                  <textarea
+                    value={form.message}
+                    onChange={set('message')}
+                    required
+                    rows={5}
+                    placeholder={locale === 'tr' ? 'Mesajınızı buraya yazın...' : 'Write your message here...'}
+                    className="input-field resize-none"
+                  />
+                </div>
+
+                {uiState === 'error' && (
+                  <div className="flex items-center gap-2.5 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+                    <AlertCircle size={15} className="shrink-0" />
+                    {t('common.error', {}, locale)}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={uiState === 'submitting'}
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow-emerald-500/20 hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {uiState === 'submitting'
+                    ? <Loader2 size={16} className="animate-spin" />
+                    : <Mail size={15} />
+                  }
+                  {t('contact.submit', {}, locale)}
+                </button>
+              </div>
             </motion.form>
           )}
         </AnimatePresence>

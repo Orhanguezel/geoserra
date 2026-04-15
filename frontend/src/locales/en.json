@@ -318,10 +318,11 @@
   "contact": {
     "title": "Contact",
     "subtitle": "Reach out to us with your questions",
-    "name_label": "Your Name",
+    "form_title": "Send a Message",
+    "name_label": "Full Name",
     "email_label": "Email",
-    "message_label": "Your Message",
-    "submit": "Send",
+    "message_label": "Message",
+    "submit": "Send Message",
     "success": "Your message has been received! We'll get back to you shortly."
   },
   "common": {
