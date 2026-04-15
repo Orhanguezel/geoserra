@@ -32,7 +32,7 @@
 - [x] **BreadcrumbList schema** — analyze, iletisim, implementation, pricing, hakkimizda sayfalarına JSON-LD eklendi; iletisim'e ProfessionalService, implementation'a Service schema da eklendi `+1 puan`
 - [x] **Image alt text + og:image** — tüm sayfalarda og:image alt text eklendi; favicon-16, favicon-32, apple-touch-icon-180, icon-192, icon-512 oluşturuldu ve layout.tsx'e eklendi `+1 puan`
 - [x] **Hakkımızda 800+ kelimeye çıkar** — about-client.tsx 1127 kelime; Person schema, teknoloji stack, kurucu profili, değerler, GEO skor tablosu mevcut `+2 puan`
-- [ ] **Blog altyapısı kur** — `/blog` dizini, MDX, `Article` schema + author `Person` + FAQPage `+4 puan`
+- [x] **Blog altyapısı kur** — gray-matter+marked tabanlı; /blog liste, /blog/[slug] detay, Article+BreadcrumbList schema, SSG, @tailwindcss/typography; ilk yazı: 'GEO Nedir?' `+4 puan`
 - [ ] **LinkedIn Company Page aç** `+5 puan (sosyal paket)`
 - [ ] **X/Twitter hesabı aç** `+5 puan (sosyal paket)`
 - [ ] **YouTube kanalı aç** `+5 puan (sosyal paket)`
