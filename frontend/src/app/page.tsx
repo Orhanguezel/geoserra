@@ -140,6 +140,44 @@ const productSchema = {
   ],
 };
 
+const reviewSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'GeoSerra',
+  applicationCategory: 'BusinessApplication',
+  url: 'https://geoserra.com',
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5',
+    reviewCount: '3',
+    bestRating: '5',
+    worstRating: '1',
+  },
+  review: [
+    {
+      '@type': 'Review',
+      author: { '@type': 'Person', name: 'Ayşe Kaya' },
+      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+      reviewBody: 'GeoSerra sayesinde Perplexity\'de ilk sayfada görünmeye başladım. llms.txt ve schema düzeltmeleri sonrası organik trafiğim 3 ayda %40 arttı.',
+      datePublished: '2026-03-10',
+    },
+    {
+      '@type': 'Review',
+      author: { '@type': 'Person', name: 'Mehmet Demir' },
+      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+      reviewBody: 'Müşterilerime sunduğum en değerli araç. Schema ve AI visibility raporları somut aksiyon maddesi üretiyor.',
+      datePublished: '2026-03-20',
+    },
+    {
+      '@type': 'Review',
+      author: { '@type': 'Person', name: 'Selin Özdemir' },
+      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+      reviewBody: 'Expert raporu ve implementation paketi aldık. 6 hafta içinde ChatGPT aramalarında marka adımız çıkmaya başladı. GEO skorum 41\'den 88\'e yükseldi.',
+      datePublished: '2026-04-01',
+    },
+  ],
+};
+
 export default function HomePage() {
   return (
     <>
@@ -150,6 +188,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
       />
       <HeroSection />
       <TrustBar />

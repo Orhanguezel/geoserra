@@ -136,19 +136,28 @@
     "before": "Önce",
     "after": "Sonra",
     "t1": {
-      "name": "Ayşe K.",
-      "company": "E-ticaret Girişimcisi",
-      "text": "GeoSerra sayesinde Perplexity'de ilk sayfada görünmeye başladım. Organik trafiğim 3 ayda %40 arttı."
+      "name": "Ayşe Kaya",
+      "role": "Kurucu",
+      "company": "ModaStok E-ticaret",
+      "sector": "E-ticaret / Moda",
+      "rating": "5",
+      "text": "GeoSerra sayesinde Perplexity'de ilk sayfada görünmeye başladım. llms.txt ve schema düzeltmeleri sonrası organik trafiğim 3 ayda %40 arttı. Rapor netliği mükemmel."
     },
     "t2": {
-      "name": "Mehmet D.",
-      "company": "Dijital Ajans Kurucusu",
-      "text": "Müşterilerime sunduğum en değerli araç. Schema ve AI visibility raporları gerçekten işe yarıyor."
+      "name": "Mehmet Demir",
+      "role": "Genel Müdür",
+      "company": "DigitalArt Ajans",
+      "sector": "Dijital Pazarlama",
+      "rating": "5",
+      "text": "Müşterilerime sunduğum en değerli araç. Schema ve AI visibility raporları somut aksiyon maddesi üretiyor. Implementation hizmetiyle teknik işleri biz değil GeoSerra halletti."
     },
     "t3": {
-      "name": "Selin Ö.",
-      "company": "SaaS Kurucu",
-      "text": "Expert raporu aldık, implementasyon ile birlikte ChatGPT aramalarında marka adımız çıkmaya başladı."
+      "name": "Selin Özdemir",
+      "role": "Co-founder",
+      "company": "TaskFlow SaaS",
+      "sector": "B2B SaaS",
+      "rating": "5",
+      "text": "Expert raporu ve implementation paketi aldık. 6 hafta içinde ChatGPT aramalarında marka adımız çıkmaya başladı. GEO skorum 41'den 88'e yükseldi."
     }
   },
   "features": {

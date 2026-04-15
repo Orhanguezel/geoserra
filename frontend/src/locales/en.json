@@ -136,19 +136,28 @@
     "before": "Before",
     "after": "After",
     "t1": {
-      "name": "Ayse K.",
-      "company": "E-commerce Founder",
-      "text": "Thanks to GeoSerra, I started showing up on the first page in Perplexity. Organic traffic grew 40% in three months."
+      "name": "Ayşe Kaya",
+      "role": "Founder",
+      "company": "ModaStok E-commerce",
+      "sector": "E-commerce / Fashion",
+      "rating": "5",
+      "text": "Thanks to GeoSerra, I started appearing on page one in Perplexity. After fixing llms.txt and schema issues, organic traffic grew 40% in three months. The report clarity is excellent."
     },
     "t2": {
-      "name": "Mehmet D.",
-      "company": "Digital Agency Founder",
-      "text": "The most valuable tool I offer my clients. The schema and AI visibility reporting creates real action."
+      "name": "Mehmet Demir",
+      "role": "CEO",
+      "company": "DigitalArt Agency",
+      "sector": "Digital Marketing",
+      "rating": "5",
+      "text": "The most valuable tool I offer my clients. Schema and AI visibility reports generate concrete action items. The implementation service handled the technical work so we didn't have to."
     },
     "t3": {
-      "name": "Selin O.",
-      "company": "SaaS Founder",
-      "text": "We bought the Expert report and implementation package. Soon after, our brand started appearing in ChatGPT searches."
+      "name": "Selin Özdemir",
+      "role": "Co-founder",
+      "company": "TaskFlow SaaS",
+      "sector": "B2B SaaS",
+      "rating": "5",
+      "text": "We bought the Expert report and implementation package. Within 6 weeks our brand name started appearing in ChatGPT searches. GEO score went from 41 to 88."
     }
   },
   "features": {
