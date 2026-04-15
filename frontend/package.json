@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 3071",
-    "dev:no-turbo": "next dev --no-turbopack -p 3071",
+    "dev": "next dev --turbopack -p 3073",
+    "dev:no-turbo": "next dev --no-turbopack -p 3073",
     "build": "next build",
-    "start": "next start -p 3071",
+    "start": "next start -p 3073",
     "lint": "eslint"
   },
   "dependencies": {
