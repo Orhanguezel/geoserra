@@ -16,11 +16,27 @@ const categories = [
   { nameKey: 'report_preview.cat_platform', score: 71, color: '#38bdf8' },
 ];
 
-const ISSUE_COLORS = [
-  'text-red-400 bg-red-500/10',
-  'text-amber-400 bg-amber-500/10',
-  'text-amber-400 bg-amber-500/10',
-  'text-yellow-400 bg-yellow-500/10',
+const ISSUE_STYLES = [
+  {
+    wrapper: 'bg-red-50 border border-red-200 dark:bg-red-500/10 dark:border-red-500/20',
+    badge:   'bg-red-600 text-white dark:bg-red-500/20 dark:text-red-300',
+    text:    'text-red-900 dark:text-red-300',
+  },
+  {
+    wrapper: 'bg-amber-50 border border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/20',
+    badge:   'bg-amber-600 text-white dark:bg-amber-500/20 dark:text-amber-300',
+    text:    'text-amber-900 dark:text-amber-300',
+  },
+  {
+    wrapper: 'bg-amber-50 border border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/20',
+    badge:   'bg-amber-600 text-white dark:bg-amber-500/20 dark:text-amber-300',
+    text:    'text-amber-900 dark:text-amber-300',
+  },
+  {
+    wrapper: 'bg-yellow-50 border border-yellow-200 dark:bg-yellow-500/10 dark:border-yellow-500/20',
+    badge:   'bg-yellow-600 text-white dark:bg-yellow-500/20 dark:text-yellow-300',
+    text:    'text-yellow-900 dark:text-yellow-300',
+  },
 ];
 
 export function ReportPreviewSection() {
@@ -103,11 +119,11 @@ export function ReportPreviewSection() {
                 </div>
                 <div className="space-y-2">
                   {([1, 2, 3, 4] as const).map((n, i) => (
-                    <div key={n} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 ${ISSUE_COLORS[i]}`}>
-                      <span className="mt-px shrink-0 rounded px-1 py-0.5 text-[9px] font-bold font-mono opacity-80">
+                    <div key={n} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 ${ISSUE_STYLES[i].wrapper}`}>
+                      <span className={`mt-px shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold font-mono ${ISSUE_STYLES[i].badge}`}>
                         {t(`report_preview_issues.i${n}_priority`, {}, locale)}
                       </span>
-                      <span className="text-[11px] leading-5 opacity-90">{t(`report_preview_issues.i${n}_text`, {}, locale)}</span>
+                      <span className={`text-[11px] leading-5 ${ISSUE_STYLES[i].text}`}>{t(`report_preview_issues.i${n}_text`, {}, locale)}</span>
                     </div>
                   ))}
                 </div>
