@@ -157,12 +157,12 @@ async function generateExecutiveSummary(params: {
   brand_context: string;
   top_barriers: string[];
 }) {
-  const system = 'Sen bir GEO SEO uzmanısın. Profesyonel, müşteri odaklı içerik yaz.';
+  const system = 'Sen bir GEO SEO uzmanısın. Profesyonel, müşteri odaklı içerik yaz. Yanıtlarını JSON formatında döndür.';
   const dimSummary = Object.entries(params.scores)
     .filter(([, v]) => v != null)
     .map(([k, v]) => `${k}=${v}`)
     .join(', ');
-  const user = `Bu siteye dair PDF raporun Executive Summary bölümü için 4-6 cümlelik profesyonel Türkçe özet yaz.
+  const user = `Bu siteye dair PDF raporun Executive Summary bölümü için 4-6 cümlelik profesyonel Türkçe özet üret ve JSON olarak döndür.
 
 Domain: ${params.domain}
 Genel GEO Skor: ${params.geo_score}/100
@@ -197,7 +197,7 @@ async function generateFindings(params: {
   has_llmstxt: boolean;
 }) {
   const system = 'Sen bir GEO SEO uzmanısın. Somut, uygulanabilir teknik bulgular üret. Daima JSON döndür.';
-  const user = `Aşağıdaki site verileri için severity kategorili bulgular listesi üret.
+  const user = `Aşağıdaki site verileri için severity kategorili bulgular listesi üret ve JSON olarak döndür.
 
 Domain: ${params.domain}
 Skorlar: ${JSON.stringify(params.scores)}
@@ -238,10 +238,10 @@ async function generateTieredPlan(params: {
   findings: Finding[];
   scores: Record<string, number | null>;
 }) {
-  const system = 'Sen bir GEO SEO uzmanısın. Öncelik sıralı aksiyon planı üret.';
+  const system = 'Sen bir GEO SEO uzmanısın. Öncelik sıralı aksiyon planı üret. Yanıtlarını JSON formatında döndür.';
   const findingsBrief = params.findings.slice(0, 10).map((f) => `[${f.severity}] ${f.title}`).join('\n');
 
-  const user = `Aşağıdaki bulgulara göre 3-katmanlı aksiyon planı üret (Türkçe, somut maddeler).
+  const user = `Aşağıdaki bulgulara göre 3-katmanlı aksiyon planı üret (Türkçe, somut maddeler) ve JSON olarak döndür.
 
 Domain: ${params.domain}
 Bulgular:

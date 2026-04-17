@@ -194,12 +194,9 @@ export async function downloadAnalysisPdf(req: FastifyRequest, reply: FastifyRep
     return reply.code(403).send({ error: 'PDF_NOT_AVAILABLE_FOR_FREE' });
   }
 
-  // Geçici download URL döndür (PDF /reports/ prefix'i altında statik serve edilir)
+  // PDF'e 302 redirect et — /reports/* statik serve edilir (staticReports plugin)
   const filename = analysis.pdf_path.split('/').pop();
-  return reply.send({
-    download_url: `/reports/${filename}`,
-    expires_in: 3600,
-  });
+  return reply.redirect(`/reports/${filename}`, 302);
 }
 
 // ─── Helper ─────────────────────────────────────────────────────────────────
