@@ -185,43 +185,92 @@ Kurallar:
 
 async function generateFindings(params: {
   domain: string;
+  title: string | null;
+  description: string | null;
+  h1_tags: string[];
+  word_count: number;
   scores: Record<string, number | null>;
   performance_score: number | null;
   seo_score: number | null;
-  has_schema: boolean;
-  https_ok: boolean;
-  spf_ok: boolean | null;
-  has_hreflang: boolean;
-  security_headers_present: number;
-  word_count: number;
+  lcp: string | null;
+  schema_types: string[];
+  missing_security_headers: string[];
+  analytics_tools: string[];
+  social_profiles_count: number;
   has_llmstxt: boolean;
+  has_hreflang: boolean;
+  lang_attribute: string | null;
+  spf_ok: boolean | null;
+  dmarc_ok: boolean | null;
+  https_ok: boolean;
+  sitemap_exists: boolean;
+  crawler_blocks: string[];
 }) {
-  const system = 'Sen bir GEO SEO uzmanısın. Somut, uygulanabilir teknik bulgular üret. Daima JSON döndür.';
-  const user = `Aşağıdaki site verileri için severity kategorili bulgular listesi üret ve JSON olarak döndür.
+  const system = `Sen deneyimli bir GEO SEO danışmanısın. Somut, müşteriye sunulabilir bulgular üret.
 
+KURALLAR:
+1. Her bulgu SİTEDEN GÖZLENEN GERÇEK bir veriye atıfta bulunsun (rakam, başlık metni, eksik schema tipi)
+2. Generic cümleler YAZMA: "ai_citability düşük" ❌ | "Title tag 44 karakter, optimal 50-60 — SERP'te alan kaybı" ✓
+3. "Fix:" somut adım (hangi dosya, hangi kod) | "Etki:" +X puan veya metrik iyileşmesi
+4. Severity dağılımı: 2-4 critical, 3-5 high, 2-4 medium, 1-2 low
+5. Türkçe yaz, teknik terimleri İngilizce bırak (hreflang, schema, LCP, JSON-LD)
+6. Yanıtını JSON formatında döndür`;
+
+  const scoreBrief = Object.entries(params.scores)
+    .filter(([, v]) => v != null)
+    .map(([k, v]) => `${k}=${v}`)
+    .join(', ');
+
+  const schemaList = params.schema_types.length > 0 ? params.schema_types.join(', ') : 'HİÇBİRİ';
+  const essentialSchemas = ['Organization', 'WebSite', 'Person', 'BreadcrumbList', 'FAQPage'];
+  const missingSchemas = essentialSchemas.filter(
+    (s) => !params.schema_types.some((t) => t.toLowerCase().includes(s.toLowerCase())),
+  );
+
+  const user = `Aşağıdaki SİTE VERİSİNE dayalı somut bulgular üret (JSON):
+
+== Genel ==
 Domain: ${params.domain}
-Skorlar: ${JSON.stringify(params.scores)}
-Performans: ${params.performance_score ?? '?'}/100
-SEO: ${params.seo_score ?? '?'}/100
-Schema: ${params.has_schema ? 'Var' : 'Yok'}
-HTTPS: ${params.https_ok ? 'OK' : 'Eksik'}
-SPF: ${params.spf_ok ? 'OK' : 'Eksik'}
-hreflang: ${params.has_hreflang ? 'Var' : 'Yok'}
-Security Headers: ${params.security_headers_present}/6 mevcut
-Kelime sayısı: ${params.word_count}
-llms.txt: ${params.has_llmstxt ? 'Var' : 'Yok'}
+Title: ${params.title ? `"${params.title}" (${params.title.length} karakter)` : 'YOK'}
+Meta Description: ${params.description ? `"${params.description.slice(0, 120)}${params.description.length > 120 ? '…' : ''}" (${params.description.length} karakter)` : 'YOK'}
+H1 etiketleri: ${params.h1_tags.length === 0 ? 'YOK' : params.h1_tags.map((h) => `"${h}"`).join(' | ')}
+Sayfa kelime sayısı: ${params.word_count}
+HTML dil: ${params.lang_attribute ?? 'tanımsız'}
 
-8-14 adet bulgu üret, her biri:
-- severity: "critical" | "high" | "medium" | "low"
-- title: kısa başlık (60 karakter sınırı, Türkçe)
-- description: 2-3 cümle açıklama + "Fix:" ile nasıl düzeltilir + "Etki:" ile skor kazancı (Türkçe)
+== Skorlar (0-100) ==
+${scoreBrief}
+Lighthouse Performance: ${params.performance_score ?? '?'}
+Lighthouse SEO: ${params.seo_score ?? '?'}
+LCP: ${params.lcp ?? 'ölçülemedi'}
 
-Severity dağılımı: 2-4 critical, 3-5 high, 2-4 medium, 1-2 low.
-Somut ol — generic tavsiyeler verme.
+== Structured Data (JSON-LD) ==
+Mevcut schema tipleri: ${schemaList}
+Eksik essential schemas: ${missingSchemas.length ? missingSchemas.join(', ') : 'yok (hepsi var)'}
 
-{"findings": [{"severity":"...", "title":"...", "description":"..."}]}`;
+== Teknik ==
+HTTPS: ${params.https_ok ? 'OK' : 'YOK (kritik)'}
+SPF: ${params.spf_ok ? 'var' : 'YOK'}
+DMARC: ${params.dmarc_ok ? 'var' : 'YOK'}
+hreflang: ${params.has_hreflang ? 'var' : 'YOK'}
+Eksik security headers: ${params.missing_security_headers.length ? params.missing_security_headers.join(', ') : 'hepsi var'}
+sitemap.xml: ${params.sitemap_exists ? 'var' : 'yok'}
+llms.txt: ${params.has_llmstxt ? 'var' : 'yok'}
 
-  const { content, usage } = await callGroq(user, system, { maxTokens: 2500, temperature: 0.3, jsonMode: true });
+== AI Crawler Erişimi ==
+Bloke edilen botlar: ${params.crawler_blocks.length ? params.crawler_blocks.join(', ') : 'yok'}
+
+== Entity/Brand ==
+Analytics araçları: ${params.analytics_tools.length ? params.analytics_tools.join(', ') : 'yok'}
+Sosyal profil linkleri: ${params.social_profiles_count} adet
+
+8-14 bulgu üret. Yukarıdaki RAKAMLARI ve METİNLERİ referans al.
+
+ÖRNEK İYİ BULGU:
+{"severity":"critical","title":"Homepage sadece 160 kelime — AI alıntılama imkansız","description":"AI sistemleri 134-167 kelimelik pasajları alıntılıyor. ${params.domain} homepage'de sadece ${params.word_count} kelime var. Fix: Tanım blokları, istatistikler ve FAQ ekleyin. Etki: +6 puan (AI Citability)"}
+
+{"findings": [...]}`;
+
+  const { content, usage } = await callGroq(user, system, { maxTokens: 3000, temperature: 0.35, jsonMode: true });
   const data = parseJson(content, { findings: [] as any[] });
   const findings: Finding[] = (Array.isArray(data.findings) ? data.findings : [])
     .filter((f: any) => f?.title && f?.description)
@@ -238,20 +287,35 @@ async function generateTieredPlan(params: {
   findings: Finding[];
   scores: Record<string, number | null>;
 }) {
-  const system = 'Sen bir GEO SEO uzmanısın. Öncelik sıralı aksiyon planı üret. Yanıtlarını JSON formatında döndür.';
-  const findingsBrief = params.findings.slice(0, 10).map((f) => `[${f.severity}] ${f.title}`).join('\n');
+  const system = `Sen deneyimli bir GEO SEO danışmanısın. Müşteriye sunulabilir aksiyon planı üret (JSON).
 
-  const user = `Aşağıdaki bulgulara göre 3-katmanlı aksiyon planı üret (Türkçe, somut maddeler) ve JSON olarak döndür.
+KURALLAR:
+1. Her madde somut — "hangi dosya", "hangi kod", "hangi metrik" içersin
+2. Findings'teki bulgulardan TÜRETİN — yeni genel tavsiye uydurma
+3. Türkçe yaz; teknik terimleri (hreflang, schema, JSON-LD, Core Web Vitals, INP, LCP) orijinal bırak
+4. Her maddeye "+X puan" veya etki notunu ekle (örn: "+4 puan AI Citability")
+5. Yanıtını JSON formatında döndür`;
+
+  const findingsDetail = params.findings.slice(0, 14).map((f) =>
+    `[${f.severity.toUpperCase()}] ${f.title}\n  → ${f.description.slice(0, 200)}`,
+  ).join('\n\n');
+
+  const user = `Aşağıdaki BULGULARDAN yola çıkarak 3-katmanlı aksiyon planı üret (JSON).
 
 Domain: ${params.domain}
-Bulgular:
-${findingsBrief}
 
-Kurallar:
-- quick_wins: 4-6 madde — bu hafta, düşük efor, critical/high severity'den
-- medium_term: 6-10 madde — bu ay, orta efor
-- strategic: 5-8 madde — bu çeyrek, uzun vadeli
-- Her madde tek satır, "+X puan" veya "Etki:..." eklenebilir
+Bulgular:
+${findingsDetail}
+
+Katmanlar:
+- quick_wins: 4-6 madde — BU HAFTA yapılabilir, düşük efor, critical/high severity'den gelir
+  Örnek: "robots.txt'den GPTBot Disallow kuralını kaldır — +3 puan Crawler Access"
+- medium_term: 6-10 madde — BU AY, orta efor (içerik yazımı, schema markup, refactor)
+  Örnek: "Person schema (JSON-LD) ekle — kurucu biyografisi + sosyal linkler — +3 puan E-E-A-T"
+- strategic: 5-8 madde — BU ÇEYREK, uzun vadeli (marka otoritesi, içerik üretimi)
+  Örnek: "YouTube kanalı aç — teknik tutorial serisi — +6 puan Brand Authority (AI korelasyonu 0.737)"
+
+Her madde tek satır, somut eylem + skor etkisi.
 
 {"quick_wins": [...], "medium_term": [...], "strategic": [...]}`;
 
@@ -359,20 +423,43 @@ export async function runAiInsights(
       'X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy',
     ];
     const secHeaders = page?.security_headers ?? {};
-    const secPresent = securityHeaderKeys.filter((k) => !!secHeaders[k]).length;
+    const missingSecurityHeaders = securityHeaderKeys.filter((k) => !secHeaders[k]);
+
+    const schemaTypes: string[] = Array.isArray(page?.structured_data)
+      ? page.structured_data
+          .map((s: any) => s?.['@type'])
+          .flat()
+          .filter(Boolean)
+          .map((t: any) => String(t))
+      : [];
+
+    const crawlerAccess = fullData.crawler_access ?? {};
+    const crawlerBlocks: string[] = Object.entries(crawlerAccess)
+      .filter(([, v]: any) => v?.status === 'Blocked' || v?.status === 'Restricted')
+      .map(([k]) => k);
 
     const f = await generateFindings({
       domain,
+      title: page?.title ?? null,
+      description: page?.description ?? null,
+      h1_tags: Array.isArray(page?.h1_tags) ? page.h1_tags : [],
+      word_count: page?.word_count ?? 0,
       scores,
       performance_score: perfScore,
       seo_score: seoScore,
-      has_schema: hasSchema,
-      https_ok: httpsOk,
-      spf_ok: spfOk,
-      has_hreflang: page?.has_hreflang === true,
-      security_headers_present: secPresent,
-      word_count: page?.word_count ?? 0,
+      lcp,
+      schema_types: schemaTypes,
+      missing_security_headers: missingSecurityHeaders,
+      analytics_tools: Array.isArray(page?.analytics_tools) ? page.analytics_tools : [],
+      social_profiles_count: Array.isArray(page?.social_profiles) ? page.social_profiles.length : 0,
       has_llmstxt: fullData.llmstxt?.exists === true,
+      has_hreflang: page?.has_hreflang === true,
+      lang_attribute: page?.lang_attribute ?? null,
+      spf_ok: spfOk,
+      dmarc_ok: dns?.dmarc?.exists ?? null,
+      https_ok: httpsOk,
+      sitemap_exists: Array.isArray(fullData.robots?.sitemaps) && fullData.robots.sitemaps.length > 0,
+      crawler_blocks: crawlerBlocks,
     });
     totalInput += f.usage.input;
     totalOutput += f.usage.output;
