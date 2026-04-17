@@ -112,6 +112,15 @@ async function runFreeAnalysis(analysisId: string, url: string): Promise<void> {
 /** Tam ücretli analiz — tüm scriptler */
 async function runFullAnalysis(analysisId: string, url: string, email: string): Promise<void> {
   try {
+    // Domain + brand name extraction (brand_scanner.py bu ikisini ayrı ayrı bekliyor)
+    const parsedUrl = (() => {
+      try { return new URL(url.startsWith('http') ? url : `https://${url}`); }
+      catch { return null; }
+    })();
+    const domain = parsedUrl?.hostname?.replace(/^www\./, '') ?? url;
+    const brandName = domain.split('.')[0];
+    const titleCaseBrand = brandName.charAt(0).toUpperCase() + brandName.slice(1);
+
     const [lighthouse, page, dns, performance, citability, brand, keywords, llmstxt, robots] =
       await Promise.allSettled([
         runPythonScript('lighthouse_checker.py', [url, '--strategy', 'both', ...(env.GOOGLE_PSI_API_KEY ? ['--api-key', env.GOOGLE_PSI_API_KEY] : [])]),
@@ -119,7 +128,7 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
         runPythonScript('dns_checker.py', [url]),
         runPythonScript('performance_analyzer.py', [url]),
         runPythonScript('citability_scorer.py', [url]),
-        runPythonScript('brand_scanner.py', [url]),
+        runPythonScript('brand_scanner.py', [titleCaseBrand, domain]),
         runPythonScript('keyword_analyzer.py', [url]),
         runPythonScript('llmstxt_generator.py', [url, '--check-only']),
         runPythonScript('fetch_page.py', [url, 'robots']),
@@ -284,27 +293,52 @@ function scoreAiCitability(data: any, tier: 'free' | 'full'): number | null {
   return Math.min(100, score);
 }
 
-/** Brand Authority — marka otoritesi (full tier only) */
+/**
+ * Brand Authority — marka otoritesi (full tier only).
+ *
+ * brand_scanner.py otomatik sorgu yapan alanlar:
+ * - wikipedia.has_wikipedia_page, has_wikidata_entry, wikipedia_search_results
+ *   (Wikipedia API ile gerçek sorgu)
+ * - youtube/reddit/linkedin: sadece presence flag'leri (çoğu zaman false döner)
+ *
+ * Ağırlıklar (referans PDF): YouTube 30, Reddit 20, Wikipedia 20, LinkedIn 15, Other 15
+ * Scoring: her platformda 2+ sinyal varsa tam puan, 1 sinyal = %50, yoksa 0
+ */
 function scoreBrandAuthority(data: any, tier: 'free' | 'full'): number | null {
-  if (tier === 'free') return null; // Free tier brand scan yapmıyor
+  if (tier === 'free') return null;
 
   const brand = data.brand;
   if (!brand) return null;
 
-  // brand_scanner.py platform presence sayar; skorlama ağırlıklı ortalamadır
   const platforms = brand.platforms ?? {};
-  let score = 0;
-  const weights = { youtube: 30, reddit: 20, wikipedia: 20, linkedin: 15, other: 15 };
+  const yt = platforms.youtube ?? {};
+  const rd = platforms.reddit ?? {};
+  const wk = platforms.wikipedia ?? {};
+  const li = platforms.linkedin ?? {};
+  const other = platforms.other?.platforms_checked ?? {};
 
-  for (const [key, weight] of Object.entries(weights)) {
-    const p = platforms[key];
-    if (!p) continue;
-    if (p.has_channel || p.mentioned_in_videos || p.has_profile || p.mentioned) {
-      score += weight;
-    } else if (p.exists) {
-      score += weight * 0.3;
-    }
-  }
+  // Her platform için sinyal sayısı
+  const ytSignals = (yt.has_channel ? 1 : 0) + (yt.mentioned_in_videos ? 1 : 0);
+  const rdSignals = (rd.has_subreddit ? 1 : 0) + (rd.mentioned_in_discussions ? 1 : 0);
+  const wkSignals = (wk.has_wikipedia_page ? 1 : 0) + (wk.has_wikidata_entry ? 1 : 0)
+    + (wk.cited_in_articles ? 1 : 0)
+    + ((wk.wikipedia_search_results ?? 0) > 3 ? 1 : 0);
+  const liSignals = (li.has_company_page ? 1 : 0) + (li.employee_thought_leadership ? 1 : 0);
+  const otherPlatforms = Object.keys(other).length;
+  // Other: sadece search URL'ler var — presence skor vermiyoruz, sadece mevcudiyet
+
+  const fullScore = (signals: number, max: number, weight: number): number => {
+    if (signals <= 0) return 0;
+    const ratio = Math.min(1, signals / max);
+    return weight * ratio;
+  };
+
+  let score = 0;
+  score += fullScore(ytSignals, 2, 30);
+  score += fullScore(rdSignals, 2, 20);
+  score += fullScore(wkSignals, 3, 20); // Wikipedia en önemli sinyal — max 3 sinyalde doyum
+  score += fullScore(liSignals, 2, 15);
+  score += otherPlatforms > 0 ? 5 : 0; // 6 diğer platform search-ready = base puan
 
   return Math.min(100, Math.round(score));
 }
