@@ -266,9 +266,20 @@ export function AnalyzeClient() {
 
 function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en'; domain: string }) {
   const geoScore: number = data?.geo_score ?? 0;
-  const perfScore: number = data?.performance_score ?? 0;
-  const seoScore: number = data?.seo_score ?? 0;
+  const perfScore: number | null = data?.performance_score ?? null;
+  const seoScore: number | null = data?.seo_score ?? null;
+  const scores = data?.scores ?? {};
+  const platforms: Record<string, number> = data?.platforms ?? {};
   const issues: string[] = data?.top_issues ?? [];
+
+  const dimensions = [
+    { key: 'ai_citability',         label_tr: 'AI Alıntılanabilirlik',  label_en: 'AI Citability',       locked: false },
+    { key: 'content_eeat',          label_tr: 'İçerik E-E-A-T',         label_en: 'Content E-E-A-T',     locked: false },
+    { key: 'technical',             label_tr: 'Teknik Altyapı',         label_en: 'Technical',           locked: false },
+    { key: 'schema',                label_tr: 'Structured Data',        label_en: 'Schema Markup',       locked: false },
+    { key: 'platform_optimization', label_tr: 'Platform Uyumu',         label_en: 'Platform Optimization', locked: false },
+    { key: 'brand_authority',       label_tr: 'Marka Otoritesi',        label_en: 'Brand Authority',     locked: true },
+  ];
 
   return (
     <motion.div
@@ -277,9 +288,10 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      <div className="rounded-3xl border border-white/5 bg-card p-8 md:p-10">
+      {/* Ana skor + performance + SEO */}
+      <div className="rounded-3xl border border-border bg-card p-8 md:p-10">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">{t('analyze.free_result_title', {}, locale)}</h2>
+          <h2 className="text-xl font-bold text-foreground">{t('analyze.free_result_title', {}, locale)}</h2>
           <div className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-500">
             {t('analyze_info.free_tier', {}, locale)}
           </div>
@@ -287,26 +299,97 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <ScoreRing label={t('analyze.geo_score', {}, locale)} score={geoScore} big />
-          <ScoreRing label={t('analyze.performance', {}, locale)} score={perfScore} />
-          <ScoreRing label={t('analyze.seo', {}, locale)} score={seoScore} />
+          <ScoreRing label={t('analyze.performance', {}, locale)} score={perfScore ?? 0} />
+          <ScoreRing label={t('analyze.seo', {}, locale)} score={seoScore ?? 0} />
         </div>
       </div>
 
-      <div className="rounded-3xl border border-white/5 bg-card p-8">
-        <h3 className="mb-6 flex items-center gap-2 font-bold text-white">
+      {/* 6-boyutlu skor dağılımı */}
+      <div className="rounded-3xl border border-border bg-card p-8">
+        <h3 className="mb-6 flex items-center gap-2 font-bold text-foreground">
+          <Layers size={18} className="text-emerald-500" />
+          {locale === 'tr' ? 'Skor Dağılımı (6 Boyut)' : 'Score Breakdown (6 Dimensions)'}
+        </h3>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {dimensions.map((d) => {
+            const val = scores[d.key];
+            const pct = val == null ? 0 : Math.max(0, Math.min(100, val));
+            const label = locale === 'tr' ? d.label_tr : d.label_en;
+            const color = pct >= 70 ? '#10b981' : pct >= 40 ? '#f59e0b' : '#ef4444';
+            return (
+              <div key={d.key} className="rounded-xl border border-border bg-muted/30 p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground/90">{label}</span>
+                  {d.locked || val == null ? (
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground">
+                      <Lock size={10} /> {locale === 'tr' ? 'Premium' : 'Premium'}
+                    </span>
+                  ) : (
+                    <span className="font-mono text-sm font-bold" style={{ color }}>{pct}/100</span>
+                  )}
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: d.locked || val == null ? '20%' : `${pct}%` }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    className="h-full rounded-full"
+                    style={{ backgroundColor: d.locked || val == null ? 'hsl(var(--muted-foreground))' : color, opacity: d.locked || val == null ? 0.25 : 1 }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* AI Platform Readiness */}
+      {Object.keys(platforms).length > 0 && (
+        <div className="rounded-3xl border border-border bg-card p-8">
+          <h3 className="mb-6 flex items-center gap-2 font-bold text-foreground">
+            <Bot size={18} className="text-emerald-500" />
+            {locale === 'tr' ? 'AI Platform Hazırlığı' : 'AI Platform Readiness'}
+          </h3>
+          <div className="space-y-3">
+            {Object.entries(platforms).map(([name, val]) => {
+              const pct = Math.max(0, Math.min(100, val));
+              const color = pct >= 70 ? '#10b981' : pct >= 40 ? '#f59e0b' : '#ef4444';
+              return (
+                <div key={name} className="flex items-center gap-4">
+                  <span className="w-44 shrink-0 text-sm text-foreground/90">{name}</span>
+                  <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 1, delay: 0.3 }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: color }}
+                    />
+                  </div>
+                  <span className="w-14 text-right font-mono text-sm font-bold" style={{ color }}>{pct}/100</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Top Issues */}
+      <div className="rounded-3xl border border-border bg-card p-8">
+        <h3 className="mb-6 flex items-center gap-2 font-bold text-foreground">
           <AlertCircle size={18} className="text-red-400" />
           {t('analyze.issues_title', {}, locale)}
         </h3>
         <ol className="space-y-4">
-          {issues.slice(0, 5).map((issue, i) => (
+          {issues.slice(0, 6).map((issue, i) => (
             <motion.li
               key={i}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="flex items-start gap-3 rounded-xl border border-white/5 bg-white/5 p-4 text-sm text-white/80"
+              className="flex items-start gap-3 rounded-xl border border-border bg-muted/40 p-4 text-sm text-foreground/80"
             >
-              <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-[10px] font-bold text-red-400">
+              <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-[10px] font-bold text-red-400">
                 {i + 1}
               </div>
               {issue}
@@ -320,25 +403,21 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
         </ol>
       </div>
 
-      <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <LockedCard label="AI Citability" />
-        <LockedCard label="Schema Markup" />
-        <LockedCard label="E-E-A-T Score" />
-        <LockedCard label="Keywords & LLMs" />
-
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-b from-transparent via-[#06090f]/80 to-[#06090f] p-6">
-          <div className="max-w-sm space-y-4 rounded-3xl border border-emerald-500/30 bg-card p-8 text-center shadow-2xl shadow-emerald-500/20">
-            <Lock className="mx-auto mb-2 text-emerald-500" size={32} />
-            <h4 className="font-bold text-white">{t('analyze.locked_title', {}, locale)}</h4>
-            <p className="text-sm leading-relaxed text-muted-foreground">{t('analyze.locked_desc', {}, locale)}</p>
-            <Link
-              href={`/pricing?domain=${encodeURIComponent(domain)}`}
-              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-bold text-white transition-all hover:bg-emerald-600"
-            >
-              {t('analyze.upgrade_cta', {}, locale)} <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
+      {/* Upgrade CTA */}
+      <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 p-8 text-center">
+        <Lock className="mx-auto mb-3 text-emerald-500" size={32} />
+        <h4 className="mb-2 font-bold text-foreground">{t('analyze.locked_title', {}, locale)}</h4>
+        <p className="mx-auto mb-5 max-w-md text-sm leading-relaxed text-muted-foreground">
+          {locale === 'tr'
+            ? 'Tam rapor ile: Marka otoritesi taraması (YouTube/Reddit/Wikipedia), citability analizi, aksiyon planı ve PDF rapor.'
+            : 'Full report includes: Brand authority scan (YouTube/Reddit/Wikipedia), citability analysis, action plan, and PDF report.'}
+        </p>
+        <Link
+          href={`/pricing?domain=${encodeURIComponent(domain)}`}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white transition-all hover:bg-emerald-700"
+        >
+          {t('analyze.upgrade_cta', {}, locale)} <ArrowRight size={16} />
+        </Link>
       </div>
     </motion.div>
   );
@@ -378,18 +457,3 @@ function ScoreRing({ score, label, big }: { score: number; label: string; big?: 
   );
 }
 
-function LockedCard({ label }: { label: string }) {
-  return (
-    <div className="pointer-events-none flex flex-col gap-3 rounded-2xl border border-white/5 bg-card/50 p-6 opacity-50 blur-[2px]">
-      <div className="flex items-center justify-between">
-        <div className="h-4 w-24 rounded-full bg-white/10" />
-        <Lock size={14} className="text-white/20" />
-      </div>
-      <div className="space-y-2">
-        <div className="h-2 w-full rounded-full bg-white/5" />
-        <div className="h-2 w-2/3 rounded-full bg-white/5" />
-      </div>
-      <div className="mt-2 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">{label}</div>
-    </div>
-  );
-}

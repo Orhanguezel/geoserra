@@ -37,8 +37,23 @@ export interface AnalysisStatus {
   package_slug: string;
   free_data?: {
     geo_score?: number;
+    scores?: {
+      ai_citability?: number | null;
+      brand_authority?: number | null;
+      content_eeat?: number | null;
+      technical?: number | null;
+      schema?: number | null;
+      platform_optimization?: number | null;
+    };
+    platforms?: Record<string, number>;
     performance_score?: number | null;
     seo_score?: number | null;
+    lcp?: string | null;
+    has_title?: boolean;
+    has_meta_description?: boolean;
+    h1_count?: number;
+    https_ok?: boolean;
+    spf_ok?: boolean;
     top_issues?: string[];
     [key: string]: unknown;
   };

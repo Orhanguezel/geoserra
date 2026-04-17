@@ -38,6 +38,8 @@ def fetch_page(url: str, timeout: int = 30) -> dict:
     """Fetch a page and return structured analysis data."""
     result = {
         "url": url,
+        "final_url": None,
+        "is_https": False,
         "status_code": None,
         "redirect_chain": [],
         "headers": {},
@@ -97,6 +99,8 @@ def fetch_page(url: str, timeout: int = 30) -> dict:
 
         result["status_code"] = response.status_code
         result["headers"] = dict(response.headers)
+        result["final_url"] = response.url
+        result["is_https"] = response.url.lower().startswith("https://")
 
         # Security headers check
         security_headers = [
