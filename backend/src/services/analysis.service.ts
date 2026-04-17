@@ -112,7 +112,7 @@ async function runFreeAnalysis(analysisId: string, url: string): Promise<void> {
 /** Tam ücretli analiz — tüm scriptler */
 async function runFullAnalysis(analysisId: string, url: string, email: string): Promise<void> {
   try {
-    const [lighthouse, page, dns, performance, citability, brand, keywords, llmstxt] =
+    const [lighthouse, page, dns, performance, citability, brand, keywords, llmstxt, robots] =
       await Promise.allSettled([
         runPythonScript('lighthouse_checker.py', [url, '--strategy', 'both', ...(env.GOOGLE_PSI_API_KEY ? ['--api-key', env.GOOGLE_PSI_API_KEY] : [])]),
         runPythonScript('fetch_page.py', [url]),
@@ -122,6 +122,7 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
         runPythonScript('brand_scanner.py', [url]),
         runPythonScript('keyword_analyzer.py', [url]),
         runPythonScript('llmstxt_generator.py', [url, '--check-only']),
+        runPythonScript('fetch_page.py', [url, 'robots']),
       ]);
 
     const fullData: FullAnalysisData = {
@@ -136,15 +137,16 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
       keywords: extractResult(keywords),
       llmstxt: extractResult(llmstxt),
     };
+    (fullData as any).robots = extractResult(robots);
 
     // 6-boyutlu skor + platform readiness hesapla
     const dimensions = computeDimensions(fullData, 'full');
     fullData.geo_score = calculateGeoScore(dimensions);
     (fullData as any).scores = dimensions;
     (fullData as any).platforms = computePlatformReadiness(dimensions);
+    (fullData as any).crawler_access = buildCrawlerAccess((fullData as any).robots);
 
-    // AI Insights — Groq LLM ile görünürlük analizi + aksiyon planı
-    // Paket slug'ını analysis kaydından alıyoruz
+    // AI Insights — Groq LLM ile görünürlük analizi + findings + aksiyon planı
     const analysisRecord = await repoGetAnalysisById(analysisId);
     const packageSlug = analysisRecord?.package_slug ?? 'starter';
     const aiInsights = await runAiInsights(fullData, packageSlug);
@@ -156,8 +158,9 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
       }
     }
 
-    // PDF üret
-    const pdfPath = await PdfService.generatePdf(analysisId, fullData);
+    // PDF üret — generate_pdf_report.py schema'ya map
+    const pdfData = buildPdfData(fullData, aiInsights);
+    const pdfPath = await PdfService.generatePdf(analysisId, pdfData);
 
     await repoUpdateAnalysis(analysisId, {
       status: 'completed',
@@ -556,6 +559,182 @@ function buildTopIssues(d: any): string[] {
   const schemaScore = d.dimensions?.schema;
   if (schemaScore != null && schemaScore < 30) issues.push('Structured data minimum — Organization/Person eksik');
   return issues.slice(0, 6);
+}
+
+// ─── AI Crawler Access Map ──────────────────────────────────────────────────
+// AI bot → platform mapping (PDF raporunun Crawler Access tablosu için)
+
+const AI_CRAWLER_PLATFORMS: Record<string, string> = {
+  'GPTBot':            'ChatGPT (OpenAI)',
+  'OAI-SearchBot':     'ChatGPT Search',
+  'ChatGPT-User':      'ChatGPT User Agent',
+  'ClaudeBot':         'Claude (Anthropic)',
+  'anthropic-ai':      'Claude (legacy)',
+  'PerplexityBot':     'Perplexity AI',
+  'CCBot':             'Common Crawl (multi-AI)',
+  'Bytespider':        'ByteDance/Doubao',
+  'cohere-ai':         'Cohere',
+  'Google-Extended':   'Google Gemini / AI Overviews',
+  'GoogleOther':       'Google AI (research)',
+  'Applebot-Extended': 'Apple Intelligence',
+  'FacebookBot':       'Meta AI',
+  'Amazonbot':         'Amazon AI',
+};
+
+function buildCrawlerAccess(robots: any): Record<string, { platform: string; status: string; recommendation: string }> {
+  const result: Record<string, { platform: string; status: string; recommendation: string }> = {};
+  const botStatuses: Record<string, string> = robots?.ai_crawler_status ?? {};
+
+  for (const [bot, platform] of Object.entries(AI_CRAWLER_PLATFORMS)) {
+    const raw = botStatuses[bot] ?? 'NOT_MENTIONED';
+    let status: string;
+    let recommendation: string;
+
+    switch (raw) {
+      case 'BLOCKED':
+      case 'BLOCKED_BY_WILDCARD':
+        status = 'Blocked';
+        recommendation = `${bot} engelli — robots.txt'de Disallow kuralını kaldırın`;
+        break;
+      case 'PARTIALLY_BLOCKED':
+        status = 'Restricted';
+        recommendation = `${bot} kısmen engelli — kritik sayfaların erişilebilir olduğunu doğrulayın`;
+        break;
+      case 'ALLOWED':
+      case 'ALLOWED_BY_DEFAULT':
+      case 'NOT_MENTIONED':
+      case 'NO_ROBOTS_TXT':
+        status = 'Allowed';
+        recommendation = 'Erişim açık';
+        break;
+      default:
+        status = 'Unknown';
+        recommendation = 'Durum belirlenemedi';
+    }
+
+    result[bot] = { platform, status, recommendation };
+  }
+
+  return result;
+}
+
+// ─── PDF Data Builder ───────────────────────────────────────────────────────
+// generate_pdf_report.py'nin beklediği şemaya dönüştürür
+
+function extractBrandName(url: string, page: any): string {
+  if (page?.og_tags?.['og:site_name']) return page.og_tags['og:site_name'];
+  if (page?.title) {
+    // Title'ın ilk kısmı (|, —, - öncesi)
+    const parts = page.title.split(/[\|—–\-]/);
+    const cleaned = parts[0]?.trim();
+    if (cleaned && cleaned.length < 60) return cleaned;
+  }
+  try {
+    const u = new URL(url.startsWith('http') ? url : `https://${url}`);
+    const host = u.hostname.replace(/^www\./, '');
+    const base = host.split('.')[0];
+    return base.charAt(0).toUpperCase() + base.slice(1);
+  } catch {
+    return url;
+  }
+}
+
+function buildRuleBasedFindings(dimensions: DimensionScores, page: any, dns: any, lh: any): any[] {
+  const findings: any[] = [];
+
+  if (dimensions.schema != null && dimensions.schema < 30) {
+    findings.push({
+      severity: 'critical',
+      title: 'Structured Data eksik — AI alıntılama sınırlı',
+      description: 'Organization, Person veya Article JSON-LD markup bulunamadı. AI sistemleri yapılandırılmış veri ile entity tanıyabiliyor. Fix: Organization + Person + WebSite schemalarını ekleyin. Etki: +6 puan.',
+    });
+  }
+  if (page?.is_https === false) {
+    findings.push({
+      severity: 'critical',
+      title: 'HTTPS yok — Güvenlik açığı',
+      description: 'Site HTTP üzerinden sunuluyor. Tarayıcılar güvensiz uyarısı veriyor, AI sistemleri güvenilir kaynak olarak görmüyor. Fix: Let\'s Encrypt ile SSL sertifikası kurun. Etki: Domain otoritesi.',
+    });
+  }
+  const perf = lh?.categories?.performance?.score;
+  const perfNum = perf != null && perf > 1 ? perf : perf != null ? perf * 100 : null;
+  if (perfNum != null && perfNum < 50) {
+    findings.push({
+      severity: 'high',
+      title: `Performans skoru düşük (${Math.round(perfNum)}/100)`,
+      description: 'LCP ve TBT metrikleri zayıf. Yavaş sayfalar AI crawlerlar için timeout riski oluşturuyor. Fix: Görselleri optimize edin, JS bundle boyutunu düşürün, CDN kullanın. Etki: +5 puan.',
+    });
+  }
+  const secHeaders = page?.security_headers ?? {};
+  const headerKeys = ['Strict-Transport-Security', 'Content-Security-Policy', 'X-Frame-Options'];
+  const missing = headerKeys.filter((k) => !secHeaders[k]);
+  if (missing.length > 0) {
+    findings.push({
+      severity: 'high',
+      title: `${missing.length} güvenlik header eksik`,
+      description: `Eksik: ${missing.join(', ')}. Fix: Nginx/web sunucusu konfigürasyonuna ekleyin. Etki: Güvenlik sinyali +2 puan.`,
+    });
+  }
+  if (!dns?.spf?.exists) {
+    findings.push({
+      severity: 'medium',
+      title: 'SPF kaydı yok',
+      description: 'Email spoofing mümkün. Domain otoritesi düşüyor. Fix: DNS TXT kaydına SPF ekleyin. Etki: Domain güvenilirliği.',
+    });
+  }
+  if (page?.has_hreflang === false) {
+    findings.push({
+      severity: 'medium',
+      title: 'hreflang tag yok',
+      description: 'Çoklu dil desteği varsa SEO için kritik. Fix: Her dil sayfasına hreflang + x-default ekleyin. Etki: +3 puan (çoklu dilli siteler için).',
+    });
+  }
+  if ((page?.word_count ?? 0) < 300) {
+    findings.push({
+      severity: 'high',
+      title: `İçerik yetersiz (${page?.word_count ?? 0} kelime)`,
+      description: 'AI sistemleri alıntılama için 300+ kelime aranıyor. Homepage 500+ kelime ideal. Fix: Tanım blokları, istatistikler ve FAQ ekleyin. Etki: +6 puan.',
+    });
+  }
+  return findings;
+}
+
+function buildPdfData(fullData: any, aiInsights: any): any {
+  const url = fullData.url;
+  const page = fullData.page ?? {};
+  const dimensions = fullData.scores ?? {};
+
+  return {
+    url,
+    brand_name: extractBrandName(url, page),
+    date: new Date().toISOString().slice(0, 10),
+    geo_score: fullData.geo_score ?? 0,
+    scores: {
+      ai_citability:         dimensions.ai_citability ?? 0,
+      brand_authority:       dimensions.brand_authority ?? 0,
+      content_eeat:          dimensions.content_eeat ?? 0,
+      technical:             dimensions.technical ?? 0,
+      schema:                dimensions.schema ?? 0,
+      platform_optimization: dimensions.platform_optimization ?? 0,
+    },
+    platforms: fullData.platforms ?? {},
+    crawler_access: fullData.crawler_access ?? {},
+    executive_summary: aiInsights?.executive_summary ?? '',
+    findings: aiInsights?.findings?.length
+      ? aiInsights.findings
+      : buildRuleBasedFindings(dimensions, page, fullData.dns, fullData.lighthouse),
+    quick_wins: aiInsights?.quick_wins ?? [],
+    medium_term: aiInsights?.medium_term ?? [],
+    strategic: aiInsights?.strategic ?? [],
+    // Ek referanslar — PDF isterse kullanır
+    ai_insights: aiInsights,
+    raw: {
+      lighthouse: fullData.lighthouse,
+      page: fullData.page,
+      dns: fullData.dns,
+      citability: fullData.citability,
+    },
+  };
 }
 
 export const AnalysisService = { runFreeAnalysis, runFullAnalysis };
