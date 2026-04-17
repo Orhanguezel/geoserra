@@ -22,14 +22,17 @@ export async function analyzeFree(req: FastifyRequest, reply: FastifyReply) {
   const { url, email } = parsed.data;
   const domain = extractDomain(url);
 
-  // Domain lock kontrolü
-  const locked = await repoIsDomainLocked(domain);
-  if (locked) {
-    return reply.code(409).send({
-      error: 'DOMAIN_ALREADY_ANALYZED',
-      message: 'Bu domain için ücretsiz analiz hakkı kullanıldı.',
-      domain,
-    });
+  // Domain lock kontrolü — FREE_ANALYSIS_DOMAIN_LOCK=false ile bypass edilebilir (testing)
+  const lockEnabled = process.env.FREE_ANALYSIS_DOMAIN_LOCK !== 'false';
+  if (lockEnabled) {
+    const locked = await repoIsDomainLocked(domain);
+    if (locked) {
+      return reply.code(409).send({
+        error: 'DOMAIN_ALREADY_ANALYZED',
+        message: 'Bu domain için ücretsiz analiz hakkı kullanıldı.',
+        domain,
+      });
+    }
   }
 
   // Analiz kaydı oluştur
@@ -41,8 +44,10 @@ export async function analyzeFree(req: FastifyRequest, reply: FastifyReply) {
     package_slug: 'free',
   });
 
-  // Domain'i kilitle
-  await repoLockDomain(domain);
+  // Domain'i kilitle (sadece lock aktifse)
+  if (lockEnabled) {
+    await repoLockDomain(domain);
+  }
 
   // Analizi asenkron başlat (non-blocking)
   AnalysisService.runFreeAnalysis(analysis.id, url).catch((err) => {

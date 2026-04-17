@@ -174,9 +174,10 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
       to: email,
       domain: new URL(url.startsWith('http') ? url : `https://${url}`).hostname,
       geoScore: fullData.geo_score ?? null,
-      performanceScore: (fullData.lighthouse as any)?.categories?.performance?.score != null
-        ? Math.round((fullData.lighthouse as any).categories.performance.score * 100)
-        : null,
+      performanceScore: (() => {
+        const p = lhNorm((fullData.lighthouse as any)?.categories?.performance?.score);
+        return p != null ? Math.round(p * 100) : null;
+      })(),
       pdfUrl: publicPdfUrl,
       analysisId,
     }).catch(() => {});
@@ -341,6 +342,15 @@ function scoreContentEEAT(data: any): number | null {
   return Math.min(100, score);
 }
 
+/**
+ * Lighthouse category score'unu 0-1 aralığına normalize eder.
+ * lighthouse_checker.py 0-100 aralığında döndürüyor ama bazı PSI versiyonları 0-1 döndürebilir.
+ */
+function lhNorm(score: number | undefined | null): number | null {
+  if (score == null) return null;
+  return score > 1 ? score / 100 : score;
+}
+
 /** Technical Foundations */
 function scoreTechnical(data: any): number | null {
   const lighthouse = data.lighthouse;
@@ -351,11 +361,11 @@ function scoreTechnical(data: any): number | null {
   let score = 0;
   let maxScore = 0;
 
-  // Lighthouse best-practices + accessibility (20 each)
-  const bp = lighthouse?.categories?.['best-practices']?.score ?? lighthouse?.categories?.best_practices?.score;
+  // Lighthouse best-practices (20) + accessibility (15) — score 0-1 aralığında
+  const bp = lhNorm(lighthouse?.categories?.['best-practices']?.score ?? lighthouse?.categories?.best_practices?.score);
   if (bp != null) { score += bp * 20; maxScore += 20; }
 
-  const a11y = lighthouse?.categories?.accessibility?.score;
+  const a11y = lhNorm(lighthouse?.categories?.accessibility?.score);
   if (a11y != null) { score += a11y * 15; maxScore += 15; }
 
   // HTTPS (15)
@@ -434,8 +444,8 @@ function scorePlatformOptimization(data: any): number | null {
   const hasSsr = page?.has_ssr_content !== false && (page?.word_count ?? 0) > 50;
   if (page) { score += hasSsr ? 25 : 0; max += 25; }
 
-  // SEO Lighthouse score (Bing, AIO, Gemini)
-  const seo = lh?.categories?.seo?.score;
+  // SEO Lighthouse score (Bing, AIO, Gemini) — normalize to 0-1
+  const seo = lhNorm(lh?.categories?.seo?.score);
   if (seo != null) { score += seo * 25; max += 25; }
 
   // Schema presence (tüm platformlar)
@@ -506,8 +516,8 @@ function extractFreeData(raw: any): any {
   const geo_score = calculateGeoScore(dimensions);
   const platforms = computePlatformReadiness(dimensions);
 
-  const perf = raw.lighthouse?.categories?.performance?.score;
-  const seo = raw.lighthouse?.categories?.seo?.score;
+  const perf = lhNorm(raw.lighthouse?.categories?.performance?.score);
+  const seo = lhNorm(raw.lighthouse?.categories?.seo?.score);
   const lcp = raw.lighthouse?.audits?.['largest-contentful-paint']?.displayValue;
   const title = raw.page?.title;
   const metaDesc = raw.page?.description;
