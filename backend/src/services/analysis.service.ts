@@ -74,7 +74,7 @@ async function runFreeAnalysis(analysisId: string, url: string): Promise<void> {
     ]);
 
     const freeData = {
-      lighthouse: lighthouse.status === 'fulfilled' ? lighthouse.value.data : null,
+      lighthouse: normalizeLighthouse(lighthouse.status === 'fulfilled' ? lighthouse.value.data : null),
       page: page.status === 'fulfilled' ? page.value.data : null,
       dns: dns.status === 'fulfilled' ? dns.value.data : null,
       generated_at: new Date().toISOString(),
@@ -127,7 +127,7 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
     const fullData: FullAnalysisData = {
       url,
       generated_at: new Date().toISOString(),
-      lighthouse: extractResult(lighthouse),
+      lighthouse: normalizeLighthouse(extractResult(lighthouse)),
       page: extractResult(page),
       dns: extractResult(dns),
       performance: extractResult(performance),
@@ -195,6 +195,26 @@ function extractResult(settled: PromiseSettledResult<ScriptResult>): any {
     return settled.value.data;
   }
   return null;
+}
+
+/**
+ * lighthouse_checker.py `strategies.mobile|desktop.categories` yapısında
+ * output veriyor. Scoring logic doğrudan `categories` bekliyor, bu yüzden
+ * mobile stratejisini root'a flatten ediyoruz (mobile yoksa desktop fallback).
+ */
+function normalizeLighthouse(raw: any): any {
+  if (!raw) return null;
+  // Zaten düz yapıdaysa (test amaçlı fallback) dokunma
+  if (raw.categories) return raw;
+  const strategy = raw.strategies?.mobile ?? raw.strategies?.desktop;
+  if (!strategy) return raw;
+  return {
+    ...raw,
+    categories: strategy.categories,
+    audits: strategy.audits,
+    core_web_vitals: strategy.core_web_vitals,
+    lighthouse_score: strategy.overall_score ?? raw.overall_lighthouse_score,
+  };
 }
 
 // ─── 6-Boyutlu GEO Scoring ──────────────────────────────────────────────────
