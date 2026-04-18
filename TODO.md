@@ -147,13 +147,18 @@ Ayda 1000 ücretli rapor = ~$4 LLM + %3-4 ödeme komisyonu.
 ## 📦 Son Commit Durumu
 
 - Branch: `main`
-- Son commit: `9546b1f` — "feat: monthly delta / analysis comparison"
+- Son commit: `c1e1cd4` — "chore: gitignore .claude/"
 - VPS senkron: ✅
-- PM2 durumu: `geoserra-backend` (online), `geoserra-frontend` (online), `geoserra-admin` (silindi, gerekirse yeniden ekle)
+- PM2 durumu: `geoserra-backend` (online), `geoserra-frontend` (online)
 
 **Sprint içi eklenenler (2026-04-18):**
 - `bdbdd3f` robustness: timeout + rate limit TR + Groq fallback
 - `9546b1f` monthly delta / analysis comparison
+- `7a7550f` pricing restructure: Basic $5 / Standart $15 / Premium $50
+  - Örnek rapor paylaşımı (pricing + home + analyze)
+  - Free tier: rule-based AI, $0 maliyet
+  - 3-paket preview card in /analyze upsell
+  - storage/assets/sample-report.pdf kalıcı
 
 ---
 
