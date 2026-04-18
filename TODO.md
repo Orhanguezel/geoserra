@@ -42,6 +42,99 @@ Son oturumda tamamlanan işler ve sonraki sprint için yapılacaklar listesi.
 
 ---
 
+## 🎯 SONRAKİ OTURUM — Başla Buradan
+
+**Durum (oturum sonu 2026-04-18):**
+- Fiyatlama yeni yapıda canlı: Basic $5 / Standart $15 / Premium $50 ✅
+- Free tier: Groq yok, rule-based, $0 maliyet ✅
+- Örnek PDF paylaşımı aktif: https://geoserra.com/assets/sample-report.pdf ✅
+- Analiz pipeline + delta compare + robustness tam ✅
+
+**Sonraki sprint için sıralı plan:**
+
+### 1️⃣ Implementation Paketleri — PRIORITY 1 (~1.5 saat)
+
+Kullanıcı açıkça istedi, mevcut `implementation` modülü form-bazlı ama tier yok. 5 tier eklenecek:
+
+| Paket | Tip | Fiyat | Süre | Kapsam |
+|---|---|---|---|---|
+| **Quick Fix** | One-time | $49 | 1-2 saat | robots.txt + meta tags + temel schema + HTTPS |
+| **Essential** | One-time | $199 | 3-5 gün | Critical/high findings + schema paketi (5 tip) + security headers + sitemap + llms.txt |
+| **Kapsamlı** | One-time | $499 | 2 hafta | Essential + ana sayfa + 5 alt sayfa content rewrite + 30 gün takip |
+| **Aylık Bakım** | Abonelik | $99/ay (3ay min) | — | Aylık re-scan + 48h critical fix + trend raporu |
+| **Full Retainer** | Abonelik | $499/ay | — | Haftalık check-in + sınırsız fix + content/schema updates |
+
+**Yapılacaklar:**
+- [ ] `backend/src/modules/implementation/` — `package_slug` kolonu ekle (ENUM: `quick_fix`, `essential`, `kapsamli`, `monthly`, `retainer`)
+- [ ] `backend/packages.ts`'e paralel `IMPLEMENTATION_PACKAGES` export'u
+- [ ] DB migration (008_implementation_packages.sql)
+- [ ] Admin panel: tier filtresi, status workflow (pending → in_progress → done)
+- [ ] `frontend/app/implementation/` sayfası: 5 paket kartı + form (mevcut form altında)
+- [ ] `/analyze` PDF sonrası "Bu raporu $199'a uygularız" CTA — Essential paketine yönlendir
+- [ ] Stripe/PayPal checkout flow'u implementation için (mevcut analyze flow'u generalize et)
+- [ ] Abonelik handler (monthly/retainer) — Stripe subscription integration
+- [ ] Rapor sayfasında (`/report/[id]`) implementasyon CTA (paid tier kullanıcılar için)
+
+### 2️⃣ Ödeme Akışı Doğrulama — PRIORITY 2 (~1 saat)
+
+Canlı gelir için kritik. Test kartları ile end-to-end doğrula:
+- [ ] Stripe test kart (4242...) ile $15 Standart satın al → analiz tetiklensin → PDF gelsin
+- [ ] PayPal sandbox ile aynı test
+- [ ] Webhook idempotency (aynı olay 2x gelirse duplicate analiz yapmamalı)
+- [ ] Fatura e-mail template (şu an email template var mı?)
+- [ ] Ödeme başarısız durumu (kart reddi) — kullanıcıya mesaj doğru mu?
+
+### 3️⃣ Admin Paneli — PRIORITY 3 (~2-3 saat)
+
+Operasyonel kontrol için. Route'lar zaten `/api/v1/admin/*` altında var (requireAdmin middleware). Frontend eksik:
+- [ ] `admin/app/` workspace'de admin sayfaları (login, analyses, users, settings, stats)
+- [ ] Analiz listesi + arama + manuel retry butonu
+- [ ] Implementation talepleri tablosu + status update
+- [ ] Kullanıcı hesapları (soft delete, role change)
+- [ ] Site settings CMS (logo, SMTP, fiyatlar)
+- [ ] Groq token kullanım grafiği (bugün/bu ay maliyet)
+
+### 4️⃣ Production Hardening — PRIORITY 4 (~1 saat)
+
+Canlıya tam güvenle geçmek için:
+- [ ] `FREE_ANALYSIS_DOMAIN_LOCK=true` yap (yukarıdaki komut)
+- [ ] PM2 autostart doğrulama: `pm2 startup && pm2 save`
+- [ ] Backup cron: `storage/reports/` + DB günlük → tar.gz
+- [ ] Uptime monitoring (UptimeRobot free tier yeterli)
+- [ ] Telegram alert webhook (Groq kota %80, backend down, disk %90)
+
+### 5️⃣ Analytics + GTM — PRIORITY 5 (~30 dk)
+
+- [ ] `NEXT_PUBLIC_GTM_ID` set et (GTM container kur)
+- [ ] GTM'de GA4 ekle
+- [ ] Conversion event'leri: `analyze_submit`, `checkout_start`, `purchase_complete`
+- [ ] Funnel görselleştirme
+
+### İkinci Faz — Kalite Kazançları (opsiyonel, sonra)
+
+- [ ] **Citability scorer'ı free tier'a aç** — paid-only olmasına gerek yok, rule-based zaten var
+- [ ] **JS rendering (Playwright)** — SPA siteler için daha iyi `has_ssr_content` tespiti
+- [ ] **Eksik Python analyzer'ları** — `eeat_analyzer.py`, `schema_validator.py`, `platform_analyzer.py`, `technical_analyzer.py` (heuristic'leri gerçek script'le değiştir)
+- [ ] **Multi-page audit** — homepage + 5-10 iç sayfa (Premium paket için)
+- [ ] **Rakip analizi implementasyonu** — Premium paket feature'ı, şu an listede ama backend'i yok
+
+---
+
+## Sonraki Oturumda İlk Adım
+
+**Tahmini süre: 1.5 saat**
+
+```
+1. Implementation paketleri yapısını oluştur
+2. Admin panel → Implementation talepleri tablosu  
+3. /pricing sayfasına ayrı "İmplementasyon" section'ı ekle
+4. /analyze sonucunda "Bu raporu uygularız" CTA'sı
+```
+
+Başlamak için sadece TODO.md'yi aç ve bu bölüme bakman yeterli — geri kalan tüm geçmiş referans olarak.
+
+---
+
 ## 📋 Sprint 3 Kandidatları (Öncelik sırası ayarlanacak)
 
 ### A. Ödeme Akışı (Kritik — Gelir için)
