@@ -30,8 +30,15 @@ interface FullAnalysisData {
 /**
  * Python scriptlerini Bun.spawn ile çalıştırır.
  * geo-seo-claude/scripts/ → backend/python/ symlink veya kopyalanmış olmalı.
+ *
+ * Timeout: default 60s. Süre aşılırsa process kill edilir ve error döner.
+ * Takılan bir script tüm pipeline'ı bloklayamaz (runFullAnalysis ~9 paralel çağrı).
  */
-async function runPythonScript(scriptName: string, args: string[]): Promise<ScriptResult> {
+async function runPythonScript(
+  scriptName: string,
+  args: string[],
+  timeoutMs = 60_000,
+): Promise<ScriptResult> {
   const scriptsDir = path.resolve(process.cwd(), env.PYTHON_SCRIPTS_DIR);
   const scriptPath = path.join(scriptsDir, scriptName);
 
@@ -39,27 +46,46 @@ async function runPythonScript(scriptName: string, args: string[]): Promise<Scri
     return { success: false, error: `Script bulunamadı: ${scriptPath}` };
   }
 
+  let proc: any;
+  let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
+  let timedOut = false;
+
   try {
-    const proc = globalThis.Bun.spawn([env.PYTHON_BIN, scriptPath, ...args], {
+    proc = globalThis.Bun.spawn([env.PYTHON_BIN, scriptPath, ...args], {
       stdout: 'pipe',
       stderr: 'pipe',
       env: { ...process.env, PYTHONUNBUFFERED: '1' },
     });
 
-    const [stdout, _stderr] = await Promise.all([
+    // Watchdog: süre aşılırsa kill
+    timeoutHandle = setTimeout(() => {
+      timedOut = true;
+      try { proc.kill('SIGKILL'); } catch { /* ignore */ }
+    }, timeoutMs);
+
+    const [stdout, stderr] = await Promise.all([
       new Response(proc.stdout).text(),
       new Response(proc.stderr).text(),
     ]);
 
     await proc.exited;
+    if (timeoutHandle) clearTimeout(timeoutHandle);
+
+    if (timedOut) {
+      return { success: false, error: `Script timeout (${timeoutMs / 1000}s): ${scriptName}` };
+    }
 
     if (proc.exitCode !== 0) {
-      return { success: false, error: `Script hata kodu: ${proc.exitCode}` };
+      return {
+        success: false,
+        error: `Script hata kodu ${proc.exitCode}: ${scriptName} — ${stderr.slice(0, 200)}`,
+      };
     }
 
     const data = JSON.parse(stdout.trim());
     return { success: true, data };
   } catch (err: any) {
+    if (timeoutHandle) clearTimeout(timeoutHandle);
     return { success: false, error: err?.message ?? 'Script çalıştırılamadı' };
   }
 }
@@ -733,14 +759,95 @@ function buildRuleBasedFindings(dimensions: DimensionScores, page: any, dns: any
   return findings;
 }
 
+/** Groq başarısız olduğunda Türkçe executive summary üretir */
+function buildRuleBasedExecutiveSummary(
+  fullData: any,
+  dimensions: DimensionScores,
+  brandName: string,
+): string {
+  const score = fullData.geo_score ?? 0;
+  const tier = score >= 85 ? 'Mükemmel' : score >= 70 ? 'İyi' : score >= 55 ? 'Orta' : score >= 40 ? 'Ortalama altı' : 'Dikkat gerektiriyor';
+  const strong: string[] = [];
+  const weak: string[] = [];
+
+  if ((dimensions.technical ?? 0) >= 70) strong.push(`teknik altyapı (${dimensions.technical}/100)`);
+  if ((dimensions.platform_optimization ?? 0) >= 70) strong.push(`platform uyumu (${dimensions.platform_optimization}/100)`);
+  if ((dimensions.content_eeat ?? 0) >= 70) strong.push(`içerik kalitesi (${dimensions.content_eeat}/100)`);
+
+  if ((dimensions.schema ?? 0) < 40) weak.push('eksik structured data');
+  if ((dimensions.brand_authority ?? 0) < 40) weak.push('düşük marka otoritesi');
+  if ((dimensions.ai_citability ?? 0) < 40) weak.push('zayıf AI alıntılanabilirliği');
+
+  const strongText = strong.length > 0 ? strong.join(', ') : 'temel altyapı mevcut';
+  const weakText = weak.length > 0 ? weak.join(' ve ') : 'belirgin zayıflık gözlenmedi';
+  const target = Math.min(100, score + 15);
+
+  return `${brandName}, genel GEO skorumuz ${score}/100 olarak değerlendirilmiştir (${tier} seviye). Güçlü yönler: ${strongText}. Zayıf yönler: ${weakText}. Quick wins stratejileri ile mevcut skoru ${target}/100'e çıkarmak mümkündür.`;
+}
+
+/** Groq başarısız olduğunda findings'ten 3-katmanlı plan üretir */
+function buildRuleBasedTieredPlan(findings: any[]): { quick_wins: string[]; medium_term: string[]; strategic: string[] } {
+  const quick: string[] = [];
+  const medium: string[] = [];
+  const strategic: string[] = [];
+
+  for (const f of findings) {
+    const title = f.title ?? '';
+    const desc = f.description ?? '';
+    const fixMatch = desc.match(/Fix:\s*([^.]+\.?)/i);
+    const action = fixMatch ? fixMatch[1].trim() : title;
+    const etkiMatch = desc.match(/Etki:\s*(\+?\d+\s*puan[^.,]*|[^.,]{1,60})/i);
+    const impact = etkiMatch ? ` — ${etkiMatch[1].trim()}` : '';
+    const item = `${action}${impact}`.slice(0, 180);
+
+    if (f.severity === 'critical') quick.push(item);
+    else if (f.severity === 'high') medium.push(item);
+    else strategic.push(item);
+  }
+
+  // Default fallback'ler — hiç finding yoksa
+  if (quick.length === 0) quick.push('Temel schema (Organization + WebSite) ekleyin — +10 puan');
+  if (medium.length === 0) medium.push('Homepage içeriğini 500+ kelimeye çıkarın — +6 puan');
+  if (strategic.length === 0) strategic.push('Marka içeriği ve sosyal medya varlığı geliştirin — +10 puan Brand Authority');
+
+  return {
+    quick_wins: quick.slice(0, 6),
+    medium_term: medium.slice(0, 10),
+    strategic: strategic.slice(0, 8),
+  };
+}
+
 function buildPdfData(fullData: any, aiInsights: any): any {
   const url = fullData.url;
   const page = fullData.page ?? {};
   const dimensions = fullData.scores ?? {};
+  const brandName = extractBrandName(url, page);
+
+  // Findings — öncelik: Groq > rule-based
+  const findings = aiInsights?.findings?.length
+    ? aiInsights.findings
+    : buildRuleBasedFindings(dimensions, page, fullData.dns, fullData.lighthouse);
+
+  // Tiered plan fallback — Groq fail ise findings'ten türet
+  const hasGroqPlan = (aiInsights?.quick_wins?.length ?? 0) > 0
+    || (aiInsights?.medium_term?.length ?? 0) > 0
+    || (aiInsights?.strategic?.length ?? 0) > 0;
+  const tiered = hasGroqPlan
+    ? {
+        quick_wins: aiInsights.quick_wins ?? [],
+        medium_term: aiInsights.medium_term ?? [],
+        strategic: aiInsights.strategic ?? [],
+      }
+    : buildRuleBasedTieredPlan(findings);
+
+  // Executive summary — öncelik: Groq > rule-based
+  const executive_summary = aiInsights?.executive_summary?.trim()
+    ? aiInsights.executive_summary
+    : buildRuleBasedExecutiveSummary(fullData, dimensions, brandName);
 
   return {
     url,
-    brand_name: extractBrandName(url, page),
+    brand_name: brandName,
     date: new Date().toISOString().slice(0, 10),
     geo_score: fullData.geo_score ?? 0,
     scores: {
@@ -753,13 +860,11 @@ function buildPdfData(fullData: any, aiInsights: any): any {
     },
     platforms: fullData.platforms ?? {},
     crawler_access: fullData.crawler_access ?? {},
-    executive_summary: aiInsights?.executive_summary ?? '',
-    findings: aiInsights?.findings?.length
-      ? aiInsights.findings
-      : buildRuleBasedFindings(dimensions, page, fullData.dns, fullData.lighthouse),
-    quick_wins: aiInsights?.quick_wins ?? [],
-    medium_term: aiInsights?.medium_term ?? [],
-    strategic: aiInsights?.strategic ?? [],
+    executive_summary,
+    findings,
+    quick_wins: tiered.quick_wins,
+    medium_term: tiered.medium_term,
+    strategic: tiered.strategic,
     // Ek referanslar — PDF isterse kullanır
     ai_insights: aiInsights,
     raw: {

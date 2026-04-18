@@ -41,6 +41,11 @@ export async function createApp() {
     global: false,
     max: 100,
     timeWindow: '1 minute',
+    errorResponseBuilder: (_req, context) => ({
+      error: 'RATE_LIMIT_EXCEEDED',
+      message: `Çok fazla istek — ${Math.ceil(context.ttl / 1000)} saniye sonra tekrar deneyin.`,
+      retry_after_seconds: Math.ceil(context.ttl / 1000),
+    }),
   });
 
   const cookieSecret =
