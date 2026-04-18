@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(grep -E \"\\\\.py$\")",
+      "Bash(curl -s -X POST https://geoserra.com/api/v1/analyze/free -H \"Content-Type: application/json\" -d '{\"url\":\"https://www.whatsapp.com\",\"email\":\"\"}')",
+      "Bash(curl -s -X POST https://geoserra.com/api/v1/analyze/free -H \"Content-Type: application/json\" -d '{\"url\":\"https://www.whatsapp.com\",\"email\":\"test@test.com\"}')",
+      "Bash(curl -s https://geoserra.com/api/v1/analyze/87a35c03-e383-406c-96d3-f2ab9df87cc2/status)",
+      "Bash(curl -s -X POST https://geoserra.com/api/v1/analyze/free -H \"Content-Type: application/json\" -d '{\"url\":\"https://www.github.com\",\"email\":\"test3@test.com\"}')",
+      "Bash(curl -s https://geoserra.com/api/v1/analyze/968b3e87-e4fe-481b-a4a8-928987d87027/status)",
+      "Bash(scp guezelwebdesign:/var/www/geoserra/backend/storage/reports/geoserra-report-287a659f-c53c-44bb-acd6-826ce7650dd2.pdf /tmp/geoserra-test/test-github.pdf)",
+      "Bash(scp guezelwebdesign:/var/www/geoserra/backend/storage/reports/geoserra-report-be6a6b68-22fd-49ba-a234-4c313a2a7ed4.pdf /tmp/geoserra-test/test-whatsapp.pdf)",
+      "Bash(curl -sI \"https://geoserra.com/api/v1/analyze/be6a6b68-22fd-49ba-a234-4c313a2a7ed4/download\")",
+      "Bash(curl -sI \"https://geoserra.com/reports/geoserra-report-be6a6b68-22fd-49ba-a234-4c313a2a7ed4.pdf\")",
+      "Bash(scp guezelwebdesign:/var/www/geoserra/backend/storage/reports/geoserra-report-1a93e5d4-a8c7-4c2d-9008-97dd633c1452.pdf /tmp/geoserra-test/test-github-v2.pdf)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://geoserra.com/compare/007d5d5e-95b6-4211-b93a-aa1549b1ee3e/1a93e5d4-a8c7-4c2d-9008-97dd633c1452\")"
+    ],
+    "additionalDirectories": [
+      "/home/orhan/Documents/Projeler/vps-guezel/geoserra/frontend/src/app/compare/[base]"
+    ]
+  }
+}

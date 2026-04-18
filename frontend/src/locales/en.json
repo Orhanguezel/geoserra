@@ -65,16 +65,16 @@
     "per_month": "month",
     "cta": "Buy Now",
     "starter": {
-      "name": "Starter",
-      "desc": "8-category full analysis, PDF report, 30 action items"
+      "name": "Basic",
+      "desc": "PDF report + AI-enhanced findings + full 6-dimensional analysis"
     },
     "pro": {
-      "name": "Pro",
-      "desc": "Starter + AI citability, schema suggestions, competitor analysis"
+      "name": "Standard",
+      "desc": "Basic + Schema generation + Delta comparison — Most popular"
     },
     "expert": {
-      "name": "Expert",
-      "desc": "Pro + 1 hour of technical implementation included"
+      "name": "Premium",
+      "desc": "Standard + Competitor analysis + llms.txt generation + 1 free re-scan/month"
     },
     "monitor": {
       "name": "Monitor",
@@ -92,18 +92,18 @@
     "free_tier_desc": "Once per domain, basic analysis"
   },
   "pricing_features": {
-    "once_1": "Full technical SEO audit",
-    "once_2": "Core Web Vitals and performance",
-    "once_3": "PDF report with top issues",
-    "once_4": "30+ actionable recommendations",
-    "pro_1": "AI citability and mention scanning",
-    "pro_2": "Schema and JSON-LD suggestions",
-    "pro_3": "Competitor and keyword analysis",
-    "pro_4": "llms.txt and E-E-A-T review",
-    "expert_1": "1 hour technical implementation",
-    "expert_2": "Robots, sitemap and baseline schema setup",
-    "expert_3": "Priority support lane",
-    "expert_4": "Expert-grade delivery summary",
+    "once_1": "PDF report (sent via email)",
+    "once_2": "AI-enhanced finding descriptions (Groq LLM)",
+    "once_3": "Executive summary (tailored paragraph)",
+    "once_4": "Quick wins + medium-term action plan",
+    "pro_1": "Everything in Basic",
+    "pro_2": "Ready-to-use JSON-LD Schema markup code",
+    "pro_3": "Delta comparison (diff vs previous analysis)",
+    "pro_4": "Priority email support (72h)",
+    "expert_1": "Everything in Standard",
+    "expert_2": "1 competitor comparison + llms.txt generation",
+    "expert_3": "1 free re-scan per month",
+    "expert_4": "Priority support 24h (email + slack)",
     "monitor_1": "Weekly score monitoring",
     "monitor_2": "Performance and SEO alerts",
     "monitor_3": "Monthly mini report",

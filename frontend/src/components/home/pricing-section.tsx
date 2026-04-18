@@ -11,9 +11,9 @@ import { formatCurrency } from '@/lib/utils';
 import { CurrencyToggle } from './currency-toggle';
 
 const ONCE_PACKAGES = [
-  { slug: 'starter', price: 9, featureKeys: ['pricing_features.once_1', 'pricing_features.once_2', 'pricing_features.once_3', 'pricing_features.once_4'] },
-  { slug: 'pro', price: 29, popular: true, featureKeys: ['pricing_features.pro_1', 'pricing_features.pro_2', 'pricing_features.pro_3', 'pricing_features.pro_4'] },
-  { slug: 'expert', price: 99, featureKeys: ['pricing_features.expert_1', 'pricing_features.expert_2', 'pricing_features.expert_3', 'pricing_features.expert_4'] },
+  { slug: 'starter', price: 5,  featureKeys: ['pricing_features.once_1', 'pricing_features.once_2', 'pricing_features.once_3', 'pricing_features.once_4'] },
+  { slug: 'pro',     price: 15, popular: true, featureKeys: ['pricing_features.pro_1', 'pricing_features.pro_2', 'pricing_features.pro_3', 'pricing_features.pro_4'] },
+  { slug: 'expert',  price: 50, featureKeys: ['pricing_features.expert_1', 'pricing_features.expert_2', 'pricing_features.expert_3', 'pricing_features.expert_4'] },
 ];
 
 const MONTHLY_PACKAGES = [
@@ -119,6 +119,20 @@ export function PricingSection() {
           {t('pricing.free_tier_desc', {}, locale)} —{' '}
           <Link href="/analyze" className="text-primary underline underline-offset-2">{t('nav.analyze', {}, locale)}</Link>
         </p>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/assets/sample-report.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-5 py-2.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+          >
+            📄 {locale === 'tr' ? 'Örnek PDF Raporunu İndir' : 'Download Sample PDF'}
+          </a>
+          <span className="text-xs text-muted-foreground">
+            {locale === 'tr' ? '(Ücretli paketlerde ne tür rapor alacağınızı görün)' : '(See what paid packages deliver)'}
+          </span>
+        </div>
       </div>
     </section>
   );

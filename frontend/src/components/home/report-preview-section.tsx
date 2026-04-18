@@ -55,9 +55,19 @@ export function ReportPreviewSection() {
             <div className="mb-6 font-mono text-xs uppercase tracking-[0.28em] text-emerald-500">{t('report_preview.eyebrow', {}, locale)}</div>
             <h2 className="mb-6 text-3xl font-extrabold leading-tight text-foreground md:text-5xl">{t('report_preview.title', {}, locale)}</h2>
             <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{t('report_preview.description', {}, locale)}</p>
-            <Link href="/analyze" className="inline-flex items-center rounded-xl bg-emerald-500 px-8 py-4 font-bold text-primary-foreground transition-all hover:bg-emerald-600">
-              {t('report_preview.cta', {}, locale)}
-            </Link>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link href="/analyze" className="inline-flex items-center rounded-xl bg-emerald-500 px-8 py-4 font-bold text-primary-foreground transition-all hover:bg-emerald-600">
+                {t('report_preview.cta', {}, locale)}
+              </Link>
+              <a
+                href="/assets/sample-report.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-4 font-semibold text-foreground transition-all hover:bg-muted"
+              >
+                📄 {locale === 'tr' ? 'Örnek Raporu İncele' : 'View Sample Report'}
+              </a>
+            </div>
           </motion.div>
 
           <motion.div

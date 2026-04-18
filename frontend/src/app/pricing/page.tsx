@@ -3,7 +3,7 @@ import { PricingSection } from '@/components/home/pricing-section';
 
 export const metadata: Metadata = {
   title: 'Fiyatlandırma — GeoSerra',
-  description: 'GeoSerra GEO SEO rapor paketleri. Starter $29, Pro $59, Expert $99. Tek seferlik ödeme, anında PDF raporu.',
+  description: 'GeoSerra GEO SEO rapor paketleri. Basic $5, Standart $15, Premium $50. Tek seferlik ödeme, anında PDF raporu.',
   alternates: { canonical: 'https://geoserra.com/pricing' },
   openGraph: {
     title: 'GeoSerra Fiyatlandırma',
@@ -35,9 +35,9 @@ export default function PricingPage() {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     itemListElement: [
-      { '@type': 'Offer', name: 'Starter', price: '9', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/starter' },
-      { '@type': 'Offer', name: 'Pro', price: '29', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/pro' },
-      { '@type': 'Offer', name: 'Expert', price: '99', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/expert' },
+      { '@type': 'Offer', name: 'Basic', price: '5', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/starter' },
+      { '@type': 'Offer', name: 'Standart', price: '15', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/pro' },
+      { '@type': 'Offer', name: 'Premium', price: '50', priceCurrency: 'USD', url: 'https://geoserra.com/checkout/expert' },
     ],
   };
 

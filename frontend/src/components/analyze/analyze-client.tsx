@@ -403,21 +403,56 @@ function FreeResults({ data, locale, domain }: { data: any; locale: 'tr' | 'en';
         </ol>
       </div>
 
-      {/* Upgrade CTA */}
-      <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 p-8 text-center">
-        <Lock className="mx-auto mb-3 text-emerald-500" size={32} />
-        <h4 className="mb-2 font-bold text-foreground">{t('analyze.locked_title', {}, locale)}</h4>
-        <p className="mx-auto mb-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          {locale === 'tr'
-            ? 'Tam rapor ile: Marka otoritesi taraması (YouTube/Reddit/Wikipedia), citability analizi, aksiyon planı ve PDF rapor.'
-            : 'Full report includes: Brand authority scan (YouTube/Reddit/Wikipedia), citability analysis, action plan, and PDF report.'}
-        </p>
-        <Link
-          href={`/pricing?domain=${encodeURIComponent(domain)}`}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white transition-all hover:bg-emerald-700"
-        >
-          {t('analyze.upgrade_cta', {}, locale)} <ArrowRight size={16} />
-        </Link>
+      {/* Upgrade CTA — 3 paket preview */}
+      <div className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 p-8">
+        <div className="text-center mb-6">
+          <Lock className="mx-auto mb-3 text-emerald-500" size={32} />
+          <h4 className="mb-2 text-xl font-bold text-foreground">
+            {locale === 'tr' ? 'Bu analizi PDF raporla al' : 'Get this analysis as a PDF report'}
+          </h4>
+          <p className="mx-auto max-w-lg text-sm text-muted-foreground">
+            {locale === 'tr'
+              ? 'AI-nüanslı bulgular, executive summary, hazır schema kodu ve daha fazlası.'
+              : 'AI-enhanced findings, executive summary, ready-to-use schema code and more.'}
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3 mb-5">
+          <div className="rounded-xl border border-border bg-card/80 p-4 text-center">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Basic</div>
+            <div className="text-2xl font-bold text-foreground">$5</div>
+            <div className="mt-2 text-[11px] text-muted-foreground">{locale === 'tr' ? 'PDF + AI bulgular' : 'PDF + AI findings'}</div>
+          </div>
+          <div className="rounded-xl border-2 border-emerald-500/50 bg-emerald-500/5 p-4 text-center shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30">
+            <div className="text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold mb-1">
+              ★ {locale === 'tr' ? 'Önerilen' : 'Recommended'}
+            </div>
+            <div className="text-2xl font-bold text-foreground">$15</div>
+            <div className="mt-2 text-[11px] text-muted-foreground">{locale === 'tr' ? '+ Schema + Delta' : '+ Schema + Delta'}</div>
+          </div>
+          <div className="rounded-xl border border-border bg-card/80 p-4 text-center">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Premium</div>
+            <div className="text-2xl font-bold text-foreground">$50</div>
+            <div className="mt-2 text-[11px] text-muted-foreground">{locale === 'tr' ? '+ Rakip + Aylık' : '+ Competitor + Monthly'}</div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+          <Link
+            href={`/pricing?domain=${encodeURIComponent(domain)}`}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white transition-all hover:bg-emerald-700"
+          >
+            {t('analyze.upgrade_cta', {}, locale)} <ArrowRight size={16} />
+          </Link>
+          <a
+            href="/assets/sample-report.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+          >
+            📄 {locale === 'tr' ? 'Örnek PDF\'i incele' : 'View sample PDF'}
+          </a>
+        </div>
       </div>
     </motion.div>
   );

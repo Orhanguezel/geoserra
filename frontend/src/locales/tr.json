@@ -65,16 +65,16 @@
     "per_month": "ay",
     "cta": "Satın Al",
     "starter": {
-      "name": "Başlangıç",
-      "desc": "8 kategori tam analiz, PDF rapor, 30 aksiyon maddesi"
+      "name": "Basic",
+      "desc": "PDF rapor + AI-nüanslı bulgular + tam 6 boyut analiz"
     },
     "pro": {
-      "name": "Pro",
-      "desc": "Starter + AI citability, schema önerileri, rakip analizi"
+      "name": "Standart",
+      "desc": "Basic + Schema üretimi + Delta karşılaştırma — En çok tercih edilen"
     },
     "expert": {
-      "name": "Uzman",
-      "desc": "Pro + 1 saatlik teknik implementasyon dahil"
+      "name": "Premium",
+      "desc": "Standart + Rakip analizi + llms.txt üretimi + Aylık 1 re-scan"
     },
     "monitor": {
       "name": "Monitor",
@@ -92,18 +92,18 @@
     "free_tier_desc": "Her domain için 1 kez, temel analiz"
   },
   "pricing_features": {
-    "once_1": "Teknik SEO tam analiz",
-    "once_2": "Core Web Vitals ve performans",
-    "once_3": "PDF rapor ve öncelikli sorunlar",
-    "once_4": "30+ uygulanabilir aksiyon",
-    "pro_1": "AI citability ve mention taraması",
-    "pro_2": "Schema ve JSON-LD önerileri",
-    "pro_3": "Rakip ve keyword analizi",
-    "pro_4": "llms.txt ve E-E-A-T incelemesi",
-    "expert_1": "1 saat teknik implementasyon",
-    "expert_2": "Robots, sitemap ve temel schema kurulumu",
-    "expert_3": "Öncelikli destek kanalı",
-    "expert_4": "Uzman seviye teslim raporu",
+    "once_1": "PDF rapor (e-mail ile gönderim)",
+    "once_2": "AI-nüanslı bulgu açıklamaları (Groq LLM)",
+    "once_3": "Executive summary (size özel paragraf)",
+    "once_4": "Quick wins + medium-term aksiyon planı",
+    "pro_1": "Basic pakette olan her şey",
+    "pro_2": "Hazır JSON-LD Schema markup kodu",
+    "pro_3": "Delta karşılaştırma (önceki analizle fark)",
+    "pro_4": "Öncelikli e-mail destek (72 saat)",
+    "expert_1": "Standart pakette olan her şey",
+    "expert_2": "1 rakip karşılaştırması + llms.txt üretimi",
+    "expert_3": "Aylık 1 ücretsiz yeniden analiz",
+    "expert_4": "Öncelikli destek 24 saat (e-mail + slack)",
     "monitor_1": "Haftalık skor izleme",
     "monitor_2": "Performans ve SEO alarmı",
     "monitor_3": "Aylık mini rapor",
