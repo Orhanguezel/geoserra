@@ -166,3 +166,4 @@ bun.lockb
 
 # Build artifacts
 backend/dist/
+.claude/
