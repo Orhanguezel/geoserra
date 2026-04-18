@@ -118,6 +118,30 @@ export async function getAnalysisStatus(id: string): Promise<AnalysisStatus> {
   return res.data;
 }
 
+export interface CompareResponse {
+  domain: string;
+  base: {
+    id: string;
+    date: string;
+    package_slug: string;
+    geo_score: number | null;
+    scores: Record<string, number | null>;
+    platforms: Record<string, number>;
+  };
+  current: CompareResponse['base'];
+  deltas: {
+    geo_score: number | null;
+    scores: Record<string, number | null>;
+    platforms: Record<string, number | null>;
+  };
+  summary: { improved: number; regressed: number; unchanged: number };
+}
+
+export async function compareAnalyses(base: string, current: string): Promise<CompareResponse> {
+  const res = await api.get(`/analyze/compare`, { params: { base, current } });
+  return res.data;
+}
+
 export async function getCurrencyRates(): Promise<{ USD: 1; TRY: number; EUR: number }> {
   const res = await api.get('/currency/rates');
   return res.data;

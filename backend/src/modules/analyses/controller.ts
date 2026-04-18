@@ -244,3 +244,92 @@ export async function getMyAnalyses(req: FastifyRequest, reply: FastifyReply) {
     pages: Math.ceil(total / limit),
   });
 }
+
+/**
+ * GET /api/v1/analyze/compare?base=<id>&current=<id>
+ *
+ * İki analiz arasındaki delta'yı üretir. Her iki ID'nin aynı domain olması gerekir.
+ * Auth GEREKMİYOR — rapor linki paylaşılabilir olsun (PDF endpoint'i gibi).
+ */
+export async function compareAnalyses(req: FastifyRequest, reply: FastifyReply) {
+  const { base, current } = req.query as { base?: string; current?: string };
+
+  if (!base || !current) {
+    return reply.code(400).send({ error: 'MISSING_IDS', message: 'base ve current ID gerekli' });
+  }
+
+  const [baseAnalysis, currentAnalysis] = await Promise.all([
+    repoGetAnalysisById(base),
+    repoGetAnalysisById(current),
+  ]);
+
+  if (!baseAnalysis || !currentAnalysis) {
+    return reply.code(404).send({ error: 'ANALYSIS_NOT_FOUND' });
+  }
+
+  if (baseAnalysis.domain !== currentAnalysis.domain) {
+    return reply.code(400).send({
+      error: 'DOMAIN_MISMATCH',
+      message: 'Karşılaştırılan analizler aynı domain olmalı',
+      base_domain: baseAnalysis.domain,
+      current_domain: currentAnalysis.domain,
+    });
+  }
+
+  if (baseAnalysis.status !== 'completed' || currentAnalysis.status !== 'completed') {
+    return reply.code(400).send({ error: 'ANALYSES_NOT_COMPLETED' });
+  }
+
+  // Veriyi iki kaynaktan da oku (free + full tier desteği)
+  const extract = (a: any) => {
+    const data = a.full_data ?? a.free_data ?? {};
+    return {
+      id: a.id,
+      date: a.completed_at ?? a.created_at,
+      package_slug: a.package_slug,
+      geo_score: data.geo_score ?? null,
+      scores: data.scores ?? {},
+      platforms: data.platforms ?? {},
+    };
+  };
+
+  const baseData = extract(baseAnalysis);
+  const currentData = extract(currentAnalysis);
+
+  // Delta hesabı (null korumalı)
+  const computeDelta = (a: number | null | undefined, b: number | null | undefined): number | null => {
+    if (a == null || b == null) return null;
+    return Math.round((b - a) * 10) / 10;
+  };
+
+  const dimensionKeys = ['ai_citability', 'brand_authority', 'content_eeat', 'technical', 'schema', 'platform_optimization'];
+  const scoreDeltas: Record<string, number | null> = {};
+  for (const k of dimensionKeys) {
+    scoreDeltas[k] = computeDelta(baseData.scores[k], currentData.scores[k]);
+  }
+
+  const platformKeys = new Set([
+    ...Object.keys(baseData.platforms),
+    ...Object.keys(currentData.platforms),
+  ]);
+  const platformDeltas: Record<string, number | null> = {};
+  for (const k of platformKeys) {
+    platformDeltas[k] = computeDelta(baseData.platforms[k], currentData.platforms[k]);
+  }
+
+  return reply.send({
+    domain: baseAnalysis.domain,
+    base: baseData,
+    current: currentData,
+    deltas: {
+      geo_score: computeDelta(baseData.geo_score, currentData.geo_score),
+      scores: scoreDeltas,
+      platforms: platformDeltas,
+    },
+    summary: {
+      improved: Object.entries(scoreDeltas).filter(([, v]) => v != null && v > 0).length,
+      regressed: Object.entries(scoreDeltas).filter(([, v]) => v != null && v < 0).length,
+      unchanged: Object.entries(scoreDeltas).filter(([, v]) => v === 0).length,
+    },
+  });
+}

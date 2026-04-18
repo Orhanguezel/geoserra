@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { requireAuth } from '@vps/shared-backend/middleware/auth';
-import { analyzeFree, analyzePaid, getAnalysisStatus, downloadAnalysisPdf, getMyAnalyses } from './controller';
+import { analyzeFree, analyzePaid, getAnalysisStatus, downloadAnalysisPdf, getMyAnalyses, compareAnalyses } from './controller';
 
 export async function registerAnalyses(app: FastifyInstance) {
   const B = '/analyze';
@@ -15,6 +15,9 @@ export async function registerAnalyses(app: FastifyInstance) {
 
   app.get(`${B}/:id/status`, getAnalysisStatus);
   app.get(`${B}/:id/download`, downloadAnalysisPdf);
+  app.get(`${B}/compare`, {
+    config: { rateLimit: { max: 30, timeWindow: '1 minute' } } as any,
+  }, compareAnalyses);
 
   // Oturum açmış kullanıcının kendi analizleri
   app.get('/analyses/mine', { preHandler: [requireAuth] }, getMyAnalyses);

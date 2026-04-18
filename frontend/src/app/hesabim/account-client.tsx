@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/stores/auth-store';
 import { getMyAnalyses, type MyAnalysis } from '@/lib/api';
-import { User, Mail, Shield, ExternalLink, FileText, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { User, Mail, Shield, ExternalLink, FileText, RefreshCw, ChevronLeft, ChevronRight, GitCompare } from 'lucide-react';
 
 const STATUS_LABEL: Record<string, string> = {
   free: 'Ücretsiz',
@@ -130,53 +130,69 @@ export function AccountClient() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                      {analyses.map((a) => (
-                        <tr key={a.id} className="hover:bg-muted/30 transition-colors">
-                          <td className="py-3">
-                            <div className="font-medium text-foreground">{a.domain}</div>
-                            <div className="text-xs text-muted-foreground truncate max-w-[180px]">{a.url}</div>
-                          </td>
-                          <td className="py-3 text-xs text-muted-foreground capitalize">{a.package_slug}</td>
-                          <td className="py-3">
-                            {a.geo_score != null ? (
-                              <span className="font-mono font-semibold text-emerald-400">{a.geo_score}</span>
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )}
-                          </td>
-                          <td className="py-3">
-                            <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[a.status] ?? ''}`}>
-                              {STATUS_LABEL[a.status] ?? a.status}
-                            </span>
-                          </td>
-                          <td className="py-3 text-xs text-muted-foreground">
-                            {new Date(a.created_at).toLocaleDateString('tr-TR')}
-                          </td>
-                          <td className="py-3 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Link
-                                href={`/analyze?id=${a.id}`}
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors"
-                                title="Görüntüle"
-                              >
-                                <ExternalLink size={12} />
-                              </Link>
-                              {a.pdf_ready && (
-                                <a
-                                  href={`/api/v1/analyze/${a.id}/download`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="inline-flex h-7 items-center justify-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
-                                  title="PDF İndir"
-                                >
-                                  <FileText size={12} />
-                                  PDF
-                                </a>
+                      {analyses.map((a, idx) => {
+                        // Aynı domain için bir sonraki daha eski analizi bul (compare için)
+                        const olderSameDomain = analyses
+                          .slice(idx + 1)
+                          .find((x) => x.domain === a.domain && x.status === 'completed' && x.geo_score != null);
+                        const canCompare = a.status === 'completed' && a.geo_score != null && olderSameDomain;
+                        return (
+                          <tr key={a.id} className="hover:bg-muted/30 transition-colors">
+                            <td className="py-3">
+                              <div className="font-medium text-foreground">{a.domain}</div>
+                              <div className="text-xs text-muted-foreground truncate max-w-[180px]">{a.url}</div>
+                            </td>
+                            <td className="py-3 text-xs text-muted-foreground capitalize">{a.package_slug}</td>
+                            <td className="py-3">
+                              {a.geo_score != null ? (
+                                <span className="font-mono font-semibold text-emerald-400">{a.geo_score}</span>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
                               )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                            </td>
+                            <td className="py-3">
+                              <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[a.status] ?? ''}`}>
+                                {STATUS_LABEL[a.status] ?? a.status}
+                              </span>
+                            </td>
+                            <td className="py-3 text-xs text-muted-foreground">
+                              {new Date(a.created_at).toLocaleDateString('tr-TR')}
+                            </td>
+                            <td className="py-3 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <Link
+                                  href={`/analyze?id=${a.id}`}
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground transition-colors"
+                                  title="Görüntüle"
+                                >
+                                  <ExternalLink size={12} />
+                                </Link>
+                                {canCompare && (
+                                  <Link
+                                    href={`/compare/${olderSameDomain.id}/${a.id}`}
+                                    className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/20 transition-colors"
+                                    title={`${new Date(olderSameDomain.created_at).toLocaleDateString('tr-TR')} ile karşılaştır`}
+                                  >
+                                    <GitCompare size={12} />
+                                  </Link>
+                                )}
+                                {a.pdf_ready && (
+                                  <a
+                                    href={`/api/v1/analyze/${a.id}/download`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex h-7 items-center justify-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+                                    title="PDF İndir"
+                                  >
+                                    <FileText size={12} />
+                                    PDF
+                                  </a>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
