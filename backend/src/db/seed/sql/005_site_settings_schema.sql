@@ -32,9 +32,9 @@ INSERT IGNORE INTO site_settings (id, `key`, locale, value) VALUES
   (UUID(), 'site.logo_small',       '*', '"/assets/logo-small.png"'),
   (UUID(), 'site.logo_small_light', '*', '"/assets/logo-small-light.png"'),
   (UUID(), 'site.favicon',          '*', '"/assets/favicon.png"'),
-  -- Fiyatlar
-  (UUID(), 'price.starter',    '*', '"9"'),
-  (UUID(), 'price.pro',        '*', '"29"'),
-  (UUID(), 'price.expert',     '*', '"99"'),
+  -- Fiyatlar (Basic / Standart / Premium — slug korundu, sadece fiyat güncellendi)
+  (UUID(), 'price.starter',    '*', '"5"'),
+  (UUID(), 'price.pro',        '*', '"15"'),
+  (UUID(), 'price.expert',     '*', '"50"'),
   -- Dil varsayılanı
   (UUID(), 'default_locale',   '*', '"tr"');

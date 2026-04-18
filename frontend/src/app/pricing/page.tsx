@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { PricingSection } from '@/components/home/pricing-section';
 
+// ISR: 5 dakikada bir revalidate et (fiyat güncellenince hızlı yansısın)
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: 'Fiyatlandırma — GeoSerra',
   description: 'GeoSerra GEO SEO rapor paketleri. Basic $5, Standart $15, Premium $50. Tek seferlik ödeme, anında PDF raporu.',
