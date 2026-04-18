@@ -38,7 +38,7 @@ Son oturumda tamamlanan işler ve sonraki sprint için yapılacaklar listesi.
   pm2 restart geoserra-backend
   ```
 
-- [ ] **VPS test-full.ts temizlik** — `/var/www/geoserra/backend/src/test-full.ts` dev script'i silinmeli (production'da gerek yok)
+- [x] **VPS test-full.ts temizlik** — dev script'leri silindi (2026-04-18)
 
 ---
 
@@ -63,8 +63,8 @@ Son oturumda tamamlanan işler ve sonraki sprint için yapılacaklar listesi.
 - [ ] Contact form mesajları yönetimi
 
 ### C. Monthly Delta / Karşılaştırma (geoserra-claude'da `geo-compare` skill'i var)
-- [ ] Aynı domain'in 2 analizi arasındaki delta hesabı
-- [ ] Hangi kategori yükseldi/düştü (renk kodlu)
+- [x] **Aynı domain'in 2 analizi arasındaki delta hesabı** (backend `/api/v1/analyze/compare` — 2026-04-18)
+- [x] **Hangi kategori yükseldi/düştü (renk kodlu)** (frontend `/compare/[base]/[current]` + /hesabim GitCompare butonu)
 - [ ] Action item tamamlama takibi ("geçen ay önerilen X, şu an var mı?")
 - [ ] Müşteri aylık "ilerleme raporu" (ayrı PDF formatı)
 - [ ] Cron: abonelik paketleri için otomatik aylık yeniden analiz
@@ -91,9 +91,9 @@ Son oturumda tamamlanan işler ve sonraki sprint için yapılacaklar listesi.
 - [ ] OpenGraph image her analiz için dinamik üretim (skor görselli)
 
 ### G. Teknik Borçlar / Operasyonel
-- [ ] **Rate limiting** — IP başına saatte X istek (abuse önleme)
-- [ ] **Analiz timeout management** — şu an 45-60s sürüyor, bir script takılırsa tüm pipeline beklemeli
-- [ ] **Groq fallback** — API down ise OpenAI/Claude'a geçiş
+- [x] **Rate limiting** — `@fastify/rate-limit` zaten wire'lı, TR error mesajı + retry_after eklendi (2026-04-18)
+- [x] **Analiz timeout management** — `runPythonScript` 60s timeout + SIGKILL (2026-04-18)
+- [x] **Groq fallback** — Rule-based executive summary + tiered plan + findings (2026-04-18)
 - [ ] **PM2 autostart** — VPS reboot sonrası otomatik başlatma doğrulaması
 - [ ] **Backup stratejisi** — DB + `storage/reports/` günlük backup
 - [ ] **Monitoring** — Uptime kontrolü + Telegram/Email alert (backend down, Groq kota dolmuş vs.)
@@ -147,9 +147,13 @@ Ayda 1000 ücretli rapor = ~$4 LLM + %3-4 ödeme komisyonu.
 ## 📦 Son Commit Durumu
 
 - Branch: `main`
-- Son commit: `d5c3994` — "feat: report page — 6-dimensional scores + AI platform readiness bars"
+- Son commit: `9546b1f` — "feat: monthly delta / analysis comparison"
 - VPS senkron: ✅
 - PM2 durumu: `geoserra-backend` (online), `geoserra-frontend` (online), `geoserra-admin` (silindi, gerekirse yeniden ekle)
+
+**Sprint içi eklenenler (2026-04-18):**
+- `bdbdd3f` robustness: timeout + rate limit TR + Groq fallback
+- `9546b1f` monthly delta / analysis comparison
 
 ---
 
