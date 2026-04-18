@@ -164,10 +164,13 @@ export function AccountClient() {
                               {a.pdf_ready && (
                                 <a
                                   href={`/api/v1/analyze/${a.id}/download`}
-                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="inline-flex h-7 items-center justify-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-colors"
                                   title="PDF İndir"
                                 >
                                   <FileText size={12} />
+                                  PDF
                                 </a>
                               )}
                             </div>
