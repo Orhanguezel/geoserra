@@ -59,6 +59,15 @@ export interface AnalysisStatus {
   };
   full_data?: {
     geo_score?: number;
+    scores?: {
+      ai_citability?: number | null;
+      brand_authority?: number | null;
+      content_eeat?: number | null;
+      technical?: number | null;
+      schema?: number | null;
+      platform_optimization?: number | null;
+    };
+    platforms?: Record<string, number>;
     performance?: {
       score?: number;
       [key: string]: unknown;

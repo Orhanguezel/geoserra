@@ -119,6 +119,62 @@ export function ReportClient({ id }: { id: string }) {
             </div>
           )}
 
+          {/* 6-boyutlu dağılım */}
+          {isComplete && fullData && (fullData as any).scores && (
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="mb-4 font-bold">{locale === 'tr' ? 'Skor Dağılımı (6 Boyut)' : 'Score Breakdown (6 Dimensions)'}</h2>
+              <div className="space-y-3">
+                {([
+                  { key: 'ai_citability',         label_tr: 'AI Alıntılanabilirlik',  label_en: 'AI Citability' },
+                  { key: 'brand_authority',       label_tr: 'Marka Otoritesi',        label_en: 'Brand Authority' },
+                  { key: 'content_eeat',          label_tr: 'İçerik E-E-A-T',         label_en: 'Content E-E-A-T' },
+                  { key: 'technical',             label_tr: 'Teknik Altyapı',         label_en: 'Technical' },
+                  { key: 'schema',                label_tr: 'Structured Data',        label_en: 'Schema Markup' },
+                  { key: 'platform_optimization', label_tr: 'Platform Uyumu',         label_en: 'Platform Optimization' },
+                ] as const).map((d) => {
+                  const val = (fullData as any).scores?.[d.key];
+                  const pct = val == null ? 0 : Math.max(0, Math.min(100, val));
+                  const label = locale === 'tr' ? d.label_tr : d.label_en;
+                  return (
+                    <div key={d.key} className="flex items-center gap-3 text-sm">
+                      <span className="w-40 shrink-0 text-foreground/90">{label}</span>
+                      <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all"
+                          style={{ width: `${pct}%`, backgroundColor: scoreColor(pct) }}
+                        />
+                      </div>
+                      <span className="w-14 text-right font-mono font-bold" style={{ color: scoreColor(pct) }}>
+                        {val == null ? '—' : `${pct}`}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* AI Platform Readiness */}
+          {isComplete && fullData && (fullData as any).platforms && Object.keys((fullData as any).platforms).length > 0 && (
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="mb-4 font-bold">{locale === 'tr' ? 'AI Platform Hazırlığı' : 'AI Platform Readiness'}</h2>
+              <div className="space-y-3">
+                {Object.entries((fullData as any).platforms as Record<string, number>).map(([name, val]) => {
+                  const pct = Math.max(0, Math.min(100, val));
+                  return (
+                    <div key={name} className="flex items-center gap-3 text-sm">
+                      <span className="w-40 shrink-0 text-foreground/90">{name}</span>
+                      <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: scoreColor(pct) }} />
+                      </div>
+                      <span className="w-14 text-right font-mono font-bold" style={{ color: scoreColor(pct) }}>{pct}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* PDF Download */}
           {isComplete && status.pdf_ready && (
             <a
