@@ -69,6 +69,12 @@ export const env = {
   PYTHON_SCRIPTS_DIR: process.env.PYTHON_SCRIPTS_DIR || './python',
   GOOGLE_PSI_API_KEY: process.env.GOOGLE_PSI_API_KEY || '',
 
+  // Merkezi Scrapling servisi (opsiyonel). Tanımlı değilse legacy Python fetch_page.py kullanılır.
+  SCRAPER_URL: process.env.SCRAPER_URL || '',
+  SCRAPER_API_KEY: process.env.SCRAPER_API_KEY || '',
+  SCRAPER_ENABLED: toBool(process.env.SCRAPER_ENABLED, false),
+  SCRAPER_TIMEOUT_MS: toInt(process.env.SCRAPER_TIMEOUT_MS, 90_000),
+
   // Google OAuth (sign-in with Google) — id_token doğrulama için aud kontrolü
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
 

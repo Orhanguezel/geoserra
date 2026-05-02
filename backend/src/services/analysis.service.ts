@@ -5,6 +5,7 @@ import { repoUpdateAnalysis, repoGetAnalysisById } from '@/modules/analyses/repo
 import { PdfService } from './pdf.service';
 import { sendAnalysisCompleteEmail } from './mail.service';
 import { runAiInsights } from './ai-insights.service';
+import { scrapeGeoPage, scrapeGeoRobots } from './scraperClient';
 
 interface ScriptResult {
   success: boolean;
@@ -90,12 +91,32 @@ async function runPythonScript(
   }
 }
 
+async function fetchPageData(url: string): Promise<ScriptResult> {
+  if (env.SCRAPER_ENABLED && env.SCRAPER_URL && env.SCRAPER_API_KEY) {
+    const result = await scrapeGeoPage(url);
+    if (result.success) return { success: true, data: result.data };
+    console.warn(`[scraper-service] geo-page fallback to fetch_page.py: ${result.error ?? 'unknown error'}`);
+  }
+
+  return runPythonScript('fetch_page.py', [url]);
+}
+
+async function fetchRobotsData(url: string): Promise<ScriptResult> {
+  if (env.SCRAPER_ENABLED && env.SCRAPER_URL && env.SCRAPER_API_KEY) {
+    const result = await scrapeGeoRobots(url);
+    if (result.success) return { success: true, data: result.data };
+    console.warn(`[scraper-service] geo-robots fallback to fetch_page.py: ${result.error ?? 'unknown error'}`);
+  }
+
+  return runPythonScript('fetch_page.py', [url, 'robots']);
+}
+
 /** Ücretsiz analiz — hızlı 3 script (lighthouse, fetch, dns) */
 async function runFreeAnalysis(analysisId: string, url: string): Promise<void> {
   try {
     const [lighthouse, page, dns] = await Promise.allSettled([
       runPythonScript('lighthouse_checker.py', [url, '--strategy', 'mobile', ...(env.GOOGLE_PSI_API_KEY ? ['--api-key', env.GOOGLE_PSI_API_KEY] : [])]),
-      runPythonScript('fetch_page.py', [url]),
+      fetchPageData(url),
       runPythonScript('dns_checker.py', [url]),
     ]);
 
@@ -150,14 +171,14 @@ async function runFullAnalysis(analysisId: string, url: string, email: string): 
     const [lighthouse, page, dns, performance, citability, brand, keywords, llmstxt, robots] =
       await Promise.allSettled([
         runPythonScript('lighthouse_checker.py', [url, '--strategy', 'both', ...(env.GOOGLE_PSI_API_KEY ? ['--api-key', env.GOOGLE_PSI_API_KEY] : [])]),
-        runPythonScript('fetch_page.py', [url]),
+        fetchPageData(url),
         runPythonScript('dns_checker.py', [url]),
         runPythonScript('performance_analyzer.py', [url]),
         runPythonScript('citability_scorer.py', [url]),
         runPythonScript('brand_scanner.py', [titleCaseBrand, domain]),
         runPythonScript('keyword_analyzer.py', [url]),
         runPythonScript('llmstxt_generator.py', [url, '--check-only']),
-        runPythonScript('fetch_page.py', [url, 'robots']),
+        fetchRobotsData(url),
       ]);
 
     const fullData: FullAnalysisData = {

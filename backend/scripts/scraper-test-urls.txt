@@ -1,0 +1,6 @@
+# GeoSerra Scrapling migration comparison set
+https://example.com
+https://react.dev
+https://wordpress.org
+https://www.google.com
+https://geoserra.com

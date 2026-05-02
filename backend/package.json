@@ -10,7 +10,8 @@
     "db:seed": "bun run db:seed:nodrop",
     "db:seed:fresh": "bun run build && node --experimental-specifier-resolution=node dist/db/seed/index.js",
     "db:seed:nodrop": "bun run build && node --experimental-specifier-resolution=node dist/db/seed/index.js --no-drop",
-    "db:seed:only": "bun run build && node --experimental-specifier-resolution=node dist/db/seed/index.js --only="
+    "db:seed:only": "bun run build && node --experimental-specifier-resolution=node dist/db/seed/index.js --only=",
+    "scraper:compare": "bun run scripts/compare-scrapers.ts --urls=scripts/scraper-test-urls.txt --output=diff-report.json"
   },
   "dependencies": {
     "@fastify/cookie": "^11",
